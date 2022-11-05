@@ -1,3 +1,47 @@
 <%- include('./partials/header')%>
-    <h1>Hello world</h1>
+<body class="bg-primary bg-opacity-25">
+    <section class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 mx-auto rounded shadow bg-white">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="m-5 text-center">
+                                <h1>Welcome admin!</h1>
+                            </div>
+                            <form action="" method="post" class="m-5">
+                                <div class="mb-3">
+                                    <label class="form-label" for="username">Username</label>
+                                    <input class="form-control"type="text" name="userName" id="username">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="username">Password</label>
+                                    <input class="form-control"type="text" name="password" id="password">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input type="checkbox" id="remember-me" class="form-check-input">
+                                            <label for="remember-me" class="form-check-label">Remember me</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-right">
+                                            <a href="#">Forgot password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <input type="submit" value="Log me in" class="form-control btn btn-primary">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div><img class="img-fluid p-5" src="/imgs/rightPanelLogin.svg" alt="login"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 <%- include('./partials/footer')%>
