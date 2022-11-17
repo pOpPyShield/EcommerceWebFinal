@@ -1,0 +1,26 @@
+Images and Prices, sold
+Prices: 55.200
+Van Chuyen: Mien phi van chuyen
+    + Van chuyen toi: ... 
+Size: M L XL XXL
+So Luong: 97 san pham co san
+Them vao gio hang/Mua ngay
+
+Describe product:
+sản phẩm: áo khoác nam.
+chất liệu mềm mại, thoáng mát, thấm hút mồ hôi.
+thiết kế thời trang phù hợp xu hướng hiện nay.
+kiểu dáng đơn giản, lịch sự, dễ phối đồ.
+đường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.
+áo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.
+thích hợp đi chơi, đi dạo phố.
+kích cỡ phù hợp với người dưới 65kg tùy chiều cao
+Size XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao
+Size S: cho bạn có cân nặng từ 40-47kg tùy chiều cao
+Size M: cho bạn có cân nặng từ 48-55kg tùy chiều cao
+Size L: cho bạn có cân nặng dưới 65kg tùy chiều cao
+
+Danh Gia:
+(Icon mac dinh) ten nguoi dung
+danh gia theo sao (1-5)
+Noi dung danh gia
