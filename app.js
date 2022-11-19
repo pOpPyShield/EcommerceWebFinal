@@ -6,6 +6,7 @@ const authLog = require('./algo/login')
 const pagesCss = {"Admin login": "index.css",
                 "Dashboard": "index.css"}
 const pagesName = Object.keys(pagesCss)
+var userName = ""
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 //Serving static files
@@ -16,19 +17,20 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-        res.render('index', {
+        res.render('Login/index', {
                                 title: pagesName[0],
                                 cssHref: pagesCss["Admin login"]
                             })
     })
 app.post('/',authLog.authLogin,(req, res) => {
-    res.send({UserName: req.body.UserName, redirect_path: "/dashboard"})
+    userName = req.body.UserName
+    res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
     //res.send({UserName: req.body.UserName,redirect_path: "/dashboard"})
     authLog.con.end()
 })
 app.get('/dashboard', (req, res) => {
-    res.render('dashboard', {
-                            UserName: req.query.UserName,
+    res.render('Dashboard/index', {
+                            UserName: userName,
                             title: pagesName[1],
                             cssHref: pagesCss["Dashboard"]
                         })
