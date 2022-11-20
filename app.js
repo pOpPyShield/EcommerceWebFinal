@@ -29,7 +29,7 @@ app.post('/',authLog.authLogin,(req, res) => {
     authLog.con.end()
 })
 app.get('/dashboard', (req, res) => {
-    res.render('Dashboard/index', {
+    res.render('Dashboard/IndexPage/index', {
                             UserName: userName,
                             title: pagesName[1],
                             cssHref: pagesCss["Dashboard"]
