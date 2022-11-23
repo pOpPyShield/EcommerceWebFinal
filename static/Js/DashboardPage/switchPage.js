@@ -1,7 +1,6 @@
 function insertToDiv(name) {
-    console.log(name.toLowerCase())
-    var htmlCtn = ejs.render('Dashboard/tables')
-    $(".container-fluid").html(htmlCtn)
+    let pageName = "/" + name.toLowerCase()
+    $(".container-fluid").load(pageName)
 }
 /*
 $.each($("#collapsePages .collapse-item"), (value) => {

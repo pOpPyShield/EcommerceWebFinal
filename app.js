@@ -35,6 +35,9 @@ app.get('/dashboard', (req, res) => {
                             cssHref: pagesCss["Dashboard"]
                         })
 }) 
+app.get('/tables', (req, res) => {
+    res.render('Dashboard/tables')
+})
 function logger(req, res, next) {
     console.log(req.originalUrl + " " + req.method)
     next()
