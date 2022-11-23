@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-const authLog = require('./algo/login')
+const authLog = require('./api/v1/login')
 const pagesCss = {"Admin login": "index.css",
                 "Dashboard": "index.css"}
 const pagesName = Object.keys(pagesCss)
