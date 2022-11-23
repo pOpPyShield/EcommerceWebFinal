@@ -3,9 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const authLog = require('./api/v1/login')
-const pagesCss = {"Admin login": "index.css",
-                "Dashboard": "index.css"}
-const pagesName = Object.keys(pagesCss)
+const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
@@ -19,7 +17,6 @@ app.use(express.json())
 app.get('/', (req, res) => {
         res.render('Login/index', {
                                 title: pagesName[0],
-                                cssHref: pagesCss["Admin login"]
                             })
     })
 app.post('/',authLog.authLogin,(req, res) => {
@@ -32,7 +29,6 @@ app.get('/dashboard', (req, res) => {
     res.render('Dashboard/IndexPage/index', {
                             UserName: userName,
                             title: pagesName[1],
-                            cssHref: pagesCss["Dashboard"]
                         })
 }) 
 app.get('/tables', (req, res) => {
