@@ -31,8 +31,17 @@ app.get('/dashboard', (req, res) => {
                             title: pagesName[1],
                         })
 }) 
-app.get('/tables', (req, res) => {
-    res.render('Dashboard/tables')
+app.get('/category', (req, res) => {
+    res.render('Dashboard/partials/categoryContainer/index')
+})
+app.get('/product', (req, res) => {
+    res.render('Dashboard/partials/productContainer/index')
+})
+app.get('/rating', (req, res) => {
+    res.render('Dashboard/partials/ratingContainer/index')
+})
+app.get('/order', (req, res) => {
+    res.render('Dashboard/partials/orderContainer/index')
 })
 function logger(req, res, next) {
     console.log(req.originalUrl + " " + req.method)
