@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const authLog = require('./api/v1/login')
+const conDb = require('./database/db')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 //Set the view engine to ejs
@@ -47,8 +48,13 @@ app.get('/order', (req, res) => {
 /* End */
 
 /* Category Api*/
-app.get('/category', (req, res) => {
-
+app.get('/category/data', (req, res) => {
+    let queryStatement = "SELECT * FROM `Category`"
+    conDb.query(queryStatement, (err, data) => {
+        console.log(data)
+        return err ? res.json({message: "Error executing"}) : res.json(data)
+    })
+    conDb.end()
 })
 function logger(req, res, next) {
     console.log(req.originalUrl + " " + req.method)
