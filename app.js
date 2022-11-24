@@ -25,6 +25,7 @@ app.post('/',authLog.authLogin,(req, res) => {
     //res.send({UserName: req.body.UserName,redirect_path: "/dashboard"})
     authLog.con.end()
 })
+/* Render page for UI */
 app.get('/dashboard', (req, res) => {
     res.render('Dashboard/IndexPage/index', {
                             UserName: userName,
@@ -42,6 +43,12 @@ app.get('/rating', (req, res) => {
 })
 app.get('/order', (req, res) => {
     res.render('Dashboard/partials/orderContainer/index')
+})
+/* End */
+
+/* Category Api*/
+app.get('/category', (req, res) => {
+
 })
 function logger(req, res, next) {
     console.log(req.originalUrl + " " + req.method)
