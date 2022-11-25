@@ -1,3 +1,4 @@
 #ignore all logs
 *.log
 /sqlFiles/sqlUserAndPassword.txt
+node_modules
