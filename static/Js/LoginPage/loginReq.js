@@ -2,7 +2,7 @@
             userName: document.querySelector("#username").value,
             password: document.querySelector("#password").value
             */
-var loginAPI = "http://localhost:3000/"
+var loginAPI = "/"
 function login(data) {
     var options  = {
         method: 'POST',
@@ -20,7 +20,7 @@ function login(data) {
                 document.querySelector("#password").value=""
                 window.location.reload()
             } else {
-                window.location.href="http://localhost:3000"+resp.redirect_path
+                window.location.href="/"+resp.redirect_path
             }
         })
         .catch((err) => {
