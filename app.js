@@ -55,7 +55,7 @@ app.get('/order', (req, res) => {
 /* End */
 
 /* Category Api*/
-app.get('/category/data', (req, res) => {
+app.get('/category/data', async (req, res) => {
     let queryStatement = "SELECT * FROM `Category`"
     conDb.query(queryStatement, (err, data) => {
         console.log(data)
