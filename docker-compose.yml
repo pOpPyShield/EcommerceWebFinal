@@ -6,6 +6,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 8bwh9P6bDZRNYGFm
       MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce
+      MYSQL_PASSWORD: 8bwh9P6bDZRNYGFm
     volumes:
       - db_data:/var/lib/mysql
       - ./database/dbDeploy/EcommerceWebSite.sql:/docker-entrypoint-initdb.d/init.sql
@@ -16,7 +18,7 @@ services:
       - "80:3000"
     environment:
       DB_HOST: db
-      DB_USER: root
+      DB_USER:  ecommerce
       DB_PASSWORD: 8bwh9P6bDZRNYGFm
       DB_WORKING: ecommerce
 
