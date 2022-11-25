@@ -52,7 +52,12 @@ app.get('/category/data', (req, res) => {
     let queryStatement = "SELECT * FROM `Category`"
     conDb.query(queryStatement, (err, data) => {
         console.log(data)
-        return err ? res.json({message: "Error executing"}) : res.json(data)
+        if (!data) {
+            res.json({status: "Error executing"})
+        } else {
+            res.json(data)
+            //console.log(data[0].Id)
+        }
     })
     conDb.end()
 })
