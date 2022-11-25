@@ -19,3 +19,6 @@ services:
       DB_USER: root
       DB_PASSWORD: 8bwh9P6bDZRNYGFm
       DB_WORKING: ecommerce
+
+volumes:
+  db_data:
