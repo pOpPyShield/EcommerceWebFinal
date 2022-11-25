@@ -24,7 +24,7 @@ services:
       DB_HOST: db
       DB_PORT: 3306
       DB_USER:  ecommerce
-      DB_PASSWORD: 8bwh9P6bDZRNYGFm
+      DB_PASS: 8bwh9P6bDZRNYGFm
       DB_WORKING: ecommerce
 
 volumes:
