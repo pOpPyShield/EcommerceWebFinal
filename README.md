@@ -76,7 +76,7 @@ module.exports = con
 ```
 
 ## URL 
-GET /: Display the login panel in line 49 of[app.js](app.js)
+GET /: Display the login panel in line 25 of [app.js](app.js)
 
 POST /: 
 * User send username and password data to server [static/Js/LoginPage/loginReq.js](static/Js/LoginPage/loginReq.js)
