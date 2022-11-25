@@ -8,8 +8,11 @@ Simple Ecommerce website with nodejs, mysql
 * [URL](#url)
 ## ENV info
 DB_HOST=localhost
+
 DB_USER=huyroot
+
 DB_PASS=Abcd1234
+
 DB_WORKING=EcommerceWebSite
 
 ## Packages
