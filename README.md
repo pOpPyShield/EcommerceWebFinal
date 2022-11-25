@@ -36,7 +36,8 @@ $ npm run dev
 ```
 
 In a production environment, the IP address and the port on which it runs might change every single time, depending on the server. Since we cannot hardcode the server port, we can solve it by using dotenv.
-/app.js
+
+app.js
 ```javascript
 const express = require('express')
 require("dotenv").config();
@@ -104,3 +105,31 @@ GET /rating: Update UI dashboard when clicked in sidebar link [views/Dashboard/p
 GET /order: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/OrderContainer/index.ejs](views/Dashboard/partials/OrderContainer/index.ejs)
 
 GET /category/data: Server response category data as json object line 58 [app.js](app.js)
+```json
+[
+    {
+        "Id": 1,
+        "IdxAdmin": 4,
+        "Name": "fjweifjweifjwifjwijiewjfvnxbcnvxvbuqewhfuwh83rsdjnjvsn",
+        "Modify": "2022-11-24T01:33:43.000Z"
+    },
+    {
+        "Id": 2,
+        "IdxAdmin": 4,
+        "Name": "KAJSDj\r\nKAsd\r\nKASDASK\r\nKASdask",
+        "Modify": "2022-11-24T01:34:14.000Z"
+    },
+    {
+        "Id": 3,
+        "IdxAdmin": 4,
+        "Name": "_a asdjasj\r\n_ sadas\r\n*asdjiasjai\r\n*Sdiaos\r\n_asdasd",
+        "Modify": "2022-11-24T01:35:04.000Z"
+    },
+    {
+        "Id": 4,
+        "IdxAdmin": 4,
+        "Name": "_ jasdjasjsa\r\n_ jjjjajaja\r\n_ asdqwi",
+        "Modify": "2022-11-24T01:38:04.000Z"
+    }
+]
+```
