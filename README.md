@@ -91,8 +91,13 @@ else
 ``` 
 
 GET /dashboard: Display the dashboard panel [views/Dashboard/IndexPage/index.ejs](views/Dashboard/IndexPage/index.ejs)
+
 GET /category: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/CategoryContainer/index.ejs](views/Dashboard/partials/CategoryContainer/index.ejs)
+
 GET /product: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/ProductContainer/index.ejs](views/Dashboard/partials/ProductContainer/index.ejs)
+
 GET /rating: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/RatingContainer/index.ejs](views/Dashboard/partials/RatingContainer/index.ejs)
+
 GET /order: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/OrderContainer/index.ejs](views/Dashboard/partials/OrderContainer/index.ejs)
+
 GET /category/data: Server response category data as json object line 58 [app.js](app.js)
