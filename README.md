@@ -1,2 +1,2 @@
 # EcommerceWebFinal
-* Simple Ecommerce website with nodejs, mysql
+Simple Ecommerce website with nodejs, mysql
