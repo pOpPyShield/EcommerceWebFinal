@@ -2,26 +2,27 @@ const express = require('express')
 require("dotenv").config();
 const app = express()
 const port = process.env.PORT || 3000
-
+const path = require('path')
 //import module to process json and db
 const bodyParser = require('body-parser')
-const authLog = require('./api/v1/login')
-const conDb = require('./database/db')
+const authLog = require('./Api/v1/login')
+const conDb = require('./Database/db')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'Views'))
 
 //Serving static files
-app.use(express.static('static'))
+app.use(express.static(__dirname+'/Static'))
 app.use(logger)
 
 //Use body-parser to encoded message
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 
-//Get the U
+//Display login UI
 app.get('/', (req, res) => {
         res.render('Login/index', {
                                 title: pagesName[0],
@@ -35,22 +36,22 @@ app.post('/auth',authLog.authLogin,(req, res) => {
 })
 /* Render page for dashboard */
 app.get('/dashboard', (req, res) => {
-    res.render('Dashboard/IndexPage/index', {
+    res.render('Dashboard/', {
                             UserName: userName,
                             title: pagesName[1],
                         })
 }) 
 app.get('/category', (req, res) => {
-    res.render('Dashboard/partials/categoryContainer/index')
+    res.render('Dashboard/partials/categoryContainer/')
 })
 app.get('/product', (req, res) => {
-    res.render('Dashboard/partials/productContainer/index')
+    res.render('Dashboard/partials/productContainer/')
 })
 app.get('/rating', (req, res) => {
-    res.render('Dashboard/partials/ratingContainer/index')
+    res.render('Dashboard/partials/ratingContainer/')
 })
 app.get('/order', (req, res) => {
-    res.render('Dashboard/partials/orderContainer/index')
+    res.render('Dashboard/partials/orderContainer/')
 })
 /* End */
 
@@ -63,7 +64,6 @@ app.get('/category/data', async (req, res) => {
             res.json({status: "Error executing"})
         } else {
             res.json(data)
-            //console.log(data[0].Id)
         }
     })
     conDb.end()

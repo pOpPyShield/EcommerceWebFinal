@@ -1,4 +1,4 @@
-const con = require("../../database/db")
+const con = require("../../Database/db")
 function checkAdmin(userName, password) {
     let queryStatement = "SELECT COUNT(*) FROM `Admin` WHERE UserName='" + userName +"' and Password='" + password +"'"
     return new Promise((resolve, reject) => {
