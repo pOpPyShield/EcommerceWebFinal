@@ -5,8 +5,8 @@ const port = process.env.PORT || 3000
 const path = require('path')
 //import module to process json and db
 const bodyParser = require('body-parser')
-const authLog = require('./Api/v1/login')
-const conDb = require('./Database/db')
+const authLog = require('./Api/login')
+const conDb = require('./Config/DatabaseConfig')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
