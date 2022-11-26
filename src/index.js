@@ -3,6 +3,7 @@ require("dotenv").config();
 const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
+
 //import module to process json and db
 const bodyParser = require('body-parser')
 const authLog = require('./Api/login')
@@ -10,13 +11,16 @@ const conDb = require('./Config/DatabaseConfig')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
+//Use middle ware to catch request from user
+const logger = require('./Api/Middlewares/Logger')
+app.use(logger.logger)
+
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
 
 //Serving static files
 app.use(express.static(__dirname+'/Static'))
-app.use(logger)
 
 //Use body-parser to encoded message
 app.use(bodyParser.urlencoded({extended: true}))
@@ -70,11 +74,6 @@ app.get('/category/data', async (req, res) => {
 })
 /* End*/
 
-/* Log the request to console*/
-function logger(req, res, next) {
-    console.log(req.originalUrl + " " + req.method)
-    next()
-}
 /* End */
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
