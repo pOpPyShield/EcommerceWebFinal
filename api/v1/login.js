@@ -10,7 +10,6 @@ function checkAdmin(userName, password) {
 function authLogin(req, res, next) {
     (async () => {
         const result = await checkAdmin(req.body.UserName, req.body.Password)
-        console.log(result)
         if (!(result === 1)) {
             res.send({redirect_path: "/"})
         } else {

@@ -82,7 +82,7 @@ module.exports = con
 ## URL 
 GET /: Display the login panel in line 25 of [app.js](app.js)
 
-POST /: 
+POST /auth: 
 * User send username and password data to server [static/Js/LoginPage/loginReq.js](static/Js/LoginPage/loginReq.js)
 * Server process request at [api/v1/login.js](/api/vi/login.js)
 If user in db then server response

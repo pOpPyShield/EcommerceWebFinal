@@ -1,4 +1,3 @@
-var loginAPI = "/"
 function login(data) {
     var options  = {
         method: 'POST',
@@ -7,7 +6,7 @@ function login(data) {
             'Content-Type': 'application/json'
         }
     }
-    fetch(loginAPI, options) 
+    fetch("/auth", options) 
         .then((res) => res.json())
         .then((resp) =>  {
             if(resp.redirect_path === "/") {

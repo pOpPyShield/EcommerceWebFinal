@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
                                 title: pagesName[0],
                             })
     })
-app.post('/',authLog.authLogin,(req, res) => {
+app.post('/auth',authLog.authLogin,(req, res) => {
     userName = req.body.UserName
     res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
     //res.send({UserName: req.body.UserName,redirect_path: "/dashboard"})
