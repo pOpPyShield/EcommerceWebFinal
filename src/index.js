@@ -73,7 +73,9 @@ app.get('/category/data', async (req, res) => {
     conDb.end()
 })
 /* End*/
-
+app.use((req, res) => {
+    res.status(404).render('Error/404')
+})
 /* End */
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
