@@ -7,7 +7,6 @@ const path = require('path')
 //import module to process json and db
 const bodyParser = require('body-parser')
 const authLog = require('./Api/login')
-const conDb = require('./Config/DatabaseConfig')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
@@ -40,7 +39,6 @@ app.post('/auth',(req, res) => {
         } else {
             userName = req.body.UserName
             res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
-            authLog.con.end()
         }
     })()
 })
@@ -67,8 +65,9 @@ app.get('/order', (req, res) => {
 
 /* Category Api*/
 app.get('/category/data', async (req, res) => {
+    let conDB = require('./Config/DatabaseConfig')
     let queryStatement = "SELECT * FROM `Category`"
-    conDb.query(queryStatement, (err, data) => {
+    conDB.query(queryStatement, (err, data) => {
         console.log(data)
         if (!data) {
             res.json({status: "Error executing"})
@@ -76,7 +75,6 @@ app.get('/category/data', async (req, res) => {
             res.json(data)
         }
     })
-    conDb.end()
 })
 /* End*/
 app.use((req, res) => {
