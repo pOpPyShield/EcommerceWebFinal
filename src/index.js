@@ -32,11 +32,17 @@ app.get('/', (req, res) => {
                                 title: pagesName[0],
                             })
     })
-app.post('/auth',authLog.authLogin,(req, res) => {
-    userName = req.body.UserName
-    res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
-    //res.send({UserName: req.body.UserName,redirect_path: "/dashboard"})
-    authLog.con.end()
+app.post('/auth',(req, res) => {
+    (async () => {
+        const result = await authLog.checkAdmin(req.body.UserName, req.body.Password)
+        if (!(result === 1)) {
+            res.send({redirect_path: "/"})
+        } else {
+            userName = req.body.UserName
+            res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
+            authLog.con.end()
+        }
+    })()
 })
 /* Render page for dashboard */
 app.get('/dashboard', (req, res) => {

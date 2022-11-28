@@ -7,6 +7,7 @@ function checkAdmin(userName, password) {
         })
     })
 }
+/*
 function authLogin(req, res, next) {
     (async () => {
         const result = await checkAdmin(req.body.UserName, req.body.Password)
@@ -17,4 +18,5 @@ function authLogin(req, res, next) {
         }
     })()
 }
-module.exports ={authLogin, con}
+*/
+module.exports ={checkAdmin, con}
