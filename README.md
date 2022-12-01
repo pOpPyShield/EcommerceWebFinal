@@ -37,7 +37,7 @@ $ npm run dev
 
 In a production environment, the IP address and the port on which it runs might change every single time, depending on the server. Since we cannot hardcode the server port, we can solve it by using dotenv.
 
-app.js
+/src/index.js
 ```javascript
 const express = require('express')
 require("dotenv").config();
@@ -50,7 +50,7 @@ const server = app.listen(port, () => {
 ```
 
 Continuously log user requests with logger function
-/app.js
+/src/Config/DatabaseConfig.js
 ```javascript
 app.use(logger)
 function logger(req, res, next) {
@@ -60,31 +60,30 @@ function logger(req, res, next) {
 ```
 
 Create connection variable
-/database/db.js
+/src/Config/DatabaseConfig.js
 ```javascript
-const mysql = require('mysql')
+const mysql = require('mysql2')
 require("dotenv").config();
-const con = mysql.createConnection({
+const con = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
-    database: process.env.DB_WORKING
+    database: process.env.DB_WORKING,
+    port: process.env.DB_PORT
 })
-async () => {
-    await con.connect((err) => {
-        if (err) throw err
-    })
-    console.log("Connected!")
-}
+con.getConnection((err) => {
+    if(err) throw err
+    console.log("Db connected")
+})
 module.exports = con
 ```
 
 ## URL 
-GET /: Display the login panel in line 25 of [app.js](app.js)
+GET /: Display the login panel in line 25 of [index.js](/src/index.js)
 
 POST /auth: 
-* User send username and password data to server [static/Js/LoginPage/loginReq.js](static/Js/LoginPage/loginReq.js)
-* Server process request at [api/v1/login.js](/api/vi/login.js)
+* User send username and password data to server [Static/Js/LoginPage/loginReq.js](/src/Static/Js/LoginPage/loginReq.js)
+* Server process request at [Api/v1/login.js](/src/Api/vi/login.js)
 If user in db then server response
 ```json
 { 'COUNT(*)': 1 }
@@ -94,17 +93,32 @@ else
 { 'COUNT(*)': 0 }
 ``` 
 
-GET /dashboard: Display the dashboard panel [views/Dashboard/IndexPage/index.ejs](views/Dashboard/IndexPage/index.ejs)
+GET /dashboard: Display the dashboard panel [src/Views/Dashboard/IndexPage/index.ejs](/src/Views/Dashboard/IndexPage/index.ejs)
 
-GET /category: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/CategoryContainer/index.ejs](views/Dashboard/partials/CategoryContainer/index.ejs)
+GET /category: Update UI dashboard when clicked in sidebar link [Views/Dashboard/partials/CategoryContainer/index.ejs](/src/Views/Dashboard/partials/CategoryContainer/index.ejs)
 
-GET /product: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/ProductContainer/index.ejs](views/Dashboard/partials/ProductContainer/index.ejs)
+GET /product: Update UI dashboard when clicked in sidebar link [Views/Dashboard/partials/ProductContainer/index.ejs](/src/Views/Dashboard/partials/ProductContainer/index.ejs)
 
-GET /rating: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/RatingContainer/index.ejs](views/Dashboard/partials/RatingContainer/index.ejs)
+GET /rating: Update UI dashboard when clicked in sidebar link [Views/Dashboard/partials/RatingContainer/index.ejs](/src/Views/Dashboard/partials/RatingContainer/index.ejs)
 
-GET /order: Update UI dashboard when clicked in sidebar link [views/Dashboard/partials/OrderContainer/index.ejs](views/Dashboard/partials/OrderContainer/index.ejs)
+GET /order: Update UI dashboard when clicked in sidebar link [Views/Dashboard/partials/OrderContainer/index.ejs](/src/Views/Dashboard/partials/OrderContainer/index.ejs)
 
-GET /category/data: Server response category data as json object line 58 [app.js](app.js)
+GET /gender/data: Server response gender data as json object line 67 [index.js](src/index.js)
+```json
+[
+    {
+        "IdGender": 1,
+        "Name": "Thời trang nam",
+        "Created": "2022-11-30T02:32:36.000Z"
+    },
+    {
+        "IdGender": 2,
+        "Name": "Thời trang nữ",
+        "Created": "2022-11-30T02:32:50.000Z"
+    }
+]
+```
+GET /category/data: Server response category data as json object line 58 [index.js](/src/index.js)
 ```json
 [
     {

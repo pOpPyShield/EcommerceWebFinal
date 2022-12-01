@@ -63,14 +63,26 @@ app.get('/order', (req, res) => {
 })
 /* End */
 
+/* Gender Api */
+app.get('/gender/data', async (req, res) => {
+    let conDB = require('./Config/DatabaseConfig')
+    let queryStatement = "SELECT * FROM `Gender`"
+    conDB.query(queryStatement, (err, data) => {
+        if (!data) {
+            res.json({status: "Error executing gender table"})
+        } else {
+            res.json(data)
+        }
+    })
+})
+/*End*/
 /* Category Api*/
 app.get('/category/data', async (req, res) => {
     let conDB = require('./Config/DatabaseConfig')
     let queryStatement = "SELECT * FROM `Category`"
     conDB.query(queryStatement, (err, data) => {
-        console.log(data)
         if (!data) {
-            res.json({status: "Error executing"})
+            res.json({status: "Error executing category table"})
         } else {
             res.json(data)
         }
