@@ -182,3 +182,37 @@ GET /product/data: Server response product data as json object line 93 [index.js
     }
 ]
 ```
+
+GET /product/data: Server response order data as json object line 106 [index.js](/src/index.js)
+```json
+[
+    {
+        "IdCustomer": 2,
+        "Name": "Huy Bui",
+        "Price": 55200,
+        "Address": "K19238, Phuong Hoa Quy, Hoa Nhon",
+        "Description": "Cho xem hang",
+        "Size": "M",
+        "Quantity": 2,
+        "Created": "2022-12-01T13:41:27.000Z",
+        "PhoneNumber": "12391277517238",
+        "TotalPrice": 110000,
+        "Status": "Cho Lay",
+        "ExpectedDate": "2022-12-16T17:00:00.000Z"
+    },
+    {
+        "IdCustomer": 2,
+        "Name": "Huy Bui",
+        "Price": 55200,
+        "Address": "K19238, Phuong Hoa Quy, Hoa Nhon",
+        "Description": "Cho xem hang",
+        "Size": "M",
+        "Quantity": 2,
+        "Created": "2022-12-01T13:41:27.000Z",
+        "PhoneNumber": "1231241251256612",
+        "TotalPrice": 110000,
+        "Status": "Cho Lay",
+        "ExpectedDate": "2022-12-16T17:00:00.000Z"
+    }
+]
+```

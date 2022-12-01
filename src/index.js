@@ -102,6 +102,19 @@ app.get('/product/data', async (req, res) => {
     })
 })
 /*End*/
+/* CustomerOrders API */
+app.get('/orders/data', async (req, res) => {
+    let conDB = require('./Config/DatabaseConfig')
+    let queryStatement = "SELECT CustomerOrders.IdCustomer, Product.Name, Product.Price, CustomerOrders.Name, CustomerOrders.Address, CustomerOrders.Description, CustomerOrders.Size, CustomerOrders.Quantity, CustomerOrders.Created, PhoneNumber.PhoneNumber, ShipThirdParty.TotalPrice,ShipThirdParty.Status,ShipThirdParty.ExpectedDate FROM CustomerOrders INNER JOIN Product ON Product.IdProduct=CustomerOrders.IdProduct INNER JOIN PhoneNumber ON PhoneNumber.IdCustomer = CustomerOrders.IdCustomer INNER JOIN ShipThirdParty ON ShipThirdParty.IdCustomer = CustomerOrders.IdCustomer"
+    conDB.query(queryStatement, (err, data) => {
+        if (!data) {
+            res.json({status: "Error executing category table"})
+        } else {
+            res.json(data)
+        }
+    })
+})
+/*End*/
 app.use((req, res) => {
     res.status(404).render('Error/404')
 })

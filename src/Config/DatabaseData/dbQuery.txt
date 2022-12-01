@@ -5,3 +5,13 @@ INNER JOIN Quantity
 ON Product.IdProduct=Quantity.IdProduct 
 INNER JOIN Size 
 ON Quantity.IdSize=Size.IdSize
+
+// Query CustomerOrders
+SELECT CustomerOrders.IdCustomer, Product.Name, Product.Price, CustomerOrders.Name, CustomerOrders.Address, CustomerOrders.Description, CustomerOrders.Size, CustomerOrders.Quantity, CustomerOrders.Created, PhoneNumber.PhoneNumber, ShipThirdParty.TotalPrice,ShipThirdParty.Status,ShipThirdParty.ExpectedDate 
+FROM CustomerOrders
+INNER JOIN Product
+ON Product.IdProduct=CustomerOrders.IdProduct 
+INNER JOIN PhoneNumber
+ON PhoneNumber.IdCustomer = CustomerOrders.IdCustomer
+INNER JOIN ShipThirdParty
+ON ShipThirdParty.IdCustomer = CustomerOrders.IdCustomer
