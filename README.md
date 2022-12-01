@@ -118,6 +118,7 @@ GET /gender/data: Server response gender data as json object line 67 [index.js](
     }
 ]
 ```
+
 GET /category/data: Server response category data as json object line 58 [index.js](/src/index.js)
 ```json
 [
@@ -144,6 +145,40 @@ GET /category/data: Server response category data as json object line 58 [index.
         "IdxAdmin": 4,
         "Name": "_ jasdjasjsa\r\n_ jjjjajaja\r\n_ asdqwi",
         "Modify": "2022-11-24T01:38:04.000Z"
+    }
+]
+```
+
+GET /product/data: Server response product data as json object line 93 [index.js](/src/index.js)
+```json
+[
+    {
+        "Name": "Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022",
+        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
+        "Price": 55200,
+        "Quantity": 25,
+        "Size": "M"
+    },
+    {
+        "Name": "Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022",
+        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
+        "Price": 55200,
+        "Quantity": 24,
+        "Size": "L"
+    },
+    {
+        "Name": "Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022",
+        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
+        "Price": 55200,
+        "Quantity": 24,
+        "Size": "XL"
+    },
+    {
+        "Name": "Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022",
+        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
+        "Price": 55200,
+        "Quantity": 24,
+        "Size": "XXL"
     }
 ]
 ```
