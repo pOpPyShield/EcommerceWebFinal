@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2022 at 09:28 AM
+-- Generation Time: Dec 01, 2022 at 09:00 PM
 -- Server version: 8.0.31-0ubuntu0.20.04.1
 -- PHP Version: 7.4.3
 
@@ -67,22 +67,6 @@ INSERT INTO `Category` (`IdCat`, `IdGender`, `Name`, `Modify`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CheckOut`
---
-
-CREATE TABLE `CheckOut` (
-  `IdCheckout` int NOT NULL,
-  `IdCustomer` int NOT NULL,
-  `IdProduct` int NOT NULL,
-  `IdSize` int NOT NULL,
-  `Quantity` int NOT NULL,
-  `IdDelivery` int NOT NULL,
-  `Created` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `CustomerOrders`
 --
 
@@ -91,27 +75,18 @@ CREATE TABLE `CustomerOrders` (
   `Name` varchar(255) NOT NULL,
   `Address` text NOT NULL,
   `Description` text NOT NULL,
+  `IdProduct` int NOT NULL,
+  `Size` varchar(10) NOT NULL,
+  `Quantity` int NOT NULL,
   `Created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `DeliveryType`
+-- Dumping data for table `CustomerOrders`
 --
 
-CREATE TABLE `DeliveryType` (
-  `IdDelivery` int NOT NULL,
-  `DeliveryType` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `DeliveryType`
---
-
-INSERT INTO `DeliveryType` (`IdDelivery`, `DeliveryType`) VALUES
-(1, 'Nhanh'),
-(2, 'Hỏa tốc');
+INSERT INTO `CustomerOrders` (`IdCustomer`, `Name`, `Address`, `Description`, `IdProduct`, `Size`, `Quantity`, `Created`) VALUES
+(2, 'Huy Bui', 'K19238, Phuong Hoa Quy, Hoa Nhon', 'Cho xem hang', 1, 'M', 2, '2022-12-01 20:41:27');
 
 -- --------------------------------------------------------
 
@@ -152,9 +127,17 @@ CREATE TABLE `Images` (
 --
 
 CREATE TABLE `PhoneNumber` (
-  `IdCheckout` int NOT NULL,
+  `IdCustomer` int NOT NULL,
   `PhoneNumber` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `PhoneNumber`
+--
+
+INSERT INTO `PhoneNumber` (`IdCustomer`, `PhoneNumber`) VALUES
+(2, '12391277517238'),
+(2, '1231241251256612');
 
 -- --------------------------------------------------------
 
@@ -208,11 +191,18 @@ INSERT INTO `Quantity` (`IdSize`, `IdProduct`, `Quantity`) VALUES
 
 CREATE TABLE `ShipThirdParty` (
   `IdShip` int NOT NULL,
-  `IdCheckOut` int NOT NULL,
+  `IdCustomer` int NOT NULL,
   `TotalPrice` int UNSIGNED NOT NULL,
   `Status` varchar(30) NOT NULL,
   `ExpectedDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `ShipThirdParty`
+--
+
+INSERT INTO `ShipThirdParty` (`IdShip`, `IdCustomer`, `TotalPrice`, `Status`, `ExpectedDate`) VALUES
+(2, 2, 110000, 'Cho Lay', '2022-12-17');
 
 -- --------------------------------------------------------
 
@@ -255,26 +245,11 @@ ALTER TABLE `Category`
   ADD KEY `IdGender` (`IdGender`);
 
 --
--- Indexes for table `CheckOut`
---
-ALTER TABLE `CheckOut`
-  ADD PRIMARY KEY (`IdCheckout`),
-  ADD KEY `IdCustomer` (`IdCustomer`),
-  ADD KEY `IdProduct` (`IdProduct`),
-  ADD KEY `IdDelivery` (`IdDelivery`),
-  ADD KEY `IdSize` (`IdSize`);
-
---
 -- Indexes for table `CustomerOrders`
 --
 ALTER TABLE `CustomerOrders`
-  ADD PRIMARY KEY (`IdCustomer`);
-
---
--- Indexes for table `DeliveryType`
---
-ALTER TABLE `DeliveryType`
-  ADD PRIMARY KEY (`IdDelivery`);
+  ADD PRIMARY KEY (`IdCustomer`),
+  ADD KEY `IdProduct` (`IdProduct`);
 
 --
 -- Indexes for table `Gender`
@@ -292,7 +267,7 @@ ALTER TABLE `Images`
 -- Indexes for table `PhoneNumber`
 --
 ALTER TABLE `PhoneNumber`
-  ADD KEY `IdCheckout` (`IdCheckout`);
+  ADD KEY `IdCustomer` (`IdCustomer`);
 
 --
 -- Indexes for table `Product`
@@ -313,7 +288,7 @@ ALTER TABLE `Quantity`
 --
 ALTER TABLE `ShipThirdParty`
   ADD PRIMARY KEY (`IdShip`),
-  ADD KEY `IdCheckOut` (`IdCheckOut`);
+  ADD KEY `IdCustomer` (`IdCustomer`);
 
 --
 -- Indexes for table `Size`
@@ -338,22 +313,10 @@ ALTER TABLE `Category`
   MODIFY `IdCat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `CheckOut`
---
-ALTER TABLE `CheckOut`
-  MODIFY `IdCheckout` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `CustomerOrders`
 --
 ALTER TABLE `CustomerOrders`
-  MODIFY `IdCustomer` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `DeliveryType`
---
-ALTER TABLE `DeliveryType`
-  MODIFY `IdDelivery` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdCustomer` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Gender`
@@ -371,7 +334,7 @@ ALTER TABLE `Product`
 -- AUTO_INCREMENT for table `ShipThirdParty`
 --
 ALTER TABLE `ShipThirdParty`
-  MODIFY `IdShip` int NOT NULL AUTO_INCREMENT;
+  MODIFY `IdShip` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Size`
@@ -390,13 +353,10 @@ ALTER TABLE `Category`
   ADD CONSTRAINT `Category_ibfk_1` FOREIGN KEY (`IdGender`) REFERENCES `Gender` (`IdGender`);
 
 --
--- Constraints for table `CheckOut`
+-- Constraints for table `CustomerOrders`
 --
-ALTER TABLE `CheckOut`
-  ADD CONSTRAINT `CheckOut_ibfk_1` FOREIGN KEY (`IdCustomer`) REFERENCES `CustomerOrders` (`IdCustomer`),
-  ADD CONSTRAINT `CheckOut_ibfk_2` FOREIGN KEY (`IdProduct`) REFERENCES `Product` (`IdProduct`),
-  ADD CONSTRAINT `CheckOut_ibfk_3` FOREIGN KEY (`IdDelivery`) REFERENCES `DeliveryType` (`IdDelivery`),
-  ADD CONSTRAINT `CheckOut_ibfk_4` FOREIGN KEY (`IdSize`) REFERENCES `Size` (`IdSize`);
+ALTER TABLE `CustomerOrders`
+  ADD CONSTRAINT `CustomerOrders_ibfk_1` FOREIGN KEY (`IdProduct`) REFERENCES `Product` (`IdProduct`);
 
 --
 -- Constraints for table `Images`
@@ -408,7 +368,7 @@ ALTER TABLE `Images`
 -- Constraints for table `PhoneNumber`
 --
 ALTER TABLE `PhoneNumber`
-  ADD CONSTRAINT `PhoneNumber_ibfk_1` FOREIGN KEY (`IdCheckout`) REFERENCES `CheckOut` (`IdCheckout`);
+  ADD CONSTRAINT `PhoneNumber_ibfk_1` FOREIGN KEY (`IdCustomer`) REFERENCES `CustomerOrders` (`IdCustomer`);
 
 --
 -- Constraints for table `Product`
@@ -427,7 +387,7 @@ ALTER TABLE `Quantity`
 -- Constraints for table `ShipThirdParty`
 --
 ALTER TABLE `ShipThirdParty`
-  ADD CONSTRAINT `ShipThirdParty_ibfk_1` FOREIGN KEY (`IdCheckOut`) REFERENCES `CheckOut` (`IdCheckout`);
+  ADD CONSTRAINT `ShipThirdParty_ibfk_1` FOREIGN KEY (`IdCustomer`) REFERENCES `CustomerOrders` (`IdCustomer`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
