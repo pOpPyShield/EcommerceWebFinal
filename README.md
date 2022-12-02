@@ -216,3 +216,18 @@ GET /product/data: Server response order data as json object line 106 [index.js]
     }
 ]
 ```
+
+POST /ProcessCheckout: Send the post request as json object to server, server insert to CustomerOrders table
+```json
+{
+    "prodNum": 1,
+    "size": "M",
+    "quantity": 2,
+    "customerName": "Huy",
+    "address": "K339, Phuong Hai Hoa, Quan Binh Thanh",
+    "phoneNumber": "19232138"
+}
+```
+Description column will be insert by admin
+
+

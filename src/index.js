@@ -115,6 +115,26 @@ app.get('/orders/data', async (req, res) => {
     })
 })
 /*End*/
+/* Get View CheckOut */
+app.get('/checkout', (req, res) => {
+    res.render('Checkout/')
+})
+app.post('/ProcessCheckout', (req, res) => {
+   var prodNum = parseInt(req.body.prodNum)
+   var size = req.body.size
+   var quantity = parseInt(req.body.quantity)
+   var customerName = req.body.customerName
+   var phoneNumber = req.body.phoneNumber
+   var address = req.body.address
+   var description = "Cho khach xem hang"
+
+   var sql = `INSERT INTO CustomerOrders(Name, Address, Description,IdProduct, Size, Quantity) VALUES ("${customerName}", "${address}", "${description}", ${prodNum}, "${size}", ${quantity})`
+   authLog.con.query(sql, (err, data) => {
+        if (err) throw err
+        console.log(data)
+   })
+})
+/**/
 app.use((req, res) => {
     res.status(404).render('Error/404')
 })
