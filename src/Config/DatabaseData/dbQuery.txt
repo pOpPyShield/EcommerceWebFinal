@@ -1,10 +1,12 @@
-//Query name, description, quantity, size of each product
-SELECT Product.Name, Product.Description, Product.Price, Quantity.Quantity, Size.Size
-FROM Product 
-INNER JOIN Quantity
-ON Product.IdProduct=Quantity.IdProduct 
-INNER JOIN Size 
-ON Quantity.IdSize=Size.IdSize
+//Query IdProduct, name, description, quantity, size of each product
+SELECT DISTINCT Product.IdProduct, Product.Name, Product.Description, Product.Price, Quantity.Quantity, Size.Size 
+FROM Product
+INNER JOIN Quantity ON Product.IdProduct=Quantity.IdProduct 
+INNER JOIN Size ON Quantity.IdSize=Size.IdSize
+//Query Images one paticular 
+SELECT Path
+FROM Images
+WHERE IdProduct=?;
 
 // Query CustomerOrders
 SELECT CustomerOrders.IdCustomer, Product.Name, Product.Price, CustomerOrders.Name, CustomerOrders.Address, CustomerOrders.Description, CustomerOrders.Size, CustomerOrders.Quantity, CustomerOrders.Created, PhoneNumber.PhoneNumber, ShipThirdParty.TotalPrice,ShipThirdParty.Status,ShipThirdParty.ExpectedDate 

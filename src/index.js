@@ -92,7 +92,7 @@ app.get('/category/data', async (req, res) => {
 /* Product APi*/
 app.get('/product/data', async (req, res) => {
     let conDB = require('./Config/DatabaseConfig')
-    let queryStatement = "SELECT Product.Name, Product.Description, Product.Price, Quantity.Quantity, Size.Size FROM Product INNER JOIN Quantity ON Product.IdProduct=Quantity.IdProduct INNER JOIN Size ON Quantity.IdSize=Size.IdSize"
+    let queryStatement = "SELECT Product.IdProduct, Product.Name, Product.Description, Product.Price, Quantity.Quantity, Size.Size FROM Product INNER JOIN Quantity ON Product.IdProduct=Quantity.IdProduct INNER JOIN Size ON Quantity.IdSize=Size.IdSize"
     conDB.query(queryStatement, (err, data) => {
         if (!data) {
             res.json({status: "Error executing category table"})
