@@ -31,8 +31,8 @@ Product.init({
     },
 }, {sequelize, modelName: "Product", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
 
-//Category.hasMany(Product)
-//Product.belongsTo(Category)
+Category.hasMany(Product)
+Product.belongsTo(Category)
 const syncModel = async () => {
     await Product.sync({ force: true });
     console.log("The table for the Product model was just (re)created!");
@@ -45,12 +45,24 @@ const eagerLoading = async() => {
         where: {
             Name: "Thời trang nam"
         },
-            include: Category
+        include: [ 
+            {
+                model: Category,
+                required: true,
+                where: {
+                    Name: "Áo khoác"
+                },
+                include: {
+                    model: Product,
+                    required: true
+                }
+            }
+        ]
     });
     // Now the ship comes with it
     console.log(JSON.stringify(products, null, 2))
 }
-//eagerLoading()
+eagerLoading()
 module.exports = Product
 /*
 const eagerLoading = async() => {

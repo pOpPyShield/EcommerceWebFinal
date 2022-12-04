@@ -42,7 +42,7 @@ const eagerLoading = async() => {
     // Now the ship comes with it
     console.log(JSON.stringify(products, null, 2))
 }
-eagerLoading()
+//eagerLoading()
 //insertInstance(categoryNew)
 //syncModel()
 module.exports = Category
