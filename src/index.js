@@ -3,7 +3,8 @@ require("dotenv").config();
 const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
-
+//Import sequelize models 
+const getAllProduct = require("./Models/createInstace")
 //import module to process json and db
 const bodyParser = require('body-parser')
 const authLog = require('./Api/login')
@@ -63,7 +64,7 @@ app.get('/order', (req, res) => {
 })
 /* End */
 
-/* Gender Api */
+/*
 app.get('/gender/data', async (req, res) => {
     let conDB = require('./Config/DatabaseConfig')
     let queryStatement = "SELECT * FROM `Gender`"
@@ -75,8 +76,6 @@ app.get('/gender/data', async (req, res) => {
         }
     })
 })
-/*End*/
-/* Category Api*/
 app.get('/category/data', async (req, res) => {
     let conDB = require('./Config/DatabaseConfig')
     let queryStatement = "SELECT * FROM `Category`"
@@ -88,18 +87,10 @@ app.get('/category/data', async (req, res) => {
         }
     })
 })
-/* End*/
+*/
 /* Product APi*/
 app.get('/product/data', async (req, res) => {
-    let conDB = require('./Config/DatabaseConfig')
-    let queryStatement = "SELECT Product.IdProduct, Product.Name, Product.Description, Product.Price, Quantity.Quantity, Size.Size FROM Product INNER JOIN Quantity ON Product.IdProduct=Quantity.IdProduct INNER JOIN Size ON Quantity.IdSize=Size.IdSize"
-    conDB.query(queryStatement, (err, data) => {
-        if (!data) {
-            res.json({status: "Error executing category table"})
-        } else {
-            res.json(data)
-        }
-    })
+    res.json(await getAllProduct())
 })
 /*End*/
 /* CustomerOrders API */

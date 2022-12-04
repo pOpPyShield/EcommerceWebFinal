@@ -39,4 +39,4 @@ const syncModel = async() => {
     await Checkout.sync({force: true})
     console.log("The table for the Checkout model was just (re)created!");
 }
-syncModel()
+//syncModel()
