@@ -21,8 +21,8 @@ Category.init({
         allowNull: false
     },
 }, {sequelize, modelName: "Category", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
-Gender.hasMany(Category)
-Category.belongsTo(Gender)
+//Gender.hasMany(Category)
+//Category.belongsTo(Gender)
 const syncModel = async () => {
     await Category.sync({ force: true });
     console.log("The table for the Category model was just (re)created!");

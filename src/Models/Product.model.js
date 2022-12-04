@@ -31,8 +31,8 @@ Product.init({
     },
 }, {sequelize, modelName: "Product", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
 
-Category.hasMany(Product)
-Product.belongsTo(Category)
+//Category.hasMany(Product)
+//Product.belongsTo(Category)
 const eagerLoading = async() => {
     const products  = await Gender.findAll({
         where: {

@@ -27,8 +27,8 @@ Size.init({
     },
 }, {sequelize, modelName: "Size", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
 
-Product.hasMany(Size)
-Size.belongsTo(Product)
+//Product.hasMany(Size)
+//Size.belongsTo(Product)
 const sizeNew = new Size({Name: "M", Quantity: 24, ProductIdProduct: 1})
 //insertInstance(sizeNew)
 const eagerLoading = async() => {

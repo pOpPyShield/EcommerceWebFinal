@@ -120,3 +120,4 @@ const syncModel = async () => {
     console.log("The table for the Admin model was just (re)created!");
 }
 //syncModel()
+module.exports=Admin

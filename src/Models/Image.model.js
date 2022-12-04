@@ -17,8 +17,8 @@ Image.init({
     },
 }, {sequelize, modelName: "Image", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
 
-Product.hasMany(Image)
-Image.belongsTo(Product)
+//Product.hasMany(Image)
+//Image.belongsTo(Product)
 const newImagePath = new Image({Path: "/Static/Prod2", ProductIdProduct: 1})
 const eagerLoading = async() => {
     const products  = await Gender.findAll({
@@ -52,4 +52,5 @@ const eagerLoading = async() => {
     // Now the ship comes with it
     console.log(JSON.stringify(products, null, 2))
 }
-eagerLoading()
+//eagerLoading()
+module.exports = Image
