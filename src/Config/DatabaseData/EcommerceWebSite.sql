@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2022 at 09:00 PM
+-- Generation Time: Dec 05, 2022 at 01:25 AM
 -- Server version: 8.0.31-0ubuntu0.20.04.1
 -- PHP Version: 7.4.3
 
@@ -30,19 +30,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Admin` (
   `Id` int NOT NULL,
-  `UserName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Password` varchar(60) NOT NULL,
-  `TimeStamp` datetime DEFAULT CURRENT_TIMESTAMP
+  `UserName` char(255) NOT NULL,
+  `Password` char(255) NOT NULL,
+  `updateTimestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `Admin`
---
-
-INSERT INTO `Admin` (`Id`, `UserName`, `Password`, `TimeStamp`) VALUES
-(4, 'aaaaa', 'zzzzzz', '2022-11-07 08:48:21'),
-(5, 'askdask', 'as8127', '2022-11-07 09:12:31'),
-(6, 'aaa88172', 'zzzzzz', '2022-11-07 09:31:12');
 
 -- --------------------------------------------------------
 
@@ -52,41 +43,45 @@ INSERT INTO `Admin` (`Id`, `UserName`, `Password`, `TimeStamp`) VALUES
 
 CREATE TABLE `Category` (
   `IdCat` int NOT NULL,
-  `IdGender` int NOT NULL,
-  `Name` text NOT NULL,
-  `Modify` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `Name` char(255) NOT NULL,
+  `updateTimestamp` datetime NOT NULL,
+  `GenderIdGender` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Category`
 --
 
-INSERT INTO `Category` (`IdCat`, `IdGender`, `Name`, `Modify`) VALUES
-(6, 1, 'Áo khoác', '2022-12-01 08:54:44');
+INSERT INTO `Category` (`IdCat`, `Name`, `updateTimestamp`, `GenderIdGender`) VALUES
+(2, 'Áo khoác', '2022-12-04 17:28:12', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `CustomerOrders`
+-- Table structure for table `Checkout`
 --
 
-CREATE TABLE `CustomerOrders` (
-  `IdCustomer` int NOT NULL,
-  `Name` varchar(255) NOT NULL,
-  `Address` text NOT NULL,
-  `Description` text NOT NULL,
-  `IdProduct` int NOT NULL,
-  `Size` varchar(10) NOT NULL,
-  `Quantity` int NOT NULL,
-  `Created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `Checkout` (
+  `IdCheckout` int NOT NULL,
+  `updateTimestamp` datetime NOT NULL,
+  `CustomerOrderIdCustomer` int DEFAULT NULL,
+  `ProductIdProduct` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `CustomerOrders`
+-- Table structure for table `CustomerOrder`
 --
 
-INSERT INTO `CustomerOrders` (`IdCustomer`, `Name`, `Address`, `Description`, `IdProduct`, `Size`, `Quantity`, `Created`) VALUES
-(2, 'Huy Bui', 'K19238, Phuong Hoa Quy, Hoa Nhon', 'Cho xem hang', 1, 'M', 2, '2022-12-01 20:41:27');
+CREATE TABLE `CustomerOrder` (
+  `IdCustomer` int NOT NULL,
+  `Name` char(255) NOT NULL,
+  `Description` text,
+  `Size` char(255) NOT NULL,
+  `Quantity` int UNSIGNED NOT NULL,
+  `updateTimestamp` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -96,29 +91,47 @@ INSERT INTO `CustomerOrders` (`IdCustomer`, `Name`, `Address`, `Description`, `I
 
 CREATE TABLE `Gender` (
   `IdGender` int NOT NULL,
-  `Name` varchar(255) NOT NULL,
-  `Created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `Name` char(255) NOT NULL,
+  `updateTimestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Gender`
 --
 
-INSERT INTO `Gender` (`IdGender`, `Name`, `Created`) VALUES
-(1, 'Thời trang nam', '2022-11-30 09:32:36'),
-(2, 'Thời trang nữ', '2022-11-30 09:32:50');
+INSERT INTO `Gender` (`IdGender`, `Name`, `updateTimestamp`) VALUES
+(1, 'Thời trang nam', '2022-12-04 17:18:27');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Images`
+-- Table structure for table `Image`
 --
 
-CREATE TABLE `Images` (
-  `IdImage` int NOT NULL,
-  `IdProduct` int NOT NULL,
-  `Path` varchar(255) NOT NULL
+CREATE TABLE `Image` (
+  `id` int NOT NULL,
+  `Path` char(255) NOT NULL,
+  `updateTimestamp` datetime NOT NULL,
+  `ProductIdProduct` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Image`
+--
+
+INSERT INTO `Image` (`id`, `Path`, `updateTimestamp`, `ProductIdProduct`) VALUES
+(1, 'Prod_1/img1.jpg', '2022-12-04 17:56:15', 1),
+(2, 'Prod_1/img2.jpg', '2022-12-04 17:56:15', 1),
+(3, 'Prod_1/img3.jpg', '2022-12-04 17:56:15', 1),
+(4, 'Prod_2/img1.jpg', '2022-12-04 17:57:56', 2),
+(5, 'Prod_2/img2.jpg', '2022-12-04 17:57:56', 2),
+(6, 'Prod_2/img3.jpg', '2022-12-04 17:57:56', 2),
+(7, 'Prod_3/img1.jpg', '2022-12-04 17:58:39', 3),
+(8, 'Prod_3/img2.jpg', '2022-12-04 17:58:39', 3),
+(9, 'Prod_3/img3.jpg', '2022-12-04 17:58:39', 3),
+(10, 'Prod_4/img1.jpg', '2022-12-04 17:59:41', 4),
+(11, 'Prod_4/img2.jpg', '2022-12-04 17:59:41', 4),
+(12, 'Prod_4/img3.jpg', '2022-12-04 17:59:41', 4);
 
 -- --------------------------------------------------------
 
@@ -127,17 +140,11 @@ CREATE TABLE `Images` (
 --
 
 CREATE TABLE `PhoneNumber` (
-  `IdCustomer` int NOT NULL,
-  `PhoneNumber` varchar(255) NOT NULL
+  `id` int NOT NULL,
+  `PhoneNumber` char(255) NOT NULL,
+  `updateTimestamp` datetime NOT NULL,
+  `CustomerOrderIdCustomer` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `PhoneNumber`
---
-
-INSERT INTO `PhoneNumber` (`IdCustomer`, `PhoneNumber`) VALUES
-(2, '12391277517238'),
-(2, '1231241251256612');
 
 -- --------------------------------------------------------
 
@@ -147,62 +154,22 @@ INSERT INTO `PhoneNumber` (`IdCustomer`, `PhoneNumber`) VALUES
 
 CREATE TABLE `Product` (
   `IdProduct` int NOT NULL,
-  `Name` text NOT NULL,
+  `Name` char(255) NOT NULL,
   `Description` text NOT NULL,
   `Price` int UNSIGNED NOT NULL,
-  `IdCat` int NOT NULL,
-  `Created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updateTimestamp` datetime NOT NULL,
+  `CategoryIdCat` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Product`
 --
 
-INSERT INTO `Product` (`IdProduct`, `Name`, `Description`, `Price`, `IdCat`, `Created`) VALUES
-(1, 'Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022', 'sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao', 55200, 6, '2022-12-01 08:58:46');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Quantity`
---
-
-CREATE TABLE `Quantity` (
-  `IdSize` int NOT NULL,
-  `IdProduct` int NOT NULL,
-  `Quantity` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `Quantity`
---
-
-INSERT INTO `Quantity` (`IdSize`, `IdProduct`, `Quantity`) VALUES
-(1, 1, 25),
-(2, 1, 24),
-(3, 1, 24),
-(4, 1, 24);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ShipThirdParty`
---
-
-CREATE TABLE `ShipThirdParty` (
-  `IdShip` int NOT NULL,
-  `IdCustomer` int NOT NULL,
-  `TotalPrice` int UNSIGNED NOT NULL,
-  `Status` varchar(30) NOT NULL,
-  `ExpectedDate` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `ShipThirdParty`
---
-
-INSERT INTO `ShipThirdParty` (`IdShip`, `IdCustomer`, `TotalPrice`, `Status`, `ExpectedDate`) VALUES
-(2, 2, 110000, 'Cho Lay', '2022-12-17');
+INSERT INTO `Product` (`IdProduct`, `Name`, `Description`, `Price`, `updateTimestamp`, `CategoryIdCat`) VALUES
+(1, 'Áo nỉ, áo khoác hoodie gấu scrub siêu ngầu nam nữ phong cách thời trang', 'San Pham long thu cuc dep', 550000, '2022-12-04 17:34:44', 2),
+(2, 'Áo khoác bomber nam dáng đẹp thể thao', 'Ao khoac nam cuc dep cho mua dong', 1000000, '2022-12-04 17:40:16', 2),
+(3, 'Áo khoác dù nam hai mặt cực đẹp', 'Ao khoac du nam cho moi thoi tiet', 600000, '2022-12-04 17:40:16', 2),
+(4, 'Áo khoác nam thêu logo cao cấp chất dù 2 lớp dày dặn thoải mái đi mưa', 'Ao khoac du cho moi thoi tiet', 700000, '2022-12-04 17:40:16', 2);
 
 -- --------------------------------------------------------
 
@@ -212,19 +179,33 @@ INSERT INTO `ShipThirdParty` (`IdShip`, `IdCustomer`, `TotalPrice`, `Status`, `E
 
 CREATE TABLE `Size` (
   `IdSize` int NOT NULL,
-  `Size` varchar(20) NOT NULL,
-  `Created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `Name` char(255) NOT NULL,
+  `Quantity` int NOT NULL,
+  `updateTimestamp` datetime NOT NULL,
+  `ProductIdProduct` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Size`
 --
 
-INSERT INTO `Size` (`IdSize`, `Size`, `Created`) VALUES
-(1, 'M', '2022-12-01 08:59:55'),
-(2, 'L', '2022-12-01 08:59:55'),
-(3, 'XL', '2022-12-01 09:00:10'),
-(4, 'XXL', '2022-12-01 09:00:10');
+INSERT INTO `Size` (`IdSize`, `Name`, `Quantity`, `updateTimestamp`, `ProductIdProduct`) VALUES
+(1, 'M', 24, '2022-12-04 17:47:14', 1),
+(2, 'L', 23, '2022-12-04 17:47:14', 1),
+(3, 'XL', 25, '2022-12-04 17:47:14', 1),
+(4, 'XXL', 20, '2022-12-04 17:47:14', 1),
+(5, 'M', 22, '2022-12-04 17:48:24', 2),
+(6, 'L', 20, '2022-12-04 17:48:24', 2),
+(7, 'XL', 21, '2022-12-04 17:48:24', 2),
+(8, 'XXL', 20, '2022-12-04 17:48:24', 2),
+(9, 'M', 20, '2022-12-04 17:49:15', 3),
+(10, 'L', 10, '2022-12-04 17:49:15', 3),
+(11, 'XL', 11, '2022-12-04 17:49:15', 3),
+(12, 'XXL', 20, '2022-12-04 17:49:15', 3),
+(13, 'M', 25, '2022-12-04 17:50:03', 4),
+(14, 'L', 15, '2022-12-04 17:50:03', 4),
+(15, 'XL', 16, '2022-12-04 17:50:03', 4),
+(16, 'XXL', 25, '2022-12-04 17:50:03', 4);
 
 --
 -- Indexes for dumped tables
@@ -235,66 +216,69 @@ INSERT INTO `Size` (`IdSize`, `Size`, `Created`) VALUES
 --
 ALTER TABLE `Admin`
   ADD PRIMARY KEY (`Id`),
-  ADD UNIQUE KEY `UniUserName` (`UserName`);
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `UserName` (`UserName`);
 
 --
 -- Indexes for table `Category`
 --
 ALTER TABLE `Category`
-  ADD PRIMARY KEY (`IdCat`) USING BTREE,
-  ADD KEY `IdGender` (`IdGender`);
+  ADD PRIMARY KEY (`IdCat`),
+  ADD UNIQUE KEY `IdCat` (`IdCat`),
+  ADD KEY `GenderIdGender` (`GenderIdGender`);
 
 --
--- Indexes for table `CustomerOrders`
+-- Indexes for table `Checkout`
 --
-ALTER TABLE `CustomerOrders`
+ALTER TABLE `Checkout`
+  ADD PRIMARY KEY (`IdCheckout`),
+  ADD UNIQUE KEY `IdCheckout` (`IdCheckout`),
+  ADD UNIQUE KEY `Checkout_ProductIdProduct_CustomerOrderIdCustomer_unique` (`CustomerOrderIdCustomer`,`ProductIdProduct`),
+  ADD KEY `ProductIdProduct` (`ProductIdProduct`);
+
+--
+-- Indexes for table `CustomerOrder`
+--
+ALTER TABLE `CustomerOrder`
   ADD PRIMARY KEY (`IdCustomer`),
-  ADD KEY `IdProduct` (`IdProduct`);
+  ADD UNIQUE KEY `IdCustomer` (`IdCustomer`);
 
 --
 -- Indexes for table `Gender`
 --
 ALTER TABLE `Gender`
-  ADD PRIMARY KEY (`IdGender`);
+  ADD PRIMARY KEY (`IdGender`),
+  ADD UNIQUE KEY `IdGender` (`IdGender`);
 
 --
--- Indexes for table `Images`
+-- Indexes for table `Image`
 --
-ALTER TABLE `Images`
-  ADD KEY `IdProduct` (`IdProduct`);
+ALTER TABLE `Image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ProductIdProduct` (`ProductIdProduct`);
 
 --
 -- Indexes for table `PhoneNumber`
 --
 ALTER TABLE `PhoneNumber`
-  ADD KEY `IdCustomer` (`IdCustomer`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `CustomerOrderIdCustomer` (`CustomerOrderIdCustomer`);
 
 --
 -- Indexes for table `Product`
 --
 ALTER TABLE `Product`
   ADD PRIMARY KEY (`IdProduct`),
-  ADD KEY `IdCat` (`IdCat`);
-
---
--- Indexes for table `Quantity`
---
-ALTER TABLE `Quantity`
-  ADD KEY `IdSize` (`IdSize`),
-  ADD KEY `IdProduct` (`IdProduct`);
-
---
--- Indexes for table `ShipThirdParty`
---
-ALTER TABLE `ShipThirdParty`
-  ADD PRIMARY KEY (`IdShip`),
-  ADD KEY `IdCustomer` (`IdCustomer`);
+  ADD UNIQUE KEY `IdProduct` (`IdProduct`),
+  ADD KEY `CategoryIdCat` (`CategoryIdCat`);
 
 --
 -- Indexes for table `Size`
 --
 ALTER TABLE `Size`
-  ADD PRIMARY KEY (`IdSize`);
+  ADD PRIMARY KEY (`IdSize`),
+  ADD UNIQUE KEY `IdSize` (`IdSize`),
+  ADD KEY `ProductIdProduct` (`ProductIdProduct`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -304,43 +288,55 @@ ALTER TABLE `Size`
 -- AUTO_INCREMENT for table `Admin`
 --
 ALTER TABLE `Admin`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Category`
 --
 ALTER TABLE `Category`
-  MODIFY `IdCat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IdCat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `CustomerOrders`
+-- AUTO_INCREMENT for table `Checkout`
 --
-ALTER TABLE `CustomerOrders`
-  MODIFY `IdCustomer` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `Checkout`
+  MODIFY `IdCheckout` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `CustomerOrder`
+--
+ALTER TABLE `CustomerOrder`
+  MODIFY `IdCustomer` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Gender`
 --
 ALTER TABLE `Gender`
-  MODIFY `IdGender` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdGender` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `Image`
+--
+ALTER TABLE `Image`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `PhoneNumber`
+--
+ALTER TABLE `PhoneNumber`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Product`
 --
 ALTER TABLE `Product`
-  MODIFY `IdProduct` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `ShipThirdParty`
---
-ALTER TABLE `ShipThirdParty`
-  MODIFY `IdShip` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IdProduct` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Size`
 --
 ALTER TABLE `Size`
-  MODIFY `IdSize` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IdSize` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
@@ -350,44 +346,38 @@ ALTER TABLE `Size`
 -- Constraints for table `Category`
 --
 ALTER TABLE `Category`
-  ADD CONSTRAINT `Category_ibfk_1` FOREIGN KEY (`IdGender`) REFERENCES `Gender` (`IdGender`);
+  ADD CONSTRAINT `Category_ibfk_1` FOREIGN KEY (`GenderIdGender`) REFERENCES `Gender` (`IdGender`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `CustomerOrders`
+-- Constraints for table `Checkout`
 --
-ALTER TABLE `CustomerOrders`
-  ADD CONSTRAINT `CustomerOrders_ibfk_1` FOREIGN KEY (`IdProduct`) REFERENCES `Product` (`IdProduct`);
+ALTER TABLE `Checkout`
+  ADD CONSTRAINT `Checkout_ibfk_1` FOREIGN KEY (`CustomerOrderIdCustomer`) REFERENCES `CustomerOrder` (`IdCustomer`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Checkout_ibfk_2` FOREIGN KEY (`ProductIdProduct`) REFERENCES `Product` (`IdProduct`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `Images`
+-- Constraints for table `Image`
 --
-ALTER TABLE `Images`
-  ADD CONSTRAINT `Images_ibfk_1` FOREIGN KEY (`IdProduct`) REFERENCES `Product` (`IdProduct`);
+ALTER TABLE `Image`
+  ADD CONSTRAINT `Image_ibfk_1` FOREIGN KEY (`ProductIdProduct`) REFERENCES `Product` (`IdProduct`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `PhoneNumber`
 --
 ALTER TABLE `PhoneNumber`
-  ADD CONSTRAINT `PhoneNumber_ibfk_1` FOREIGN KEY (`IdCustomer`) REFERENCES `CustomerOrders` (`IdCustomer`);
+  ADD CONSTRAINT `PhoneNumber_ibfk_1` FOREIGN KEY (`CustomerOrderIdCustomer`) REFERENCES `CustomerOrder` (`IdCustomer`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Product`
 --
 ALTER TABLE `Product`
-  ADD CONSTRAINT `Product_ibfk_1` FOREIGN KEY (`IdCat`) REFERENCES `Category` (`IdCat`);
+  ADD CONSTRAINT `Product_ibfk_1` FOREIGN KEY (`CategoryIdCat`) REFERENCES `Category` (`IdCat`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `Quantity`
+-- Constraints for table `Size`
 --
-ALTER TABLE `Quantity`
-  ADD CONSTRAINT `Quantity_ibfk_1` FOREIGN KEY (`IdSize`) REFERENCES `Size` (`IdSize`),
-  ADD CONSTRAINT `Quantity_ibfk_2` FOREIGN KEY (`IdProduct`) REFERENCES `Product` (`IdProduct`);
-
---
--- Constraints for table `ShipThirdParty`
---
-ALTER TABLE `ShipThirdParty`
-  ADD CONSTRAINT `ShipThirdParty_ibfk_1` FOREIGN KEY (`IdCustomer`) REFERENCES `CustomerOrders` (`IdCustomer`);
+ALTER TABLE `Size`
+  ADD CONSTRAINT `Size_ibfk_1` FOREIGN KEY (`ProductIdProduct`) REFERENCES `Product` (`IdProduct`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
