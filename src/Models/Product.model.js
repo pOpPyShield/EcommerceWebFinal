@@ -9,32 +9,6 @@ class Product extends Model {
     static classLevelMethod() {
         return 'Product'
     }
-    static async getProducts() {
-            const products  = await Gender.findAll({
-                include: [ 
-                    {
-                        model: Category,
-                        required: true,
-                        include: {
-                            model: Product,
-                            required: true,
-                            include: [
-                                {
-                                    model: Size,
-                                    required: true
-                                },
-                                {
-                                    model: Image,
-                                    required: true
-                                }
-                            ]
-                        }
-                    }
-                ]
-            });
-            // Now the ship comes with it
-            return products 
-    }
 }
 Product.init({
     IdProduct: {

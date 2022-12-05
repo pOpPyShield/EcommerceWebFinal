@@ -5,6 +5,10 @@ const port = process.env.PORT || 3000
 const path = require('path')
 //Import sequelize models 
 const getAllProduct = require("./Models/createInstace")
+const Gender = require("./Models/Gender.model")
+const Category = require("./Models/Category.model");
+const Size = require("./Models/Size.model")
+const Image = require("./Models/Image.model")
 //import module to process json and db
 const bodyParser = require('body-parser')
 const authLog = require('./Api/login')
@@ -90,9 +94,33 @@ app.get('/category/data', async (req, res) => {
 })
 */
 /* Product APi*/
-app.get('/product/data', async (req, res) => {
-    var products = await Product.getProducts()
-    res.json(products)
+app.get('/product/data',(req, res) => {
+    (async() => {
+            const products  = await Gender.findAll({
+                include: [ 
+                    {
+                        model: Category,
+                        required: true,
+                        include: {
+                            model: Product,
+                            required: true,
+                            include: [
+                                {
+                                    model: Size,
+                                    required: true
+                                },
+                                {
+                                    model: Image,
+                                    required: true
+                                }
+                            ]
+                        }
+                    }
+                ]
+            });
+            // Now the ship comes with it
+            res.json(products)
+        })()
 })
 /*End*/
 /* CustomerOrders API */
