@@ -12,7 +12,8 @@ const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
 //Use middle ware to catch request from user
-const logger = require('./Api/Middlewares/Logger')
+const logger = require('./Api/Middlewares/Logger');
+const Product = require('./Models/Product.model');
 app.use(logger.logger)
 
 //Set the view engine to ejs
@@ -90,7 +91,8 @@ app.get('/category/data', async (req, res) => {
 */
 /* Product APi*/
 app.get('/product/data', async (req, res) => {
-    res.json(await getAllProduct())
+    var products = await Product.getProducts()
+    res.json(products)
 })
 /*End*/
 /* CustomerOrders API */

@@ -3,10 +3,37 @@ const {sequelize, insertInstance} = require("../Config/DatabaseConfig")
 const {Op} = require("sequelize");
 const Category = require("./Category.model");
 const Gender = require("./Gender.model")
-
+const Size = require("./Size.model")
+const Image = require("./Image.model")
 class Product extends Model {
     static classLevelMethod() {
-        return 'Category'
+        return 'Product'
+    }
+    static async getProducts() {
+            const products  = await Gender.findAll({
+                include: [ 
+                    {
+                        model: Category,
+                        required: true,
+                        include: {
+                            model: Product,
+                            required: true,
+                            include: [
+                                {
+                                    model: Size,
+                                    required: true
+                                },
+                                {
+                                    model: Image,
+                                    required: true
+                                }
+                            ]
+                        }
+                    }
+                ]
+            });
+            // Now the ship comes with it
+            return products 
     }
 }
 Product.init({

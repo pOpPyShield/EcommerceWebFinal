@@ -47,31 +47,3 @@ const img4Third = new Image({Path: "Prod_4/img3", ProductIdProduct: 4})
 //insertInstance(img4First)
 //insertInstance(img4Second)
 //insertInstance(img4Third)
-const getAllProduct = async() => {
-    const products  = await Gender.findAll({
-        include: [ 
-            {
-                model: Category,
-                required: true,
-                include: {
-                    model: Product,
-                    required: true,
-                    include: [
-                        {
-                            model: Size,
-                            required: true
-                        },
-                        {
-                            model: Image,
-                            required: true
-                        }
-                    ]
-                }
-            }
-        ]
-    });
-    // Now the ship comes with it
-    return products 
-    //JSON.stringify(products, null, 2)
-}
-module.exports = getAllProduct
