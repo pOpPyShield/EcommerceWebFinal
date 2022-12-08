@@ -11,6 +11,15 @@ class Admin extends Model {
     getUserNameAndPassword() {
         return [this.UserName, this.Password].join(' ')
     }
+    static checkAdmin(userName, password) {
+            const admin  = Admin.findAll({
+                where: {
+                    [Op.and]: [{UserName: userName}, {Password:password}]
+                }
+            });
+            // Now the ship comes with it
+            return admin
+    }
 }
 
 Admin.init({

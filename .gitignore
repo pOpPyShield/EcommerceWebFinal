@@ -2,3 +2,4 @@
 *.log
 /sqlFiles/sqlUserAndPassword.txt
 node_modules
+/Test

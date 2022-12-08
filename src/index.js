@@ -4,20 +4,20 @@ const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
 //Import sequelize models 
-const getAllProduct = require("./Models/createInstace")
+const {Op} = require("sequelize")
 const Gender = require("./Models/Gender.model")
 const Category = require("./Models/Category.model");
 const Size = require("./Models/Size.model")
 const Image = require("./Models/Image.model")
 //import module to process json and db
 const bodyParser = require('body-parser')
-const authLog = require('./Api/login')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
 //Use middle ware to catch request from user
 const logger = require('./Api/Middlewares/Logger');
 const Product = require('./Models/Product.model');
+const Admin = require('./Models/Admin.model');
 app.use(logger.logger)
 
 //Set the view engine to ejs
@@ -38,15 +38,20 @@ app.get('/', (req, res) => {
                             })
     })
 app.post('/auth',(req, res) => {
-    (async () => {
-        const result = await authLog.checkAdmin(req.body.UserName, req.body.Password)
-        if (!(result === 1)) {
-            res.send({redirect_path: "/"})
+    const checkAdmin = (async() => {
+        var admin  = await Admin.findAll({
+            where: {
+                [Op.and]: [{UserName: req.body.UserName}, {Password:req.body.Password}]
+            }
+        });
+        if(admin.length >0) {
+            userName = admin[0].UserName
+            res.json({UserName: admin[0].UserName,redirect_path: "/Dashboard"})
         } else {
-            userName = req.body.UserName
-            res.send({UserName: req.body.UserName, redirect_path: "/Dashboard"})
+            res.json({redirect_path: "/"})
         }
-    })()
+    })
+    checkAdmin()
 })
 /* Render page for dashboard */
 app.get('/dashboard', (req, res) => {
@@ -69,30 +74,6 @@ app.get('/order', (req, res) => {
 })
 /* End */
 
-/*
-app.get('/gender/data', async (req, res) => {
-    let conDB = require('./Config/DatabaseConfig')
-    let queryStatement = "SELECT * FROM `Gender`"
-    conDB.query(queryStatement, (err, data) => {
-        if (!data) {
-            res.json({status: "Error executing gender table"})
-        } else {
-            res.json(data)
-        }
-    })
-})
-app.get('/category/data', async (req, res) => {
-    let conDB = require('./Config/DatabaseConfig')
-    let queryStatement = "SELECT * FROM `Category`"
-    conDB.query(queryStatement, (err, data) => {
-        if (!data) {
-            res.json({status: "Error executing category table"})
-        } else {
-            res.json(data)
-        }
-    })
-})
-*/
 /* Product APi*/
 app.get('/product/data',(req, res) => {
     (async() => {

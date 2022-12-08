@@ -183,7 +183,7 @@ GET /product/data: Server response product data as json object line 93 [index.js
 ]
 ```
 
-GET /product/data: Server response order data as json object line 106 [index.js](/src/index.js)
+GET /orders/data: Server response order data as json object line 106 [index.js](/src/index.js)
 ```json
 [
     {
