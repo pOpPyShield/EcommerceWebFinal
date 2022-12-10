@@ -17,4 +17,6 @@ Checkout.init({
         unique: true
     }
 }, {sequelize, modelName: "Checkout", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
+CustomerOrder.belongsToMany(Product, {through: 'Checkout'})
+Product.belongsToMany(CustomerOrder, {through: 'Checkout'})
 module.exports = Checkout

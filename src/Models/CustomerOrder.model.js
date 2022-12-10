@@ -1,6 +1,8 @@
 const { DataTypes, Sequelize, Model} = require("sequelize");
 const {sequelize, insertInstance} = require("../Config/DatabaseConfig")
 const {Op} = require("sequelize");
+const PhoneNumber = require("./PhoneNumber.model")
+const Product = require("./Product.model")
 class CustomerOrder extends Model {
     static classLevelMethod() {
         return 'CustomerOrder'
@@ -30,16 +32,11 @@ CustomerOrder.init({
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false
     },
+    Address: {
+        type: DataTypes.CHAR,
+        allowNull: false
+    }
 }, {sequelize, modelName: "CustomerOrder", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
-//CustomerOrder.hasMany(PhoneNumber)
-//PhoneNumber.belongsTo(CustomerOrder)
-//CustomerOrder.belongsToMany(Product, {through: 'Checkout'})
-//Product.belongsToMany(CustomerOrder, {through: 'Checkout'})
+CustomerOrder.hasMany(PhoneNumber)
+PhoneNumber.belongsTo(CustomerOrder)
 module.exports = CustomerOrder
-const syncModel = async() => {
-    await CustomerOrder.sync({ force: true });
-    console.log("The table for the CustomerOrder model was just (re)created!");
-    await PhoneNumber.sync({force: true})
-    console.log("The table for the PhoneNumber model was just (re)created!");
-    await Product.sync({})
-}

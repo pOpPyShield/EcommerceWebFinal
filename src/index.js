@@ -9,6 +9,10 @@ const Gender = require("./Models/Gender.model")
 const Category = require("./Models/Category.model");
 const Size = require("./Models/Size.model")
 const Image = require("./Models/Image.model")
+const CustomerOrder = require('./Models/CustomerOrder.model');
+const PhoneNumber = require('./Models/PhoneNumber.model')
+const CheckOut = require('./Models/Checkout.model')
+const {insertInstance} = require("./Config/DatabaseConfig")
 //import module to process json and db
 const bodyParser = require('body-parser')
 const pagesName = ["Admin login", "Dashboard"]
@@ -122,6 +126,26 @@ app.get('/checkout', (req, res) => {
     res.render('Checkout/')
 })
 app.post('/ProcessCheckout', (req, res) => {
+        (async() => {
+            var customerOrder = await CustomerOrder.create({
+                Name: req.body.customerName,
+                Size: req.body.size,
+                Quantity: parseInt(req.body.quantity),
+                Address: req.body.address,
+            })
+            var customerPhoneNumber =  await PhoneNumber.create({
+                PhoneNumber: req.body.phoneNumber,
+                CustomerOrderIdCustomer:customerOrder.IdCustomer
+            })
+            var product = await Product.findOne({where: {IdProduct: parseInt(req.body.prodNum)}})
+            var checkout = await CheckOut.create({
+                CustomerOrderIdCustomer: customerOrder.IdCustomer,
+                ProductIdProduct: product.IdProduct
+            })
+            res.json(checkout)
+        })()
+    })
+    /*
    var prodNum = parseInt(req.body.prodNum)
    var size = req.body.size
    var quantity = parseInt(req.body.quantity)
@@ -135,7 +159,7 @@ app.post('/ProcessCheckout', (req, res) => {
         if (err) throw err
         console.log(data)
    })
-})
+   */
 /**/
 app.use((req, res) => {
     res.status(404).render('Error/404')
