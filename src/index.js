@@ -126,6 +126,7 @@ app.get('/checkout', (req, res) => {
     res.render('Checkout/')
 })
 app.post('/ProcessCheckout', (req, res) => {
+    let quantity 
     (async() => {
             var customerOrder = new CustomerOrder({
                 Name: req.body.customerName,
@@ -138,7 +139,6 @@ app.post('/ProcessCheckout', (req, res) => {
                 CustomerOrderIdCustomer: customerOrder.IdCustomer
             })
             var products = req.body.products
-            var quantity = 0
             var checkOutArr = []
             for (let i in products) {
                 checkOutArr.push(await CheckOut.create({
@@ -148,9 +148,9 @@ app.post('/ProcessCheckout', (req, res) => {
                 quantity += products[i].quantity
             }
             const cusFind = await CustomerOrder.findOne({where: {IdCustomer: customerOrder.IdCustomer}})
-            console.log(cusFind)
             cusFind.Quantity = parseInt(quantity)
             await cusFind.save()
+
             /*
             var product = await Product.findOne({where: {IdProduct: parseInt(req.body.prodNum)}})
             var checkout = await CheckOut.create({

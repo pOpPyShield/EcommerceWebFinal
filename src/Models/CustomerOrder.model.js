@@ -30,7 +30,6 @@ CustomerOrder.init({
     },
     Quantity: {
         type: DataTypes.INTEGER.UNSIGNED,
-        defaultValue: 0,
         allowNull: true
     },
     Address: {
