@@ -37,6 +37,6 @@ CustomerOrder.init({
         allowNull: false
     }
 }, {sequelize, modelName: "CustomerOrder", freezeTableName: true, timestamps: true, createdAt: false, updatedAt: 'updateTimestamp'})
-CustomerOrder.hasMany(PhoneNumber)
-PhoneNumber.belongsTo(CustomerOrder)
+CustomerOrder.PhoneNumbers = CustomerOrder.hasMany(PhoneNumber)
+PhoneNumber.CustomerOrder = PhoneNumber.belongsTo(CustomerOrder)
 module.exports = CustomerOrder
