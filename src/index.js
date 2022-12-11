@@ -126,23 +126,39 @@ app.get('/checkout', (req, res) => {
     res.render('Checkout/')
 })
 app.post('/ProcessCheckout', (req, res) => {
-        (async() => {
-            var customerOrder = await CustomerOrder.create({
+    (async() => {
+            var customerOrder = new CustomerOrder({
                 Name: req.body.customerName,
                 Size: req.body.size,
-                Quantity: parseInt(req.body.quantity),
                 Address: req.body.address,
             })
-            var customerPhoneNumber =  await PhoneNumber.create({
+            await customerOrder.save()
+            var phone = await PhoneNumber.create({
                 PhoneNumber: req.body.phoneNumber,
-                CustomerOrderIdCustomer:customerOrder.IdCustomer
+                CustomerOrderIdCustomer: customerOrder.IdCustomer
             })
+            var products = req.body.products
+            var quantity = 0
+            var checkOutArr = []
+            for (let i in products) {
+                checkOutArr.push(await CheckOut.create({
+                    ProductIdProduct: products[i].prodNum,
+                    CustomerOrderIdCustomer: customerOrder.IdCustomer
+                }))
+                quantity += products[i].quantity
+            }
+            const cusFind = await CustomerOrder.findOne({where: {IdCustomer: customerOrder.IdCustomer}})
+            console.log(cusFind)
+            cusFind.Quantity = parseInt(quantity)
+            await cusFind.save()
+            /*
             var product = await Product.findOne({where: {IdProduct: parseInt(req.body.prodNum)}})
             var checkout = await CheckOut.create({
                 CustomerOrderIdCustomer: customerOrder.IdCustomer,
                 ProductIdProduct: product.IdProduct
             })
             res.json(checkout)
+            */
         })()
     })
     /*
