@@ -25,17 +25,32 @@ Project is created with:
 * mysql: >= 2.18.1
 * mysql2: >= 3.0.0-rc.1
 * sequelize: >= 6.25.4
-
+* sequelize-cli: >= 6.25.4
 ## Setup
-Import /database/dbDeploy/EcommerceWebSite.sql to mysql
+1. Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
+2. Use sequelize-cli to migrate database
+```
+$ npx sequelize-cli init
+```
+_ Its auto create /config, /seeders, /models/index.js, migrations/
+_ Change the host, username, password, database name, port in /config/config.json
+3. Test the connect to see it connect
+```
+$ npx sequelize db:migrate status
 
-To run this project, install it locally using npm:
+Sequelize CLI [Node: 19.2.0, CLI: 6.5.2, ORM: 6.25.4]
+
+Loaded configuration file "config/config.json".
+Using environment "development".
+```
+
+4. To run this project, install it locally using npm:
 ```
 $ npm install
 $ npm run dev
 ```
 
-In a production environment, the IP address and the port on which it runs might change every single time, depending on the server. Since we cannot hardcode the server port, we can solve it by using dotenv.
+5. In a production environment, the IP address and the port on which it runs might change every single time, depending on the server. Since we cannot hardcode the server port, we can solve it by using dotenv.
 
 /src/index.js
 ```javascript
@@ -49,7 +64,7 @@ const server = app.listen(port, () => {
 })
 ```
 
-Continuously log user requests with logger function
+6. Continuously log user requests with logger function
 /src/Config/DatabaseConfig.js
 ```javascript
 app.use(logger)
@@ -59,7 +74,7 @@ function logger(req, res, next) {
 }
 ```
 
-Create connection variable
+7. Create connection variable
 /src/Config/DatabaseConfig.js
 ```javascript
 const mysql = require('mysql2')
@@ -154,7 +169,7 @@ GET /product/data: Server response product data as json object line 93 [index.js
 [
     {
         "Name": "Áo khoác bomber nam dáng thể thao thời trang Zenkcos Men JK 2022",
-        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\nđường may chắc chắn tinh tế sắc sảo, thoải mái khi mặc.\r\náo được thiết kế với kiểu dáng đơn giản nhưng không kém phần trẻ trung, phong cách.\r\nthích hợp đi chơi, đi dạo phố.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
+        "Description": "sản phẩm: áo khoác nam.\r\nchất liệu mềm mại, thoáng mát, thấm hút mồ hôi.\r\nthiết kế thời trang phù hợp xu hướng hiện nay.\r\nkiểu dáng đơn giản, lịch sự, dễ phối đồ.\r\Now edit this file and set correct database credentials and dialect. The keys of the objects (e.g. "development") are used on model/.\r\nkích cỡ phù hợp với người dưới 65kg tùy chiều cao\r\nSize XS: cho bạn có cân nặng từ dưới 40kg tùy chiều cao\r\nSize S: cho bạn có cân nặng từ 40-47kg tùy chiều cao\r\nSize M: cho bạn có cân nặng từ 48-55kg tùy chiều cao\r\nSize L: cho bạn có cân nặng dưới 65kg tùy chiều cao",
         "Price": 55200,
         "Quantity": 25,
         "Size": "M"

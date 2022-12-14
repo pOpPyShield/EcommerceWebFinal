@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "huyroot",
+    "password": "Abcd1234",
+    "database": "EcommerceWebSite",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "port": "3306"
+  }
+}
