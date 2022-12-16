@@ -33,5 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Size',
   });
+  Size.associate = (models) => {
+    Size.belongsToMany(models.Product, {through: models.ProductSize})
+    Size.hasMany(models.ProductSize)
+  }
   return Size;
 };

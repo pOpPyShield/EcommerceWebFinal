@@ -35,10 +35,24 @@ module.exports = {
       )
     }).then(async()=> {
       await queryInterface.addColumn(
-        'Products',
+        'ProductSizes',
+        'ProductId',
+        {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Products',
+            key: 'id'
+          },
+          onDelete: 'SET NULL'
+        }
+
+      )
+    }).then(async() => {
+      await queryInterface.addColumn(
+        'ProductSizes',
         'SizeId',
         {
-          type:Sequelize.INTEGER,
+          type: Sequelize.INTEGER,
           references: {
             model: 'Sizes',
             key: 'id'
