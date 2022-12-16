@@ -20,14 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    sizeid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    productid: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     quantity:{
       type: DataTypes.INTEGER,
       allowNull: false

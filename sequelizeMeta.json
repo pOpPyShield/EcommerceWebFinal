@@ -1,1 +1,10 @@
-[]
+[
+  "20221215013024-create-admin.js",
+  "20221215072524-create-gender.js",
+  "20221215072550-create-category.js",
+  "20221215072737-create-product.js",
+  "20221215080439-create-size.js",
+  "20221216025315-create-product-size.js",
+  "20221216032640-add-associations.js",
+  "20221216033527-add-products-size-association.js"
+]

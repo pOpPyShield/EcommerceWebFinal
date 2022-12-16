@@ -12,10 +12,6 @@ module.exports = {
       name: {
         type: Sequelize.CHAR
       },
-      quantity: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        allowNull: false
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

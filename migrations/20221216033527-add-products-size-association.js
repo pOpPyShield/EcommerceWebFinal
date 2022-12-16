@@ -10,31 +10,6 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn(
-      'Categories', //Name of source model
-      'GenderId', // Name of the key we adding
-      {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Genders', //Name of target model
-          key: 'id', //Key in target model that we're referencing
-        },
-        onDelete: 'SET NULL',
-      }
-    ).then(async() => {
-      await queryInterface.addColumn(
-        'Products', 
-        'CategoryId',
-        {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Categories',
-            key: 'id'
-          },
-          onDelete: 'SET NULL'
-        }
-      )
-    }).then(async()=> {
-      await queryInterface.addColumn(
         'ProductSizes',
         'ProductId',
         {
@@ -46,8 +21,7 @@ module.exports = {
           onDelete: 'SET NULL'
         }
 
-      )
-    }).then(async() => {
+      ).then(async() => {
       await queryInterface.addColumn(
         'ProductSizes',
         'SizeId',
@@ -61,6 +35,7 @@ module.exports = {
         }
       )
     })
+
   },
 
   async down (queryInterface, Sequelize) {
@@ -71,18 +46,11 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.removeColumn(
-      'Categories', //Name of source model
-      'GenderId', //Key we want to remove
-    ).then( async() => {
-      await queryInterface.removeColumn(
-        'Products',
-        'CategoryId'
-      )
-    }).then(async() => {
-      await queryInterface.removeColumn(
-        'Products',
-        'SizeId'
-      )
+      'ProductSizes',
+      'ProductId'
+    ).then(async() => {
+      'ProductSizes',
+      'SizeId'
     })
   }
 };

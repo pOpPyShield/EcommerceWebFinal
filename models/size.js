@@ -25,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.CHAR,
         allowNull: false
     },
-    quantity: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        allowNull: false
-    }
   }, {
     sequelize,
     modelName: 'Size',
