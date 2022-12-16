@@ -5,6 +5,17 @@
     "database": "EcommerceWebSite",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "port": "3306"
+    "port": "3306",
+    "migrationStorage": "json",
+
+    "migrationStoragePath": "sequelizeMeta.json",
+
+    "migrationStorageTableName": "sequelize_meta",
+
+    "migrationStorageTableSchema": "custom_schema",
+
+    "seederStorage": "json",
+    "seederStoragePath": "sequelizeData.json",
+    "seederStorageTableName": "sequelize_data"
   }
 }
