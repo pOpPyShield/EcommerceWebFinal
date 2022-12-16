@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER
       },
       name: {
-        type: Sequelize.CHAR,
+        type: DataTypes.CHAR,
         allowNull: false
       },
       description: {

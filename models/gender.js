@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    async findAllGender() {
+       return await Gender.findAll()
+    }
   }
   Gender.init({
     id: {
