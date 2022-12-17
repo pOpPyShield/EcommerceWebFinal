@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static async createProducts(arr) {
+    }
   }
   Product.init({
       id: {
@@ -25,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       description: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
       },
       price: {
         type: DataTypes.INTEGER.UNSIGNED,

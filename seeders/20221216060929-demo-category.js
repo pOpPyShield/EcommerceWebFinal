@@ -1,6 +1,6 @@
 'use strict';
 
-const Gender = require('../models/index')['Gender'];
+var Gender = require("../models/index")['Gender']
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -14,8 +14,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   var genders = await Gender.findAll()
-   console.log(genders)
+   var genders = await Gender.findAllGenders()
+   console.log(JSON.stringify(genders,null,2))
    await queryInterface.bulkInsert('Categories', [{
     name: 'Ao khoac',
     GenderId: genders[0].id,
