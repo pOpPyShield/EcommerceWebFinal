@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsTo(models.Category)
     Product.belongsToMany(models.Size, {through: models.ProductSize})
     Product.hasMany(models.ProductSize)
+    Product.hasMany(models.ProductImage)
   }
   return Product;
 };

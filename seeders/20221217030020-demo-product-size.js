@@ -1,7 +1,5 @@
 'use strict';
 
-const ProductSize = require('../models/index')['ProductSize'];
-
 const Product = require('../models/index')['Product'];
 const Size = require('../models/index')['Size']
 /** @type {import('sequelize-cli').Migration} */
