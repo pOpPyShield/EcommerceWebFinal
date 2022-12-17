@@ -17,13 +17,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Gender.init({
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        unique: true
-    },
     name: DataTypes.STRING
   }, {
     sequelize,
