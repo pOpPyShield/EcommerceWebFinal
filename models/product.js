@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-    static async createProducts(arr) {
+    static async findAllProducts() {
+      return await Product.findAll()
     }
   }
   Product.init({
