@@ -28,25 +28,80 @@ Project is created with:
 * sequelize-cli: >= 6.25.4
 ## Setup
 1. Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
-2. Use sequelize-cli to migrate database
+2. Install dependencies package
+```
+$ npm install
+``` 
+Install sequelie-cli globally to interact with database 
+```
+$ npm install --save-dev sequelize-cli
+```
+Init sequelize-cli to use in project
 ```
 $ npx sequelize-cli init
 ```
 _ Its auto create /config, /seeders, /models/index.js, migrations/
-_ Change the host, username, password, database name, port in /config/config.json
-3. Test the connect to see it connect
+_ Change the host, username, password, database name, port in /config/config.js
+3. Migrate
+_ Migrate table
 ```
-$ npx sequelize db:migrate status
+$ npx sequelize-cli db:migrate
+```
+_ Test the migration
+```
+$ npx sequelize-cli db:migrate status
 
 Sequelize CLI [Node: 19.2.0, CLI: 6.5.2, ORM: 6.25.4]
 
 Loaded configuration file "config/config.json".
 Using environment "development".
 ```
-
-4. To run this project, install it locally using npm:
+_ Undo migrate
 ```
-$ npm install
+$ npx sequelize-cli db:migrate:undo:all
+```
+_ Create raw datas
+```
+$ npx sequelize-cli db:seed:all
+```
+_ Undo create
+```
+$ npx sequelize-cli db:seed:undo:all
+```
+_ Create custom seed
+```
+$ npx sequelize-cli seed:generate --name
+```
+_ Create models and migration
+```
+$ npx sequelize-cli model:generate --name --attributes
+```
+_ Create custom migration to create association
+```
+$ npx sequelize-cli migration:generate --name 
+```
+_ Make sure the create-table file in the top above association file.
+```bash
+migrations
+├── 20221215013024-create-admin.js
+├── 20221215072524-create-gender.js
+├── 20221215072550-create-category.js
+├── 20221215072737-create-product.js
+├── 20221215080439-create-size.js
+├── 20221216025315-create-product-size.js
+├── 20221217064913-create-image.js
+├── 20221217081953-add-associations.js
+├── 20221217082002-add-products-size-association.js
+├── 20221217082011-add-products-image-association.js
+├── 20221217091528-create-cart.js
+├── 20221217091552-create-checkout.js
+├── 20221217091628-create-customer.js
+├── 20221217091914-add-products-cart-association.js
+├── 20221217092740-add-cart-checkout-association.js
+└── 20221217094827-add-checkout-customer-association.js
+```
+4. To run this project:
+```
 $ npm run dev
 ```
 
