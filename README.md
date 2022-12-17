@@ -27,16 +27,16 @@ Project is created with:
 * sequelize: >= 6.25.4
 * sequelize-cli: >= 6.25.4
 ## Setup
-1. Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
-2. Install dependencies package
+_ Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
+_ Install dependencies package
 ```
 $ npm install
 ``` 
-Install sequelie-cli globally to interact with database 
+_ Install sequelie-cli globally to interact with database 
 ```
 $ npm install --save-dev sequelize-cli
 ```
-Init sequelize-cli to use in project
+_ Init sequelize-cli to use in project
 ```
 $ npx sequelize-cli init
 ```
