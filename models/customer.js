@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static async findAllCustomers() {
+      return await Customer.findAll()
+    }
   }
   Customer.init({
     name: DataTypes.STRING,

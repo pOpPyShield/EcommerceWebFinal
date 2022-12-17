@@ -12,9 +12,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static async findAllCarts() {
+      return await Cart.findAll()
+    }
   }
   Cart.init({
-    quantity: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER,
+    size: DataTypes.CHAR
   }, {
     sequelize,
     modelName: 'Cart',

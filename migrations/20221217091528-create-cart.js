@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      size: {
+        type: Sequelize.CHAR
+      },
       quantity: {
         type: Sequelize.INTEGER
       },
