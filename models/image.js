@@ -12,15 +12,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    static async findAllImages() {
+      return await Image.findAll()
+    }
   }
   Image.init({
-    path: DataTypes.STRING
+    path: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Image',
   });
   Image.associate = (models) => {
-    Image.belongsTo(models.ProductImage)
+    //Image.hasOne(models.ProductImage)
+    //Image.belongsToMany(models.Product, {through: models.ProductImage})
+    //Image.hasOne(models.ProductImage)
+    Image.belongsTo(models.Product)
   }
   return Image;
 };
