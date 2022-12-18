@@ -4,21 +4,16 @@ const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
 //Import sequelize models 
-const Gender = require("../models/index")['Gender']
-const Category = require("../models/index")['Category']
-const Product = require('../models/index')['Product']
-const ProductSize = require('../models/index')['ProductSize']
-const Size = require("../models/index")['Size']
-const Image = require("../models/index")['Image']
-const Admin = require('../models/index')['Admin']
-const {insertInstance} = require("./Config/DatabaseConfig")
+const ProductService = require("./services/productservices")
+const GenderService = require(".//services/genderservices")
+const Admin = require('./models/index')['Admin']
 //import module to process json and db
 const bodyParser = require('body-parser')
 const pagesName = ["Admin login", "Dashboard"]
 var userName = ""
 
 //Use middle ware to catch request from user
-const logger = require('./Api/Middlewares/Logger');
+const logger = require('./middlewares/logger');
 app.use(logger.logger)
 
 //Set the view engine to ejs
@@ -70,35 +65,25 @@ app.get('/order', (req, res) => {
 })
 /* End */
 
-/* Product APi*/
-app.get('/product/data',(req, res) => {
+/* Gender API */
+app.get('/gender/all', (req, res) => {
     (async() => {
-            const products  = await Gender.findAll({
-                include: [ 
-                    {
-                        model: Category,
-                        required: true,
-                        include: {
-                            model: Product,
-                            required: true,
-                            include: [
-                                {
-                                    model: ProductSize,
-                                    required: true,
-                                    include: [{model: Size}]
-                                },
-                                {
-                                    model: Image,
-                                    required: true
-                                }
-                            ]
-                        }
-                    }
-                ]
-            });
-            // Now the ship comes with it
-            res.json(products)
-        })()
+        res.json(await GenderService.getAllGenders())
+    })()
+})
+/*End*/
+
+/* Product APi*/
+app.get('/product/all',(req, res) => {
+    (async() => {
+        // Now the ship comes with it
+        res.json(await ProductService.getAllProducts())
+    })()
+})
+app.get('/product/:id', (req, res) => {
+    (async() => {
+        res.json(await ProductService.getOneProduct(req.params.id))
+    })()
 })
 /*End*/
 /* CustomerOrders API */
