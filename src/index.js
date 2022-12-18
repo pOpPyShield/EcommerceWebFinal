@@ -4,13 +4,13 @@ const app = express()
 const port = process.env.PORT || 3000
 const path = require('path')
 //Import sequelize models 
-const {Op} = require("sequelize")
 const Gender = require("../models/index")['Gender']
 const Category = require("../models/index")['Category']
 const Product = require('../models/index')['Product']
 const ProductSize = require('../models/index')['ProductSize']
 const Size = require("../models/index")['Size']
 const Image = require("../models/index")['Image']
+const Admin = require('../models/index')['Admin']
 const {insertInstance} = require("./Config/DatabaseConfig")
 //import module to process json and db
 const bodyParser = require('body-parser')
@@ -19,7 +19,6 @@ var userName = ""
 
 //Use middle ware to catch request from user
 const logger = require('./Api/Middlewares/Logger');
-const Admin = require('./Models/Admin.model');
 app.use(logger.logger)
 
 //Set the view engine to ejs
@@ -40,20 +39,15 @@ app.get('/', (req, res) => {
                             })
     })
 app.post('/auth',(req, res) => {
-    const checkAdmin = (async() => {
-        var admin  = await Admin.findAll({
-            where: {
-                [Op.and]: [{UserName: req.body.UserName}, {Password:req.body.Password}]
-            }
-        });
-        if(admin.length >0) {
-            userName = admin[0].UserName
-            res.json({UserName: admin[0].UserName,redirect_path: "/Dashboard"})
+    (async() => {
+        var admin = new Admin(req.body.UserName, req.body.Password)
+        if(await admin.checkAdmin()) {
+            userName = admin.userName
+            res.json({UserName: admin.userName,redirect_path: "/Dashboard"})
         } else {
             res.json({redirect_path: "/"})
         }
-    })
-    checkAdmin()
+    })()
 })
 /* Render page for dashboard */
 app.get('/dashboard', (req, res) => {
