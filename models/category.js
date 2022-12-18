@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Category.associate = (models) => {
     Category.belongsTo(models.Gender) 
+    Category.hasMany(models.Product)
   }
   return Category;
 };

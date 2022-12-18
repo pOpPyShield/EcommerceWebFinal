@@ -5,13 +5,12 @@ const port = process.env.PORT || 3000
 const path = require('path')
 //Import sequelize models 
 const {Op} = require("sequelize")
-const Gender = require("./Models/Gender.model")
-const Category = require("./Models/Category.model");
-const Size = require("./Models/Size.model")
-const Image = require("./Models/Image.model")
-const CustomerOrder = require('./Models/CustomerOrder.model');
-const PhoneNumber = require('./Models/PhoneNumber.model')
-const CheckOut = require('./Models/Checkout.model')
+const Gender = require("../models/index")['Gender']
+const Category = require("../models/index")['Category']
+const Product = require('../models/index')['Product']
+const ProductSize = require('../models/index')['ProductSize']
+const Size = require("../models/index")['Size']
+const Image = require("../models/index")['Image']
 const {insertInstance} = require("./Config/DatabaseConfig")
 //import module to process json and db
 const bodyParser = require('body-parser')
@@ -20,7 +19,6 @@ var userName = ""
 
 //Use middle ware to catch request from user
 const logger = require('./Api/Middlewares/Logger');
-const Product = require('./Models/Product.model');
 const Admin = require('./Models/Admin.model');
 app.use(logger.logger)
 
@@ -91,8 +89,9 @@ app.get('/product/data',(req, res) => {
                             required: true,
                             include: [
                                 {
-                                    model: Size,
-                                    required: true
+                                    model: ProductSize,
+                                    required: true,
+                                    include: [{model: Size}]
                                 },
                                 {
                                     model: Image,
