@@ -10,7 +10,7 @@ function authenticateToken(req, res, next) {
             }
         }catch(err){
             console.log(err)
-            return res.json("No authorization")
+            return res.redirect("/")
         }
     })()
 }

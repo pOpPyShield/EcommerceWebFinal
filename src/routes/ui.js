@@ -13,7 +13,11 @@ function processLogin(req, res){
         })()
 }
 function login(req, res){
-    res.render('Login/', {title: "Admin login"})
+    if (req.resultAuth) {
+        res.redirect('/dashboard')
+    } else {
+        res.render('Login/', {title: "Admin login"})
+    }
 }
 function dashboard(req, res) {
     res.render('Dashboard/', {title: "Dashboard", UserName: req.resultAuth.userName})

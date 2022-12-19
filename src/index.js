@@ -31,7 +31,7 @@ app.use(express.json())
 var ui = require('./routes/ui');
 const authenticateToken = require('./middlewares/authenticateToken');
 //Display login UI
-app.get('/', ui.login)
+app.get('/', authenticateToken,ui.login)
 app.post('/auth',LoginController.checkCredentials)
 /* Render page for dashboard */
 app.get('/dashboard', authenticateToken,ui.dashboard) 
