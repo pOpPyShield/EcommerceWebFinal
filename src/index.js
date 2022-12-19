@@ -6,16 +6,16 @@ const path = require('path')
 //Import sequelize models 
 const ProductService = require("./services/productservices")
 const GenderService = require(".//services/genderservices")
-const Admin = require('./models/index')['Admin']
 //import module to process json and db
 const bodyParser = require('body-parser')
-const pagesName = ["Admin login", "Dashboard"]
-var userName = ""
-
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 //Use middle ware to catch request from user
 const logger = require('./middlewares/logger');
 app.use(logger.logger)
 
+//Use controllers
+const LoginController = require('./controllers/logincontroller')
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
@@ -27,37 +27,21 @@ app.use(express.static(__dirname+'/Static'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
 
+//Routes
+var ui = require('./routes/ui');
+const authenticateToken = require('./middlewares/authenticateToken');
 //Display login UI
-app.get('/', (req, res) => {
-        res.render('Login/index', {
-                                title: pagesName[0],
-                            })
-    })
-app.post('/auth',(req, res) => {
-    (async() => {
-        var admin = new Admin(req.body.UserName, req.body.Password)
-        if(await admin.checkAdmin()) {
-            userName = admin.userName
-            res.json({UserName: admin.userName,redirect_path: "/Dashboard"})
-        } else {
-            res.json({redirect_path: "/"})
-        }
-    })()
-})
+app.get('/', ui.login)
+app.post('/auth',LoginController.checkCredentials)
 /* Render page for dashboard */
-app.get('/dashboard', (req, res) => {
-    res.render('Dashboard/', {
-                            UserName: userName,
-                            title: pagesName[1],
-                        })
-}) 
-app.get('/category', (req, res) => {
+app.get('/dashboard', authenticateToken,ui.dashboard) 
+app.get('/category',(req, res) => {
     res.render('Dashboard/partials/categoryContainer/')
 })
 app.get('/product', (req, res) => {
     res.render('Dashboard/partials/productContainer/')
 })
-app.get('/rating', (req, res) => {
+app.get('/rating',(req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
 })
 app.get('/order', (req, res) => {
@@ -128,36 +112,10 @@ app.post('/ProcessCheckout', (req, res) => {
             const cusFind = await CustomerOrder.findOne({where: {IdCustomer: customerOrder.IdCustomer}})
             cusFind.Quantity = quantity
             await cusFind.save()
-
-            /*
-            var product = await Product.findOne({where: {IdProduct: parseInt(req.body.prodNum)}})
-            var checkout = await CheckOut.create({
-                CustomerOrderIdCustomer: customerOrder.IdCustomer,
-                ProductIdProduct: product.IdProduct
-            })
-            res.json(checkout)
-            */
         })()
     })
-    /*
-   var prodNum = parseInt(req.body.prodNum)
-   var size = req.body.size
-   var quantity = parseInt(req.body.quantity)
-   var customerName = req.body.customerName
-   var phoneNumber = req.body.phoneNumber
-   var address = req.body.address
-   var description = "Cho khach xem hang"
-
-   var sql = `INSERT INTO CustomerOrders(Name, Address, Description,IdProduct, Size, Quantity) VALUES ("${customerName}", "${address}", "${description}", ${prodNum}, "${size}", ${quantity})`
-   authLog.con.query(sql, (err, data) => {
-        if (err) throw err
-        console.log(data)
-   })
-   */
 /**/
-app.use((req, res) => {
-    res.status(404).render('Error/404')
-})
+app.use(ui.page404)
 /* End */
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

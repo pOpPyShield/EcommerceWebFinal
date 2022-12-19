@@ -26,6 +26,7 @@ Project is created with:
 * mysql2: >= 3.0.0-rc.1
 * sequelize: >= 6.25.4
 * sequelize-cli: >= 6.25.4
+* jsonwebtoken: >= 8.5.1
 ## Setup
 _ Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
 _ Install dependencies package

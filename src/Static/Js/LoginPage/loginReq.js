@@ -1,3 +1,9 @@
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
 function login(data) {
     var options  = {
         method: 'POST',
@@ -9,13 +15,14 @@ function login(data) {
     fetch("/auth", options) 
         .then((res) => res.json())
         .then((resp) =>  {
-            if(resp.redirect_path === "/") {
+            if(resp.token) {
+                setCookie('token', resp.token, 1)
+                window.location.href=resp.redirect_path
+            } else {
                 alert("Some thing wrong with your username and password")
                 document.querySelector("#username").value=""
                 document.querySelector("#password").value=""
                 window.location.reload()
-            } else {
-                window.location.href=resp.redirect_path
             }
         })
         .catch((err) => {
