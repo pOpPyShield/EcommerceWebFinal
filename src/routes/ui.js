@@ -1,5 +1,7 @@
 const Admin = require('../models/index')['Admin']
-const SecurityService = require('../services/securityservice');
+const SecurityService = require('../services/securityservice')
+const CategoryService = require('../services/categoryservices')
+const GenderService = require('../services/genderservices')
 function processLogin(req, res){
         (async() => {
             var admin = new Admin(req.body.UserName, req.body.Password)
@@ -22,7 +24,14 @@ function login(req, res){
 function dashboard(req, res) {
     res.render('Dashboard/', {title: "Dashboard", UserName: req.resultAuth.userName})
 }
+function category(req, res) {
+    (async() => {
+        var categories = await CategoryService.getAllCategories()
+        var genders = await GenderService.getAllGenders()
+        res.render('Dashboard/partials/categoryContainer/', {category: categories, gender: genders})
+    })()
+}
 function page404(req,res) {
     res.status(404).render('Error/404')
 }
-module.exports = {login, processLogin, dashboard, page404}
+module.exports = {login, processLogin, dashboard, page404, category}

@@ -11,12 +11,4 @@ function checkCredentials(req, res, next) {
             }
         })()
 }
-function afterAuthenticateToken(req, res) {
-    (async() => {
-        if(req.user) {
-            res.json({user: req.user})
-            next()
-        }
-    })()
-}
-module.exports={checkCredentials, afterAuthenticateToken}
+module.exports={checkCredentials}

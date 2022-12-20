@@ -35,16 +35,14 @@ app.get('/', authenticateToken,ui.login)
 app.post('/auth',LoginController.checkCredentials)
 /* Render page for dashboard */
 app.get('/dashboard', authenticateToken,ui.dashboard) 
-app.get('/category',(req, res) => {
-    res.render('Dashboard/partials/categoryContainer/')
-})
-app.get('/product', (req, res) => {
+app.get('/category',authenticateToken, ui.category)
+app.get('/product',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/productContainer/')
 })
-app.get('/rating',(req, res) => {
+app.get('/rating',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
 })
-app.get('/order', (req, res) => {
+app.get('/order',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/orderContainer/')
 })
 /* End */
