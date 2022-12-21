@@ -3,9 +3,12 @@ const jwt = require('jsonwebtoken');
 function authenticateToken(req, res, next) {
     (async() => {
         try {
-            var result = jwt.verify(req.cookies.token, process.env.TOKEN_SECRET)
-            if (result){
+            if(req.cookies.token != null) {
+                var result = jwt.verify(req.cookies.token, process.env.TOKEN_SECRET)
                 req.resultAuth = result
+                next()
+            } else {
+                req.resultAuth=null
                 next()
             }
         }catch(err){
