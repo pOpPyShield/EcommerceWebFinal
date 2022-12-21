@@ -113,8 +113,9 @@
             e.stopPropagation();
             if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
                 /*UPLOAD FILES HERE*/
-                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[0]
-                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[0])
+                let lengthFiles = e.originalEvent.dataTransfer.files.length
+                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles-1]
+                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles-1])
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
@@ -129,14 +130,14 @@
      */
     function updateThumbNail(dropZoneElement, file) {
         if (file.type.startsWith("image/")) {
-            let thumbnailElement = $('.drop-zone__thumb')
+            let thumbnailElement = document.querySelector('.drop-zone__thumb')
             console.log(file)
             // First time - remove the prompt
             if (dropZoneElement.has(".drop-zone__prompt")) {
                 $(".drop-zone__prompt").remove();
             }
             // Second time - there is no thumbnail element, so create it 
-            if (!thumbnailElement.length) {
+            if (!thumbnailElement) {
                 thumbnailElement = document.createElement("div")
                 thumbnailElement.classList.add("drop-zone__thumb")
                 dropZoneElement.append(thumbnailElement);
