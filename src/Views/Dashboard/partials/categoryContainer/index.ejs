@@ -75,6 +75,7 @@
                     <div class="form-group">
                         <div class="drop-zone">
                             <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                            <input type="file" name="myCatFile" class="drop-zone__input">
                         </div>
                     </div>
                 </form>
@@ -86,12 +87,71 @@
         </div>
     </div>
 </div>
+<div class="alert alert-warning" role="alert">
+    Accept image type only!
+</div>
 <script>
     $(document).ready(function () {
         $('#dataTable').DataTable();
         $('.show-form-category').on('click', (event) => {
             var catTitle = $(event.target).text()
             $('#exampleModalLabel').text(catTitle)
+            $('#exampleInputEmail1').val(catTitle)
+        })
+        //const dropZoneElement = $('.drop-zone__input').closest('.drop_zone')
+        $('.drop-zone').on('dragover', (e) => {
+            e.preventDefault()
+            $('.drop-zone').addClass("drop-zone--over")
+        });
+        ["dragleave", "dragend"].forEach(type => {
+            $('.drop-zone').on(type, (e) => {
+                $('.drop-zone').removeClass("drop-zone--over")
+            })
+        })
+        $('.drop-zone').on('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
+                /*UPLOAD FILES HERE*/
+                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[0]
+                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[0])
+            }
+            $('.drop-zone').removeClass('drop-zone--over')
         })
     });
+
+    /**
+     * Updates the thumbnail on a drop zone element
+     * 
+     *  @param {HTMLElement} dropZoneElement
+     *  @param {File} file
+     * 
+     */
+    function updateThumbNail(dropZoneElement, file) {
+        if (file.type.startsWith("image/")) {
+            let thumbnailElement = $('.drop-zone__thumb')
+            console.log(file)
+            // First time - remove the prompt
+            if (dropZoneElement.has(".drop-zone__prompt")) {
+                $(".drop-zone__prompt").remove();
+            }
+            // Second time - there is no thumbnail element, so create it 
+            if (!thumbnailElement.length) {
+                thumbnailElement = document.createElement("div")
+                thumbnailElement.classList.add("drop-zone__thumb")
+                dropZoneElement.append(thumbnailElement);
+            } 
+
+            thumbnailElement.dataset.label = file.name
+
+            //Show thumbnail for image files
+            const reader = new FileReader();
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            }
+        } else {
+            //Display alert
+        }
+    }
 </script>

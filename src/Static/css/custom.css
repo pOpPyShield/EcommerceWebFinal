@@ -1,6 +1,42 @@
 .drop-zone {
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    cursor: pointer;
+    color: #cccccc;
+    border: 4px dashed #009578;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.drop-zone--over {
+    border-style: solid;
+}
+
+.drop-zone__input {
+    display: none;
+}
+
+.drop-zone__thumb {
+    width: 80%;
+    height: 80%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #cccccc;
+    background-size: cover;
+    position:relative;
+}
+
+.drop-zone__thumb::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    color: #ffff;
+    background: rgba(0,0,0,0.75);
+    text-align: center;
+    font-size: 14px;
 }
