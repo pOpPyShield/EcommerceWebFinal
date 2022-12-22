@@ -144,6 +144,11 @@
             } 
 
             thumbnailElement.dataset.label = file.name
+            
+            console.log(getNameImage(file.name))
+            console.log(typeof(file.size))
+            console.log(typeof(file.lastModified))
+
 
             //Show thumbnail for image files
             const reader = new FileReader();
@@ -153,6 +158,15 @@
             }
         } else {
             //Display alert
+            alert('Accept the image file only!')
         }
+    }
+    function getNameImage(url) {
+        return url.split('.').slice(0, -1).join('.')
+    }
+    function encryptUrl(arr) {
+        //1. Take array param
+        //2. Loop through each element 
+        //3. return concat param 
     }
 </script>
