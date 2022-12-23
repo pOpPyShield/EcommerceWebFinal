@@ -70,7 +70,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <div class="drop-zone">
+                    <div class="drop-zone update-delete-cate">
                         <span class="drop-zone__prompt">Drop file here or click to upload</span>
                         <input type="file" name="myCatFile" class="drop-zone__input">
                     </div>
@@ -112,7 +112,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <div class="drop-zone-update-delete">
+                        <div class="drop-zone create-cate">
                             <span class="drop-zone__prompt">Drop file here or click to upload</span>
                             <input type="file" name="myCatFile" class="drop-zone__input">
                         </div>
@@ -146,19 +146,27 @@
                 $('.drop-zone').removeClass("drop-zone--over")
             })
         })
-        $('.drop-zone-update-delete').on('drop', (e) => {
+        $('.update-delete-cate').on('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
             if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1])
+                console.log(updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")))
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
-        $('.action-add').on('click', (e) => {
-
+        $('.create-cate').on('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
+                /*UPLOAD FILES HERE*/
+                let lengthFiles = e.originalEvent.dataTransfer.files.length
+                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
+                console.log(updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1], ''))
+            }
+            $('.drop-zone').removeClass('drop-zone--over')
         })
     });
 
@@ -169,23 +177,24 @@
      *  @param {File} file
      * 
      */
-    function updateThumbNail(dropZoneElement, file) {
+    function updateThumbNail(dropZoneElement, file, label) {
         if (file.type.startsWith("image/")) {
             let thumbnailElement = document.querySelector('.drop-zone__thumb')
             // First time - remove the prompt
             if (dropZoneElement.has(".drop-zone__prompt")) {
                 $(".drop-zone__prompt").remove();
             }
+            //    document.querySelector('.drop-zone__thumb').remove()
+            //    dropZoneElement.append(".drop-zone__prompt")
             // Second time - there is no thumbnail element, so create it 
             if (!thumbnailElement) {
                 thumbnailElement = document.createElement("div")
                 thumbnailElement.classList.add("drop-zone__thumb")
                 dropZoneElement.append(thumbnailElement);
             }
-
             thumbnailElement.dataset.label = file.name
 
-            //console.log(encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")]))
+            //console.log(encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label]))
 
             //Show thumbnail for image files
             const reader = new FileReader();
@@ -193,7 +202,11 @@
             reader.onload = () => {
                 thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
             }
-            return [encryptUrl([getNameImage(file.name), ])]
+            if(label) {
+                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label])
+            } else {
+                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString()])
+            }
         } else {
             Swal.fire({
                 title: "Accept image file only!",
