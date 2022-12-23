@@ -1,7 +1,7 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <button class="btn btn-primary">Add categories</button>
+        <a class="show-add-form-category" href="#" data-toggle="modal" data-target="#exampleModalAdd"><button class="btn btn-primary">Add categories</button></a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -25,9 +25,7 @@
                 <tbody>
                     <% category.forEach(function(cate){ %>
                         <tr>
-                            <td><a class="show-form-category" href="#" data-toggle="modal" data-target="#exampleModal">
-                                    <%=cate.name%>
-                                </a></td>
+                            <td><a class="show-form-category" href="#" data-toggle="modal" data-target="#exampleModal"><%=cate.name%></a></td>
                             <td>
                                 <%=cate.Gender.name%>
                             </td>
@@ -44,13 +42,54 @@
         </div>
     </div>
 </div>
-<!--Modal-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!--Modal Update, Delete function -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelUpdateDelete"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabelUpdateDelete">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputUpdateDelete">Category name</label>
+                    <input type="email" class="form-control" id="exampleInputUpdateDelete" aria-describedby="emailHelp"
+                        placeholder="Enter category name">
+                    <small id="emailHelp" class="form-text text-muted">The change will affect other products</small>
+                </div>
+                <div class="form-group">
+                    <select class="form-control">
+                        <% gender.forEach(function(gen){ %>
+                            <option>
+                                <%=gen.name%>
+                            </option>
+                            <% });%>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="drop-zone">
+                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                        <input type="file" name="myCatFile" class="drop-zone__input">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal create -->
+<div class="modal fade" id="exampleModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title add-cat" id="exampleModalLabel">Add category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -58,8 +97,8 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Category name</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        <label for="exampleInputCreate">Category name</label>
+                        <input type="email" class="form-control" id="exampleInputCreate" aria-describedby="emailHelp"
                             placeholder="Enter category name">
                         <small id="emailHelp" class="form-text text-muted">The change will affect other products</small>
                     </div>
@@ -73,7 +112,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <div class="drop-zone">
+                        <div class="drop-zone-update-delete">
                             <span class="drop-zone__prompt">Drop file here or click to upload</span>
                             <input type="file" name="myCatFile" class="drop-zone__input">
                         </div>
@@ -81,22 +120,21 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-success action-add" data-dismiss="modal">Add</button>
             </div>
         </div>
     </div>
-</div>
-<div class="alert alert-warning" role="alert">
-    Accept image type only!
 </div>
 <script>
     $(document).ready(function () {
         $('#dataTable').DataTable();
         $('.show-form-category').on('click', (event) => {
             var catTitle = $(event.target).text()
-            $('#exampleModalLabel').text(catTitle)
-            $('#exampleInputEmail1').val(catTitle)
+            $('#exampleModalLabelUpdateDelete').text(catTitle)
+            $('#exampleInputUpdateDelete').val(catTitle)
+        })
+        $('.show-add-form-category').on('click', (event) => {
+
         })
         //const dropZoneElement = $('.drop-zone__input').closest('.drop_zone')
         $('.drop-zone').on('dragover', (e) => {
@@ -108,16 +146,19 @@
                 $('.drop-zone').removeClass("drop-zone--over")
             })
         })
-        $('.drop-zone').on('drop', (e) => {
+        $('.drop-zone-update-delete').on('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
             if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
-                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles-1]
-                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles-1])
+                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
+                updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1])
             }
             $('.drop-zone').removeClass('drop-zone--over')
+        })
+        $('.action-add').on('click', (e) => {
+
         })
     });
 
@@ -131,7 +172,6 @@
     function updateThumbNail(dropZoneElement, file) {
         if (file.type.startsWith("image/")) {
             let thumbnailElement = document.querySelector('.drop-zone__thumb')
-            console.log(file)
             // First time - remove the prompt
             if (dropZoneElement.has(".drop-zone__prompt")) {
                 $(".drop-zone__prompt").remove();
@@ -141,14 +181,11 @@
                 thumbnailElement = document.createElement("div")
                 thumbnailElement.classList.add("drop-zone__thumb")
                 dropZoneElement.append(thumbnailElement);
-            } 
+            }
 
             thumbnailElement.dataset.label = file.name
-            
-            console.log(getNameImage(file.name))
-            console.log(typeof(file.size))
-            console.log(typeof(file.lastModified))
 
+            //console.log(encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")]))
 
             //Show thumbnail for image files
             const reader = new FileReader();
@@ -156,17 +193,23 @@
             reader.onload = () => {
                 thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
             }
+            return [encryptUrl([getNameImage(file.name), ])]
         } else {
-            //Display alert
-            alert('Accept the image file only!')
+            Swal.fire({
+                title: "Accept image file only!",
+                text: "Please check the file is image!",
+                icon: "warning",
+                button: "Ok"
+            })
         }
     }
     function getNameImage(url) {
         return url.split('.').slice(0, -1).join('.')
     }
+    function getFileExtension(url) {
+        return url.split('.').pop()
+    }
     function encryptUrl(arr) {
-        //1. Take array param
-        //2. Loop through each element 
-        //3. return concat param 
+        return arr.join("_")
     }
 </script>

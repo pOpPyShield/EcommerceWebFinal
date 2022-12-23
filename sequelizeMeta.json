@@ -14,5 +14,7 @@
   "20221217091628-create-customer.js",
   "20221217091914-add-products-cart-association.js",
   "20221217092740-add-cart-checkout-association.js",
-  "20221217094827-add-checkout-customer-association.js"
+  "20221217094827-add-checkout-customer-association.js",
+  "20221223070603-create-image-cate.js",
+  "20221223070935-add-imagecate-category-association.js"
 ]

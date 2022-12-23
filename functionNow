@@ -1,0 +1,2 @@
+Update -> concat fileName_fileSize_fileLastModified_CategoryName -> store .ext -> send to the server -> encrypt -> save to database -> save to static/images
+Click to category -> query from database encrypt name and display 

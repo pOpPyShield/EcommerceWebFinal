@@ -27,6 +27,11 @@ Project is created with:
 * sequelize: >= 6.25.4
 * sequelize-cli: >= 6.25.4
 * jsonwebtoken: >= 8.5.1
+## Security
+_ Use this command in node to create private key
+```
+> require('crypto').randomBytes(64).toString('hex')
+```
 ## Setup
 _ Import /src/Config/DatabaseData/EcommerceWebSite.sql to mysql
 _ Install dependencies package
