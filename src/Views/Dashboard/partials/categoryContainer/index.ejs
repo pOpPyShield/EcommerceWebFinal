@@ -127,6 +127,8 @@
 </div>
 <script>
     $(document).ready(function () {
+        //For store file
+        var fileName, ext, blob, fileType, file;
         $('#dataTable').DataTable();
         $('.show-form-category').on('click', (event) => {
             var catTitle = $(event.target).text()
@@ -173,9 +175,29 @@
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                console.log(updateThumbNail($('.create-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], ''))
+                fileName = updateThumbNail($('.create-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
+                ext = getFileExtension(e.originalEvent.dataTransfer.files[lengthFiles-1].name)
+                e.originalEvent.dataTransfer.files[lengthFiles-1].name = fileName
+                fileType = e.originalEvent.dataTransfer.files[lengthFiles-1].type
+                file = e.originalEvent.dataTransfer.files[lengthFiles - 1]
             }
             $('.drop-zone').removeClass('drop-zone--over')
+        })
+        $('.action-add').on('click', (e) => {
+            sendImage({
+                fileName: fileName,
+                ext: ext,
+                blob:new Blob([file], {type: fileType})
+            })
+            console.log("Trigger add event")
+            let thumb = document.querySelector('.drop-zone__thumb')
+            if(thumb) {
+                thumb.remove()
+                let prompt = document.createElement('span')
+                prompt.classList.add('drop-zone__prompt')
+                prompt.innerHTML = "Drop file here or click to upload"
+                $('.drop-zone').prepend(prompt)
+            }
         })
     });
 
@@ -184,6 +206,7 @@
      * 
      *  @param {HTMLElement} dropZoneElement
      *  @param {File} file
+     *  @param {HTMLElement} label
      * 
      */
     function updateThumbNail(dropZoneElement, file, label) {
@@ -233,5 +256,18 @@
     }
     function encryptUrl(arr) {
         return arr.join("_")
+    }
+    /**
+     * 
+     * Post request to the server
+     *  {
+     *      path: 
+     *      ext: 
+     *      blob: 
+     *  }
+     *  
+    */
+    function sendImage(imgObj) {
+        console.table(imgObj)
     }
 </script>

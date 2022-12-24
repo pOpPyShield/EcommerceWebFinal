@@ -1,2 +1,8 @@
-Update -> concat fileName_fileSize_fileLastModified_CategoryName -> store .ext -> send to the server -> encrypt -> save to database -> save to static/images
-Click to category -> query from database encrypt name and display 
+Update -> store concat fileName_fileSize_fileLastModified_CategoryName -> store .ext -> send 
+{
+    fileName: concat fileName_fileSize...
+    extension: .ext
+    blob: blob of file
+}
+to the server -> save encrypted file name , extension to database -> save encrypted file to static/images
+Click to category -> query from database -> display the file in static/images
