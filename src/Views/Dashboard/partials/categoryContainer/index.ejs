@@ -49,7 +49,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabelUpdateDelete">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn-close-cate" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -90,7 +90,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title add-cat" id="exampleModalLabel">Add category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn-close-cate" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -133,8 +133,17 @@
             $('#exampleModalLabelUpdateDelete').text(catTitle)
             $('#exampleInputUpdateDelete').val(catTitle)
         })
-        $('.show-add-form-category').on('click', (event) => {
-
+        $('.btn-close-cate').on('click', (event) => {
+            console.log(event.target)
+            console.log("Trigger close event")
+            let thumb = document.querySelector('.drop-zone__thumb')
+            if(thumb) {
+                thumb.remove()
+                let prompt = document.createElement('span')
+                prompt.classList.add('drop-zone__prompt')
+                prompt.innerHTML = "Drop file here or click to upload"
+                $('.drop-zone').prepend(prompt)
+            }
         })
         //const dropZoneElement = $('.drop-zone__input').closest('.drop_zone')
         $('.drop-zone').on('dragover', (e) => {
@@ -153,7 +162,7 @@
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                console.log(updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")))
+                console.log(updateThumbNail($('.update-delete-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")))
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
@@ -164,7 +173,7 @@
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                console.log(updateThumbNail($('.drop-zone'), e.originalEvent.dataTransfer.files[lengthFiles - 1], ''))
+                console.log(updateThumbNail($('.create-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], ''))
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
