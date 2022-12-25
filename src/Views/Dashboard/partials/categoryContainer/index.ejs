@@ -191,7 +191,7 @@
                 ext: ext,
                 blob:new Blob([file], {type: fileType})
             }
-            sendImage({name}, "/category/create")
+            sendImage({name, genName}, "/category/create")
             $("#exampleInputCreate").val(" ")
             console.log("Trigger add event")
             let thumb = document.querySelector('.drop-zone__thumb')
