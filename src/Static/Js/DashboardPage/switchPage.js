@@ -1,5 +1,6 @@
 function insertToDiv(name) {
     let pageName = "/" + name.toLowerCase()
+    console.log(pageName)
     $(".container-fluid").load(pageName)
 }
 /*

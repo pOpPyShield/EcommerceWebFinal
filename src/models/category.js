@@ -24,7 +24,17 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         unique: true
     },
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      validate: {
+        checkName(value) {
+          if(!(value.length > 1 && value.length <= 100)) {
+            throw new Error("Category name can't be empty or less than one character")
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Category',

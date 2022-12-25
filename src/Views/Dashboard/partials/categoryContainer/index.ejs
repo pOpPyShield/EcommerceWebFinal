@@ -61,7 +61,7 @@
                     <small id="emailHelp" class="form-text text-muted">The change will affect other products</small>
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
+                    <select class="form-control" id="select-gender-form-update-delete">
                         <% gender.forEach(function(gen){ %>
                             <option>
                                 <%=gen.name%>
@@ -103,7 +103,7 @@
                         <small id="emailHelp" class="form-text text-muted">The change will affect other products</small>
                     </div>
                     <div class="form-group">
-                        <select class="form-control">
+                        <select class="form-control" id="select-gender-form-create">
                             <% gender.forEach(function(gen){ %>
                                 <option>
                                     <%=gen.name%>
@@ -120,7 +120,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success action-add" data-dismiss="modal">Add</button>
+                <input type="submit" name="insertCategory" value="Add category" class="btn btn-success action-add" data-dismiss="modal"></input>
             </div>
         </div>
     </div>
@@ -184,11 +184,14 @@
             $('.drop-zone').removeClass('drop-zone--over')
         })
         $('.action-add').on('click', (e) => {
-            sendImage({
+            var name = document.getElementById("exampleInputCreate").value
+            var genName = document.getElementById("select-gender-form-create").value
+            var file =  {
                 fileName: fileName,
                 ext: ext,
                 blob:new Blob([file], {type: fileType})
-            })
+            }
+            sendImage({name})
             console.log("Trigger add event")
             let thumb = document.querySelector('.drop-zone__thumb')
             if(thumb) {
@@ -216,8 +219,6 @@
             if (dropZoneElement.has(".drop-zone__prompt")) {
                 $(".drop-zone__prompt").remove();
             }
-            //    document.querySelector('.drop-zone__thumb').remove()
-            //    dropZoneElement.append(".drop-zone__prompt")
             // Second time - there is no thumbnail element, so create it 
             if (!thumbnailElement) {
                 thumbnailElement = document.createElement("div")
@@ -225,9 +226,6 @@
                 dropZoneElement.append(thumbnailElement);
             }
             thumbnailElement.dataset.label = file.name
-
-            //console.log(encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label]))
-
             //Show thumbnail for image files
             const reader = new FileReader();
             reader.readAsDataURL(file)
@@ -257,17 +255,32 @@
     function encryptUrl(arr) {
         return arr.join("_")
     }
-    /**
-     * 
-     * Post request to the server
-     *  {
-     *      path: 
-     *      ext: 
-     *      blob: 
-     *  }
-     *  
-    */
     function sendImage(imgObj) {
-        console.table(imgObj)
+        var options  = {
+            method: 'POST',
+            body: JSON.stringify(imgObj),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        console.log(options)
+        fetch("/category/create", options) 
+            .then((res) => res.json())
+            .then((resp) => {
+                console.log(resp)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    } 
+    /*
+    function actionAdd() {
+        var btnAdd = document.querySelector(".action-add")
+        btnAdd.onclick = function() {
+            var name = document.getElementById("exampleInputCreate").value
+            var formData = {name}
+            sendImage(formData)
+        }
     }
+    */
 </script>

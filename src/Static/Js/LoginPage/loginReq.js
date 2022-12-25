@@ -32,10 +32,10 @@ function login(data) {
 function handleLoginForm() {
     var loginBtn = document.querySelector(".btn-primary")
     loginBtn.onclick = function() {
-        var UserName = document.querySelector("#username").value
-        var Password = document.querySelector("#password").value
-        var formData = {UserName, Password}
-        login(formData)
+        var username = document.querySelector("#username").value
+        var password = document.querySelector("#password").value
+        var formdata = {username, password}
+        login(formdata)
     }
 }
 handleLoginForm()     

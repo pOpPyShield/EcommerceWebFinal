@@ -1,11 +1,12 @@
 const express = require('express')
 require("dotenv").config();
 const app = express()
+//spyRoutes(app)
 const port = process.env.PORT || 3000
 const path = require('path')
-//Import sequelize models 
+//Import services
 const ProductService = require("./services/productservices")
-const GenderService = require(".//services/genderservices")
+const GenderService = require("./services/genderservices")
 //import module to process json and db
 const bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
@@ -16,6 +17,7 @@ app.use(logger.logger)
 
 //Use controllers
 const LoginController = require('./controllers/logincontroller')
+const CategoryController = require('./controllers/categorycontroller')
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
@@ -35,13 +37,18 @@ app.get('/', authenticateToken,ui.login)
 app.post('/auth',LoginController.checkCredentials)
 /* Render page for dashboard */
 app.get('/dashboard', authenticateToken,ui.dashboard) 
+/* Render page for category */
 app.get('/category',authenticateToken, ui.category)
+app.post('/category/create', authenticateToken,CategoryController.insertCategory)
+/* Render page for product */
 app.get('/product',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/productContainer/')
 })
+/* Render page for rating */
 app.get('/rating',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
 })
+/* Render page for order */
 app.get('/order',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/orderContainer/')
 })
@@ -118,7 +125,6 @@ app.use(ui.page404)
 const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
-
 process.on("unhandledRejection", err => {
     console.log(`An error occured: ${err.message}`)
     server.close(() => process.exit(1))   

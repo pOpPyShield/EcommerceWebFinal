@@ -16,6 +16,10 @@ module.exports = {
     name: 'Nam',
     createdAt: new Date(),
     updatedAt: new Date()
+   },{
+    name: 'Nu',
+    createdAt: new Date(),
+    updatedAt: new Date()
    }])
   },
 
