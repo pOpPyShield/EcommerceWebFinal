@@ -69,12 +69,6 @@
                             <% });%>
                     </select>
                 </div>
-                <div class="form-group">
-                    <div class="drop-zone update-delete-cate">
-                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                        <input type="file" name="myCatFile" class="drop-zone__input">
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
@@ -111,12 +105,6 @@
                                 <% });%>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <div class="drop-zone create-cate">
-                            <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                            <input type="file" name="myCatFile" class="drop-zone__input">
-                        </div>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -135,127 +123,15 @@
             $('#exampleModalLabelUpdateDelete').text(catTitle)
             $('#exampleInputUpdateDelete').val(catTitle)
         })
-        $('.btn-close-cate').on('click', (event) => {
-            console.log(event.target)
-            console.log("Trigger close event")
-            let thumb = document.querySelector('.drop-zone__thumb')
-            if(thumb) {
-                thumb.remove()
-                let prompt = document.createElement('span')
-                prompt.classList.add('drop-zone__prompt')
-                prompt.innerHTML = "Drop file here or click to upload"
-                $('.drop-zone').prepend(prompt)
-            }
-        })
-        //const dropZoneElement = $('.drop-zone__input').closest('.drop_zone')
-        $('.drop-zone').on('dragover', (e) => {
-            e.preventDefault()
-            $('.drop-zone').addClass("drop-zone--over")
-        });
-        ["dragleave", "dragend"].forEach(type => {
-            $('.drop-zone').on(type, (e) => {
-                $('.drop-zone').removeClass("drop-zone--over")
-            })
-        })
-        $('.update-delete-cate').on('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
-                /*UPLOAD FILES HERE*/
-                let lengthFiles = e.originalEvent.dataTransfer.files.length
-                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                console.log(updateThumbNail($('.update-delete-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")))
-            }
-            $('.drop-zone').removeClass('drop-zone--over')
-        })
-        $('.create-cate').on('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
-                /*UPLOAD FILES HERE*/
-                let lengthFiles = e.originalEvent.dataTransfer.files.length
-                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                fileName = updateThumbNail($('.create-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
-                ext = getFileExtension(e.originalEvent.dataTransfer.files[lengthFiles-1].name)
-                e.originalEvent.dataTransfer.files[lengthFiles-1].name = fileName
-                fileType = e.originalEvent.dataTransfer.files[lengthFiles-1].type
-                file = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-            }
-            $('.drop-zone').removeClass('drop-zone--over')
-        })
         $('.action-add').on('click', (e) => {
             var name = document.getElementById("exampleInputCreate").value
             var genName = document.getElementById("select-gender-form-create").value
-            var file =  {
-                fileName: fileName,
-                ext: ext,
-                blob:new Blob([file], {type: fileType})
-            }
             sendImage({name, genName}, "/category/create")
             $("#exampleInputCreate").val(" ")
             console.log("Trigger add event")
-            let thumb = document.querySelector('.drop-zone__thumb')
-            if(thumb) {
-                thumb.remove()
-                let prompt = document.createElement('span')
-                prompt.classList.add('drop-zone__prompt')
-                prompt.innerHTML = "Drop file here or click to upload"
-                $('.drop-zone').prepend(prompt)
-            }
         })
     });
 
-    /**
-     * Updates the thumbnail on a drop zone element
-     * 
-     *  @param {HTMLElement} dropZoneElement
-     *  @param {File} file
-     *  @param {HTMLElement} label
-     * 
-     */
-    function updateThumbNail(dropZoneElement, file, label) {
-        if (file.type.startsWith("image/")) {
-            let thumbnailElement = document.querySelector('.drop-zone__thumb')
-            // First time - remove the prompt
-            if (dropZoneElement.has(".drop-zone__prompt")) {
-                $(".drop-zone__prompt").remove();
-            }
-            // Second time - there is no thumbnail element, so create it 
-            if (!thumbnailElement) {
-                thumbnailElement = document.createElement("div")
-                thumbnailElement.classList.add("drop-zone__thumb")
-                dropZoneElement.append(thumbnailElement);
-            }
-            thumbnailElement.dataset.label = file.name
-            //Show thumbnail for image files
-            const reader = new FileReader();
-            reader.readAsDataURL(file)
-            reader.onload = () => {
-                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
-            }
-            if(label) {
-                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label])
-            } else {
-                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString()])
-            }
-        } else {
-            Swal.fire({
-                title: "Accept image file only!",
-                text: "Please check the file is image!",
-                icon: "warning",
-                button: "Ok"
-            })
-        }
-    }
-    function getNameImage(url) {
-        return url.split('.').slice(0, -1).join('.')
-    }
-    function getFileExtension(url) {
-        return url.split('.').pop()
-    }
-    function encryptUrl(arr) {
-        return arr.join("_")
-    }
     function sendImage(imgObj, path) {
         var options  = {
             method: 'POST',
@@ -282,9 +158,9 @@
                         icon: "success",
                         confirmButtonText: 'Ok',
                     }).then((result) => {
-                        if(result.isDismissed || !result.isConfirmed) {
-                            $(".container-fluid").load("/category")
-                        }
+                        $.get('/category', (html) => {
+                            $(".container-fluid").html(html)
+                        })
                     })
                 }
             })

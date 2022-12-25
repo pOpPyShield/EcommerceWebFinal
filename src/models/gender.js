@@ -17,7 +17,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Gender.init({
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      allowNull:false,
+      validate: {
+        checkName(value) {
+          if(!(value.length > 1 && value.length <= 100)) {
+            throw new Error("Gender name can't be empty or less than one character")
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Gender',

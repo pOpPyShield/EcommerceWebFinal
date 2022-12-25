@@ -18,6 +18,7 @@ app.use(logger.logger)
 //Use controllers
 const LoginController = require('./controllers/logincontroller')
 const CategoryController = require('./controllers/categorycontroller')
+const GenderController = require('./controllers/gendercontroller')
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
@@ -37,6 +38,8 @@ app.get('/', authenticateToken,ui.login)
 app.post('/auth',LoginController.checkCredentials)
 /* Render page for dashboard */
 app.get('/dashboard', authenticateToken,ui.dashboard) 
+app.get('/gender', authenticateToken, ui.gender)
+app.post('/gender/create', authenticateToken, GenderController.insertGender)
 /* Render page for category */
 app.get('/category',authenticateToken, ui.category)
 app.post('/category/create', authenticateToken,CategoryController.insertCategory)

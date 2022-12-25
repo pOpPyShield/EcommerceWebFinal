@@ -1,6 +1,5 @@
 const Category = require("../models/")["Category"]
 const Gender = require("../models/")["Gender"]
-const CategoryService = require("../services/categoryservices")
 function insertCategory(req, res, next) {
     (async() => {
         try {

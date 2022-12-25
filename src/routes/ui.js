@@ -24,6 +24,12 @@ function login(req, res){
 function dashboard(req, res) {
     res.render('Dashboard/', {title: "Dashboard", UserName: req.resultAuth.userName})
 }
+function gender(req, res) {
+    (async() => {
+        var genders = await GenderService.getAllGenders()
+        res.render('Dashboard/partials/genderContainer/', {gender: genders})
+    })()
+}
 function category(req, res) {
     (async() => {
         var categories = await CategoryService.getAllCategories()
@@ -34,4 +40,4 @@ function category(req, res) {
 function page404(req,res) {
     res.status(404).render('Error/404')
 }
-module.exports = {login, processLogin, dashboard, page404, category}
+module.exports = {login, processLogin, dashboard, page404, category, gender}
