@@ -3,10 +3,11 @@ const CategoryService = require("../services/categoryservices")
 function insertCategory(req, res, next) {
     (async() => {
         try {
-            res.json(req.body.name)
-            next()
+            var categoryObj = await Category.create({name: req.body.name})
+            await categoryObj.save()
+            res.json({result: categoryObj.name, operation: "Add"})
         } catch(err) {
-            console.log(err)
+            res.send(err)
         }
     })()
 }

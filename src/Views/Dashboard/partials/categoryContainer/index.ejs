@@ -120,7 +120,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <input type="submit" name="insertCategory" value="Add category" class="btn btn-success action-add" data-dismiss="modal"></input>
+                <input type="submit" name="insertCategory" value="Add" class="btn btn-success action-add" data-dismiss="modal"></input>
             </div>
         </div>
     </div>
@@ -191,7 +191,8 @@
                 ext: ext,
                 blob:new Blob([file], {type: fileType})
             }
-            sendImage({name})
+            sendImage({name}, "/category/create")
+            $("#exampleInputCreate").val(" ")
             console.log("Trigger add event")
             let thumb = document.querySelector('.drop-zone__thumb')
             if(thumb) {
@@ -255,7 +256,7 @@
     function encryptUrl(arr) {
         return arr.join("_")
     }
-    function sendImage(imgObj) {
+    function sendImage(imgObj, path) {
         var options  = {
             method: 'POST',
             body: JSON.stringify(imgObj),
@@ -267,7 +268,25 @@
         fetch("/category/create", options) 
             .then((res) => res.json())
             .then((resp) => {
-                console.log(resp)
+                if (resp.errors) {
+                    Swal.fire({
+                        title: "Errors",
+                        text: resp.errors[resp.errors.length-1].message,
+                        icon: "error",
+                        button: "Ok"
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        text: resp.operation + " " + resp.result +" category",
+                        icon: "success",
+                        confirmButtonText: 'Ok',
+                    }).then((result) => {
+                        if(result.isDismissed || !result.isConfirmed) {
+                            $(".container-fluid").load("/category")
+                        }
+                    })
+                }
             })
             .catch((err) => {
                 console.log(err)
