@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
   });
   Gender.associate = (models) => {
     Gender.hasMany(models.Category)
+    Gender.hasOne(models.ImageGender, {
+      onDelete: 'CASCADE'
+    })
   }
   return Gender;
 };

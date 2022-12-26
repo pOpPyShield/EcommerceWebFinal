@@ -1,7 +1,8 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <a class="show-add-form-category" href="#" data-toggle="modal" data-target="#exampleModalAdd"><button class="btn btn-primary">Add Gender</button></a>
+        <a class="show-add-form-category" href="#" data-toggle="modal" data-target="#exampleModalAdd"><button
+                class="btn btn-primary">Add Gender</button></a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -23,7 +24,9 @@
                 <tbody>
                     <% gender.forEach(function(gen){ %>
                         <tr>
-                            <td><a class="show-form-category" href="#" data-toggle="modal" data-target="#exampleModal"><%=gen.name%></a></td>
+                            <td><a class="show-form-category" href="#" data-toggle="modal" data-target="#exampleModal">
+                                    <%=gen.name%>
+                                </a></td>
                             <td>
                                 <%=gen.createdAt%>
                             </td>
@@ -97,7 +100,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <input type="submit" name="insertGender" value="Add" class="btn btn-success action-add" data-dismiss="modal"></input>
+                <input type="submit" name="insertGender" value="Add" class="btn btn-success action-add"
+                    data-dismiss="modal"></input>
             </div>
         </div>
     </div>
@@ -105,7 +109,7 @@
 <script>
     $(document).ready(function () {
         //For store file
-        var fileName, ext, blob, fileType, file;
+        var fileName, ext, fileType, fileData;
         $('#dataTable').DataTable();
         $('.show-form-category').on('click', (event) => {
             var catTitle = $(event.target).text()
@@ -116,12 +120,16 @@
             console.log(event.target)
             console.log("Trigger close event")
             let thumb = document.querySelector('.drop-zone__thumb')
-            if(thumb) {
+            if (thumb) {
                 thumb.remove()
                 let prompt = document.createElement('span')
                 prompt.classList.add('drop-zone__prompt')
                 prompt.innerHTML = "Drop file here or click to upload"
                 $('.drop-zone').prepend(prompt)
+            }
+            let inputCreate = $("#exampleInputCreate").val()
+            if (inputCreate.length > 0) {
+                $("#exampleInputCreate").val(" ")
             }
         })
         //const dropZoneElement = $('.drop-zone__input').closest('.drop_zone')
@@ -153,31 +161,39 @@
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
                 fileName = updateThumbNail($('.create-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
-                ext = getFileExtension(e.originalEvent.dataTransfer.files[lengthFiles-1].name)
-                e.originalEvent.dataTransfer.files[lengthFiles-1].name = fileName
-                fileType = e.originalEvent.dataTransfer.files[lengthFiles-1].type
-                file = e.originalEvent.dataTransfer.files[lengthFiles - 1]
+                ext = getFileExtension(e.originalEvent.dataTransfer.files[lengthFiles - 1].name)
+                e.originalEvent.dataTransfer.files[lengthFiles - 1].name = fileName
+                fileType = e.originalEvent.dataTransfer.files[lengthFiles - 1].type
+                fileData = e.originalEvent.dataTransfer.files[lengthFiles - 1]
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
         $('.action-add').on('click', (e) => {
             var name = document.getElementById("exampleInputCreate").value
-            var file =  {
+            console.log(fileData)
+            var fileIns = {
                 fileName: fileName,
                 ext: ext,
-                blob:new Blob([file], {type: fileType})
             }
-            console.log(name)
-            sendImage({name}, "/gender/create")
-            $("#exampleInputCreate").val(" ")
-            console.log("Trigger add event")
-            let thumb = document.querySelector('.drop-zone__thumb')
-            if(thumb) {
-                thumb.remove()
-                let prompt = document.createElement('span')
-                prompt.classList.add('drop-zone__prompt')
-                prompt.innerHTML = "Drop file here or click to upload"
-                $('.drop-zone').prepend(prompt)
+            if (fileData) {
+                sendImage({ name, fileIns }, fileData, "/gender/upload", "/gender/create")
+                $("#exampleInputCreate").val(" ")
+                console.log("Trigger add event")
+                let thumb = document.querySelector('.drop-zone__thumb')
+                if (thumb) {
+                    thumb.remove()
+                    let prompt = document.createElement('span')
+                    prompt.classList.add('drop-zone__prompt')
+                    prompt.innerHTML = "Drop file here or click to upload"
+                    $('.drop-zone').prepend(prompt)
+                }
+            } else {
+                Swal.fire({
+                    title: "Errors",
+                    text: "Insert image",
+                    icon: "error",
+                    confirmButtonText: "Ok"
+                })
             }
         })
     });
@@ -210,7 +226,7 @@
             reader.onload = () => {
                 thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
             }
-            if(label) {
+            if (label) {
                 return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label])
             } else {
                 return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString()])
@@ -233,42 +249,90 @@
     function encryptUrl(arr) {
         return arr.join("_")
     }
-    function sendImage(imgObj, path) {
-        var options  = {
-            method: 'POST',
-            body: JSON.stringify(imgObj),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        console.log(options)
-        fetch(path, options) 
-            .then((res) => res.json())
-            .then((resp) => {
-                if (resp.errors) {
-                    Swal.fire({
-                        title: "Errors",
-                        text: resp.errors[resp.errors.length-1].message,
-                        icon: "error",
-                        confirmButtonText: "Ok"
-                    })
-                } else {
-                    Swal.fire({
-                        title: "Success",
-                        text: resp.operation + " " + resp.result +" gender",
-                        icon: "success",
-                        confirmButtonText: 'Ok',
-                    }).then((result) => {
-                        $.get('/gender', (html) => {
-                            $(".container-fluid").html(html)
-                        })
-                    })
+    function sendImage(imgObj, file, pathFile, pathInfo) {
+        (async () => {
+            var checkUploadInfo = false
+            var checkUploadFile = false
+            const formData = new FormData()
+            var respOperation, respResult;
+            formData.append('myFile', file)
+            var options = {
+                method: 'POST',
+                body: JSON.stringify(imgObj),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
+            }
+            // Insert gender data
+            await fetch(pathInfo, options)
+                .then((res) => res.json())
+                .then((resp) => {
+                    if (resp.errors) {
+                        Swal.fire({
+                            title: "Errors",
+                            text: resp.errors[resp.errors.length - 1].message,
+                            icon: "error",
+                            confirmButtonText: "Ok"
+                        })
+                    } else {
+                        console.log("Upload info success")
+                        respOperation = resp.operation
+                        respResult = resp.result
+                        checkUploadInfo = true
+                    }
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+
+                            await fetch(pathFile, {
+                                method: 'POST',
+                                body: formData
+
+                            })
+                                .then((res) => res.json())
+                                .then((resp) => {
+                                    if (resp.errors) {
+                                        Swal.fire({
+                                            title: "Errors",
+                                            text: resp.errors[resp.errors.length - 1].message,
+                                            icon: "error",
+                                            confirmButtonText: "Ok"
+                                        })
+                                    } else {
+                                        console.log("Upload file success")
+                                        checkUploadFile = true
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log(err)
+                                })
+            if (checkUploadInfo == true && checkUploadFile == true) {
+                Swal.fire({
+                    title: "Success",
+                    text: respOperation + " " + respResult + " gender",
+                    icon: "success",
+                    confirmButtonText: 'Ok',
+                }).then((result) => {
+                    $.get('/gender', (html) => {
+                        $(".container-fluid").html(html)
+                    })
+                })
+            } else {
+                console.log("Something not right")
+            }
+            /*
+            Swal.fire({
+                title: "Errors",
+                text: "Insert image",
+                icon: "error",
+                confirmButtonText: "Ok"
             })
-            .catch((err) => {
-                console.log(err)
-            })
-    } 
+            */
+        })()
+
+    }
     /*
     function actionAdd() {
         var btnAdd = document.querySelector(".action-add")

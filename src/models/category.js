@@ -42,9 +42,6 @@ module.exports = (sequelize, DataTypes) => {
   Category.associate = (models) => {
     Category.belongsTo(models.Gender) 
     Category.hasMany(models.Product)
-    Category.hasOne(models.ImageCate, {
-      onDelete: 'CASCADE'
-    })
   }
   return Category;
 };

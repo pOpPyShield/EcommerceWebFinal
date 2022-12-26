@@ -1,6 +1,9 @@
 const express = require('express')
+const fileUpload = require('express-fileupload')
 require("dotenv").config();
 const app = express()
+// Default options
+app.use(fileUpload())
 //spyRoutes(app)
 const port = process.env.PORT || 3000
 const path = require('path')
@@ -40,6 +43,7 @@ app.post('/auth',LoginController.checkCredentials)
 app.get('/dashboard', authenticateToken,ui.dashboard) 
 app.get('/gender', authenticateToken, ui.gender)
 app.post('/gender/create', authenticateToken, GenderController.insertGender)
+app.post('/gender/upload', authenticateToken, GenderController.uploadFile)
 /* Render page for category */
 app.get('/category',authenticateToken, ui.category)
 app.post('/category/create', authenticateToken,CategoryController.insertCategory)

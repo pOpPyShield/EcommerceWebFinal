@@ -10,12 +10,12 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.addColumn(
-      'ImageCates',
-      'CategoryId',
+      'ImageGenders',
+      'GenderId',
       {
           type: Sequelize.INTEGER,
           references: {
-            model: 'Categories',
+            model: 'Genders',
             key: 'id'
           },
           onDelete: 'CASCADE'
