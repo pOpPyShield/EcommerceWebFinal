@@ -1,11 +1,10 @@
 const express = require('express')
 const fileUpload = require('express-fileupload')
-const formData = require("express-form-data");
+//const formData = require("express-form-data");
 require("dotenv").config();
 const app = express()
 // Default options
 app.use(fileUpload())
-app.use(formData.union());
 //spyRoutes(app)
 const port = process.env.PORT || 3000
 const path = require('path')
