@@ -171,29 +171,16 @@
         $('.action-add').on('click', (e) => {
             var name = document.getElementById("exampleInputCreate").value
             console.log(fileData)
-            var fileIns = {
-                fileName: fileName,
-                ext: ext,
-            }
-            if (fileData) {
-                sendImage({ name, fileIns }, fileData, "/gender/upload", "/gender/create")
-                $("#exampleInputCreate").val(" ")
-                console.log("Trigger add event")
-                let thumb = document.querySelector('.drop-zone__thumb')
-                if (thumb) {
-                    thumb.remove()
-                    let prompt = document.createElement('span')
-                    prompt.classList.add('drop-zone__prompt')
-                    prompt.innerHTML = "Drop file here or click to upload"
-                    $('.drop-zone').prepend(prompt)
-                }
-            } else {
-                Swal.fire({
-                    title: "Errors",
-                    text: "Insert image",
-                    icon: "error",
-                    confirmButtonText: "Ok"
-                })
+            sendImage(name, fileData, "/gender/create")
+            $("#exampleInputCreate").val(" ")
+            console.log("Trigger add event")
+            let thumb = document.querySelector('.drop-zone__thumb')
+            if (thumb) {
+                thumb.remove()
+                let prompt = document.createElement('span')
+                prompt.classList.add('drop-zone__prompt')
+                prompt.innerHTML = "Drop file here or click to upload"
+                $('.drop-zone').prepend(prompt)
             }
         })
     });
@@ -249,20 +236,15 @@
     function encryptUrl(arr) {
         return arr.join("_")
     }
-    function sendImage(imgObj, file, pathFile, pathInfo) {
+    function sendImage(name, file, pathInfo) {
         (async () => {
-            var checkUploadInfo = false
-            var checkUploadFile = false
             const formData = new FormData()
             var respOperation, respResult;
             formData.append('myFile', file)
-            formData.append('testData', "OkTest data")
+            formData.append('name', name)
             var options = {
                 method: 'POST',
-                body: JSON.stringify(imgObj),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: formData,
             }
             // Insert gender data
             await fetch(pathInfo, options)
@@ -277,71 +259,23 @@
                         })
                     } else {
                         console.log("Upload info success")
-                        respOperation = resp.operation
-                        respResult = resp.result
-                        checkUploadInfo = true
+                        Swal.fire({
+                            title: "Success",
+                            text: resp.operation + " " + resp.result + " gender",
+                            icon: "success",
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            $.get('/gender', (html) => {
+                                $(".container-fluid").html(html)
+                            })
+                        })
                     }
 
                 })
                 .catch((err) => {
                     console.log(err)
                 })
-
-                            await fetch(pathFile, {
-                                method: 'POST',
-                                body: formData
-
-                            })
-                                .then((res) => res.json())
-                                .then((resp) => {
-                                    if (resp.errors) {
-                                        Swal.fire({
-                                            title: "Errors",
-                                            text: resp.errors[resp.errors.length - 1].message,
-                                            icon: "error",
-                                            confirmButtonText: "Ok"
-                                        })
-                                    } else {
-                                        console.log("Upload file success")
-                                        checkUploadFile = true
-                                    }
-                                })
-                                .catch((err) => {
-                                    console.log(err)
-                                })
-            if (checkUploadInfo == true && checkUploadFile == true) {
-                Swal.fire({
-                    title: "Success",
-                    text: respOperation + " " + respResult + " gender",
-                    icon: "success",
-                    confirmButtonText: 'Ok',
-                }).then((result) => {
-                    $.get('/gender', (html) => {
-                        $(".container-fluid").html(html)
-                    })
-                })
-            } else {
-                console.log("Something not right")
-            }
-            /*
-            Swal.fire({
-                title: "Errors",
-                text: "Insert image",
-                icon: "error",
-                confirmButtonText: "Ok"
-            })
-            */
         })()
 
     }
-    /*
-    function actionAdd() {
-        var btnAdd = document.querySelector(".action-add")
-        btnAdd.onclick = function() {
-            var name = document.getElementById("exampleInputCreate").value
-            var formData = {name}
-            sendImage(formData)
-        }
-    }
-    */
 </script>

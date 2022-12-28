@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         checkName(value) {
           if(!(value.length > 1 && value.length <= 100)) {
-            throw new Error("Gender name can't be empty or less than one character")
-          }
+            throw new Error("Gender can't be less than one character or empty")
+          } 
         }
       }
     }
