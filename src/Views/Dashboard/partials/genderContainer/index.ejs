@@ -33,6 +33,7 @@
                             <td>
                                 <%=gen.updatedAt%>
                             </td>
+                            <input type="hidden" id="imageGender" value="<%=gen.ImageGender != null ? gen.ImageGender.path+"."+gen.ImageGender.ext : ''%>">
                         </tr>
                         <% });%>
                 </tbody>
@@ -66,8 +67,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-danger action-delete" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-primary action-update">Save changes</button>
             </div>
         </div>
     </div>
@@ -112,9 +113,27 @@
         var fileName, ext, fileType, fileData;
         $('#dataTable').DataTable();
         $('.show-form-category').on('click', (event) => {
+            var imageValue = event.currentTarget.parentElement.parentElement.querySelector('#imageGender')
             var catTitle = $(event.target).text()
             $('#exampleModalLabelUpdateDelete').text(catTitle)
             $('#exampleInputUpdateDelete').val(catTitle)
+            let thumb = document.querySelector('.drop-zone__thumb')
+            if(!(imageValue.value == '')) {
+                $('.drop-zone__prompt').remove()
+                let thumbnailElement = document.querySelector('.drop-zone__thumb')
+                if(!thumbnailElement) {
+                    thumbnailElement = document.createElement("div")
+                    thumbnailElement.classList.add("drop-zone__thumb")
+                    $('.update-delete-cate').append(thumbnailElement)
+                    thumbnailElement.dataset.label = imageValue.value
+                    thumbnailElement.style.backgroundImage = `url('${"/imgs/GenderImg/"+imageValue.value}')`
+                }
+            }
+            /*
+            if($('.update-delete-cate').has('.drop-zone__prompt')) {
+                $('.drop-zone__prompt').remove()
+            }
+            */
         })
         $('.btn-close-cate').on('click', (event) => {
             console.log(event.target)
@@ -173,7 +192,6 @@
             console.log(fileData)
             sendImage(name, fileData, "/gender/create")
             $("#exampleInputCreate").val(" ")
-            console.log("Trigger add event")
             let thumb = document.querySelector('.drop-zone__thumb')
             if (thumb) {
                 thumb.remove()
@@ -182,6 +200,11 @@
                 prompt.innerHTML = "Drop file here or click to upload"
                 $('.drop-zone').prepend(prompt)
             }
+        })
+        $('.action-delete').on('click', (e) => {
+            console.log("trigger delete action")
+            var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
+            deleteGender
         })
     });
 
@@ -277,5 +300,44 @@
                 })
         })()
 
+    }
+    function deleteGender(name, path) {
+        (async () => {
+            const formData = new FormData()
+            var respOperation, respResult;
+            formData.append('name', name)
+            var options = {
+                method: 'POST',
+                body: formData,
+            }
+            await fetch(path, options)
+                .then((res) => res.json())
+                .then((resp) => {
+                    if (resp.errors) {
+                        Swal.fire({
+                            title: "Errors",
+                            text: resp.errors[resp.errors.length - 1].message,
+                            icon: "error",
+                            confirmButtonText: "Ok"
+                        })
+                    } else {
+                        console.log("Upload info success")
+                        Swal.fire({
+                            title: "Success",
+                            text: resp.operation + " " + resp.result + " gender",
+                            icon: "success",
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            $.get('/gender', (html) => {
+                                $(".container-fluid").html(html)
+                            })
+                        })
+
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        })()
     }
 </script>

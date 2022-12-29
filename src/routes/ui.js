@@ -27,6 +27,7 @@ function dashboard(req, res) {
 function gender(req, res) {
     (async() => {
         var genders = await GenderService.getAllGenders()
+        console.log(JSON.stringify(genders, null, 2))
         res.render('Dashboard/partials/genderContainer/', {gender: genders})
     })()
 }
