@@ -33,7 +33,9 @@
                             <td>
                                 <%=gen.updatedAt%>
                             </td>
-                            <input type="hidden" id="imageGender" value="<%=gen.ImageGender != null ? gen.ImageGender.path+"."+gen.ImageGender.ext : ''%>">
+                            <input type="hidden" id="imageGender"
+                                value="<%=gen.ImageGender != null ? gen.ImageGender.path+"."+gen.ImageGender.ext : ''
+                                %>">
                         </tr>
                         <% });%>
                 </tbody>
@@ -118,10 +120,10 @@
             $('#exampleModalLabelUpdateDelete').text(catTitle)
             $('#exampleInputUpdateDelete').val(catTitle)
             let thumb = document.querySelector('.drop-zone__thumb')
-            if(!(imageValue.value == '')) {
+            if (!(imageValue.value == '')) {
                 $('.drop-zone__prompt').remove()
                 let thumbnailElement = document.querySelector('.drop-zone__thumb')
-                if(!thumbnailElement) {
+                if (!thumbnailElement) {
                     thumbnailElement = document.createElement("div")
                     thumbnailElement.classList.add("drop-zone__thumb")
                     $('.update-delete-cate').append(thumbnailElement)
@@ -129,11 +131,6 @@
                     thumbnailElement.style.backgroundImage = `url('${"/imgs/GenderImg/"+imageValue.value}')`
                 }
             }
-            /*
-            if($('.update-delete-cate').has('.drop-zone__prompt')) {
-                $('.drop-zone__prompt').remove()
-            }
-            */
         })
         $('.btn-close-cate').on('click', (event) => {
             console.log(event.target)
@@ -204,7 +201,7 @@
         $('.action-delete').on('click', (e) => {
             console.log("trigger delete action")
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
-            deleteGender
+            deleteGender(name, "/gender/delete")
         })
     });
 
@@ -262,7 +259,6 @@
     function sendImage(name, file, pathInfo) {
         (async () => {
             const formData = new FormData()
-            var respOperation, respResult;
             formData.append('myFile', file)
             formData.append('name', name)
             var options = {
@@ -302,42 +298,50 @@
 
     }
     function deleteGender(name, path) {
-        (async () => {
-            const formData = new FormData()
-            var respOperation, respResult;
-            formData.append('name', name)
-            var options = {
-                method: 'POST',
-                body: formData,
-            }
-            await fetch(path, options)
-                .then((res) => res.json())
-                .then((resp) => {
-                    if (resp.errors) {
-                        Swal.fire({
-                            title: "Errors",
-                            text: resp.errors[resp.errors.length - 1].message,
-                            icon: "error",
-                            confirmButtonText: "Ok"
-                        })
-                    } else {
-                        console.log("Upload info success")
-                        Swal.fire({
-                            title: "Success",
-                            text: resp.operation + " " + resp.result + " gender",
-                            icon: "success",
-                            confirmButtonText: 'Ok',
-                        }).then((result) => {
-                            $.get('/gender', (html) => {
-                                $(".container-fluid").html(html)
-                            })
-                        })
-
+        Swal.fire({
+            title: 'Do you want to delete the gender?',
+            showCancelButton: true,
+            confirmButtonText: 'Delete'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                (async () => {
+                    const formData = new FormData()
+                    formData.append('name', name)
+                    var options = {
+                        method: 'POST',
+                        body: formData,
                     }
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        })()
+                    console.log("Trigger delete")
+                    await fetch(path, options)
+                        .then((res) => res.json())
+                        .then((resp) => {
+                            if (resp.errors) {
+                                Swal.fire({
+                                    title: "Errors",
+                                    text: resp.errors[resp.errors.length - 1].message,
+                                    icon: "error",
+                                    confirmButtonText: "Ok"
+                                })
+                            } else {
+                                console.log("Delete info success")
+                                Swal.fire({
+                                    title: "Success",
+                                    text: resp.operation + " " + resp.result + " gender",
+                                    icon: "success",
+                                    confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    $.get('/gender', (html) => {
+                                        $(".container-fluid").html(html)
+                                    })
+                                })
+
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })()
+            }
+        })
     }
 </script>

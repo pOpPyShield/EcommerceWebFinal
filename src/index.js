@@ -44,6 +44,7 @@ app.post('/auth',LoginController.checkCredentials)
 app.get('/dashboard', authenticateToken,ui.dashboard) 
 app.get('/gender', authenticateToken, ui.gender)
 app.post('/gender/create', authenticateToken, GenderController.insertGender)
+app.post('/gender/delete', authenticateToken, GenderController.deleteGender)
 /* Render page for category */
 app.get('/category',authenticateToken, ui.category)
 app.post('/category/create', authenticateToken,CategoryController.insertCategory)

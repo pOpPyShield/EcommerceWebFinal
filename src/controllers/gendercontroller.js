@@ -36,4 +36,19 @@ function insertGender(req, res, next) {
         }
     })()
 }
-module.exports={insertGender}
+function deleteGender(req, res, next) {
+    (async() => {
+        try {
+            var bodyData = JSON.parse(JSON.stringify(req.body))
+            var gender = await Gender.findOne({where: { name: bodyData.name}})
+            if(gender == null) {
+                throw Error("Gender not found!")
+            }
+            await gender.destroy()
+            res.json({result: gender.name, operation: "Delete"})
+        } catch(err) {
+            res.send(err)
+        }
+    })() 
+}
+module.exports={insertGender, deleteGender}
