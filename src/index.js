@@ -37,6 +37,7 @@ app.use(express.json())
 //Routes
 var ui = require('./routes/ui');
 const authenticateToken = require('./middlewares/authenticateToken');
+const api = require('./routes/api')
 //Display login UI
 app.get('/', authenticateToken,ui.login)
 app.post('/auth',LoginController.checkCredentials)
@@ -64,11 +65,7 @@ app.get('/order',authenticateToken, (req, res) => {
 /* End */
 
 /* Gender API */
-app.get('/gender/all', (req, res) => {
-    (async() => {
-        res.json(await GenderService.getAllGenders())
-    })()
-})
+app.get('/gender/all', api.getAllGender)
 /*End*/
 
 /* Product APi*/
