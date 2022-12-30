@@ -209,6 +209,7 @@
         $('.action-update').on('click', (e) => {
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
             var newName = document.getElementById("exampleInputUpdateDelete").value
+            console.log(fileData)
             updateGender(name,newName, fileData, "/gender/update")
         })
     });
@@ -390,11 +391,11 @@
                                     icon: "success",
                                     confirmButtonText: 'Ok',
                                 }).then((result) => {
+                                    document.querySelector(".modal-backdrop").remove()
                                     $.get('/gender', (html) => {
                                         $(".container-fluid").html(html)
                                     })
                                 })
-
                             }
                         })
                         .catch((err) => {

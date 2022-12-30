@@ -64,7 +64,17 @@ function updateGender(req, res, next) {
                 var imageGender = await ImageGender.findOne({where: {GenderId: gender.id}})
                 if(imageGender != null) {
                     fs.unlinkSync(pathSave+imageGender.path+"."+imageGender.ext)
-                    console.log(`Delete image of ${gender.name} successful`)
+                    await gender.update({name: bodyData.newName})
+                    await gender.save()
+                    await imageGender.update({path: getNameImage(req.files.myFile.name), ext: getFileExtension(req.files.myFile.name)})
+                    await imageGender.save()
+                    req.files.myFile.mv(pathSave+req.files.myFile.name, (err) => {
+                        if(err) {
+                            console.log(err)
+                        } else {
+                            console.log("file uploaded")
+                        }
+                    })
                 } else {
                     var fileName = getNameImage(req.files.myFile.name)
                     var fileType = getFileExtension(req.files.myFile.name)
@@ -79,6 +89,7 @@ function updateGender(req, res, next) {
                         }
                     })
                 }
+                res.json({result: bodyData.newName, operation: "Update"})
             } else {
                 var gender= await Gender.findOne({where: {name: bodyData.name}})
                 if(gender == null) {
