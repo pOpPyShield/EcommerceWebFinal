@@ -50,6 +50,8 @@ app.post('/gender/update', authenticateToken, GenderController.updateGender)
 /* Render page for category */
 app.get('/category',authenticateToken, ui.category)
 app.post('/category/create', authenticateToken,CategoryController.insertCategory)
+app.post('/category/update', authenticateToken,CategoryController.updateCategory)
+app.post('/category/delete', authenticateToken,CategoryController.deleteCategory)
 /* Render page for product */
 app.get('/product',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/productContainer/')
