@@ -165,7 +165,11 @@
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                console.log(updateThumbNail($('.update-delete-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, "")))
+                fileName =updateThumbNail($('.update-delete-cate'), e.originalEvent.dataTransfer.files[lengthFiles - 1], $('#exampleModalLabelUpdateDelete').text().replace(/\s/g, ""))
+                ext = getFileExtension(e.originalEvent.dataTransfer.files[lengthFiles - 1].name)
+                e.originalEvent.dataTransfer.files[lengthFiles - 1].name = fileName
+                fileType = e.originalEvent.dataTransfer.files[lengthFiles - 1].type
+                fileData = e.originalEvent.dataTransfer.files[lengthFiles - 1]
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
@@ -199,9 +203,13 @@
             }
         })
         $('.action-delete').on('click', (e) => {
-            console.log("trigger delete action")
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
             deleteGender(name, "/gender/delete")
+        })
+        $('.action-update').on('click', (e) => {
+            var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
+            var newName = document.getElementById("exampleInputUpdateDelete").value
+            updateGender(name,newName, fileData, "/gender/update")
         })
     });
 
@@ -299,7 +307,7 @@
     }
     function deleteGender(name, path) {
         Swal.fire({
-            title: 'Do you want to delete the gender?',
+            title: `Do you want to delete ${name} gender?`,
             showCancelButton: true,
             confirmButtonText: 'Delete'
         }).then((result) => {
@@ -311,7 +319,6 @@
                         method: 'POST',
                         body: formData,
                     }
-                    console.log("Trigger delete")
                     await fetch(path, options)
                         .then((res) => res.json())
                         .then((resp) => {
@@ -342,6 +349,59 @@
                         })
                 })()
             }
+        })
+    }
+    function updateGender(name,newName, file, path) {
+        Swal.fire({
+            title: `Do you want to update ${name} gender?`,
+            showCancelButton: true,
+            confirmButtonText: 'Update'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const formData = new FormData()
+                if(file != null) {
+                    formData.append('myFile', file)
+                    formData.append('newName', newName)
+                    formData.append('name', name)
+                } else {
+                    formData.append('newName', newName)
+                    formData.append('name', name)
+                }
+                (async() => {
+                    var options = {
+                        method: 'POST',
+                        body: formData
+                    }
+                    await fetch(path, options)
+                        .then((res) => res.json())
+                        .then((resp) => {
+                            if (resp.errors) {
+                                Swal.fire({
+                                    title: "Errors",
+                                    text: resp.errors[resp.errors.length - 1].message,
+                                    icon: "error",
+                                    confirmButtonText: "Ok"
+                                })
+                            } else {
+                                console.log("Update info success")
+                                Swal.fire({
+                                    title: "Success",
+                                    text: resp.operation + " " + resp.result + " gender",
+                                    icon: "success",
+                                    confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    $.get('/gender', (html) => {
+                                        $(".container-fluid").html(html)
+                                    })
+                                })
+
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
+                })()
+            }   
         })
     }
 </script>
