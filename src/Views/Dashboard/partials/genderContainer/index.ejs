@@ -209,7 +209,6 @@
         $('.action-update').on('click', (e) => {
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
             var newName = document.getElementById("exampleInputUpdateDelete").value
-            console.log(fileData)
             updateGender(name,newName, fileData, "/gender/update")
         })
     });
@@ -364,6 +363,7 @@
                     formData.append('newName', newName)
                     formData.append('name', name)
                 } else {
+                    console.log("add form data without file")
                     formData.append('newName', newName)
                     formData.append('name', name)
                 }

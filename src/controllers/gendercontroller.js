@@ -56,48 +56,37 @@ function updateGender(req, res, next) {
     (async() => {
         try {
             var bodyData = JSON.parse(JSON.stringify(req.body))
-            if(req.files || Object.keys(req.files).length >0) {
-                var gender = await Gender.findOne({where: {name: bodyData.name}})
-                if(gender == null) {
-                    throw Error(`${bodyData.name} gender not found`)
-                }
-                var imageGender = await ImageGender.findOne({where: {GenderId: gender.id}})
-                if(imageGender != null) {
-                    fs.unlinkSync(pathSave+imageGender.path+"."+imageGender.ext)
-                    await gender.update({name: bodyData.newName})
-                    await gender.save()
-                    await imageGender.update({path: getNameImage(req.files.myFile.name), ext: getFileExtension(req.files.myFile.name)})
-                    await imageGender.save()
-                    req.files.myFile.mv(pathSave+req.files.myFile.name, (err) => {
-                        if(err) {
-                            console.log(err)
-                        } else {
-                            console.log("file uploaded")
-                        }
-                    })
-                } else {
-                    var fileName = getNameImage(req.files.myFile.name)
-                    var fileType = getFileExtension(req.files.myFile.name)
-                    var imageGender = await ImageGender.create({path: fileName, ext: fileType, GenderId: gender.id})
-                    await imageGender.save()
-                    var fileObj = req.files.myFile
-                    fileObj.mv(pathSave+fileName+"."+fileType, (err) => {
-                        if(err) {
-                            console.log(err)
-                        } else {
-                            console.log("file uploaded")   
-                        }
-                    })
-                }
-                res.json({result: bodyData.newName, operation: "Update"})
-            } else {
+            console.log(bodyData)
+            console.log(req)
+            //if(!(req.files || Object.keys(req.files).length >0)) {
+            if(req.files == null) {
+                console.log("Execute file == null")
                 var gender= await Gender.findOne({where: {name: bodyData.name}})
                 if(gender == null) {
                     throw Error(`${bodyData.name} gender not found`)
                 }
-                gender.name = bodyData.newName
+                await gender.update({name: bodyData.newName})
                 await gender.save()
-                res.json({result: bodyData.newName, operation: "Update"})
+                res.json({result: bodyData.name, operation: "Update"})
+            } else {
+                console.log("Execute file != null")
+                var gender2= await Gender.findOne({where: {name: bodyData.name}})
+                var imageGender = await ImageGender.findOne({where: {GenderId: gender2.id}})
+                if(imageGender) {
+                    await gender2.update({name: bodyData.newName})
+                    await gender2.save()
+                    fs.unlink(pathSave+imageGender.path+"."+imageGender.ext, (err) => {
+                        if(err) console.log(err)
+                        console.log("Remove "+pathSave+imageGender.path+"."+imageGender.ext)
+                    })
+                    await imageGender.update({path: getNameImage(req.files.myFile.name), ext: getFileExtension(req.files.myFile.name)})
+                    await imageGender.save()
+                    req.files.myFile.mv(pathSave+req.files.myFile.name, (err) => {
+                        if(err) console.log(err)
+                        console.log("file uploaded")   
+                    })
+                }
+                res.json({result: bodyData.name, operation: "Update"})
             }
         }catch(err) {
             res.send(err)
