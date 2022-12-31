@@ -24,6 +24,7 @@ function insertGender(req, res, next) {
             var imageGender = await ImageGender.create({path: fileName, ext: fileType, GenderId: gender.id})
             await imageGender.save()
             var fileObj = req.files.myFile
+            console.log(fileObj)
             fileObj.mv(pathSave+fileName+"."+fileType, (err) => {
                 if(err) {
                     console.log(err)
@@ -42,9 +43,15 @@ function deleteGender(req, res, next) {
         try {
             var bodyData = JSON.parse(JSON.stringify(req.body))
             var gender = await Gender.findOne({where: { name: bodyData.name}})
+            var imageGender = await ImageGender.findOne({where: {GenderId: gender.id}})
             if(gender == null) {
                 throw Error(`${bodyData.name} gender not found!`)
             }
+
+            fs.unlink(pathSave+imageGender.path+"."+imageGender.ext, (err) => {
+                if(err) console.log(err)
+                console.log("Remove "+pathSave+imageGender.path+"."+imageGender.ext)
+            })
             await gender.destroy()
             res.json({result: gender.name, operation: "Delete"})
         } catch(err) {

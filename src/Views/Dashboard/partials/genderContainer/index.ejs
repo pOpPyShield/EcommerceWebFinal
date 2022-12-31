@@ -191,7 +191,8 @@
         $('.action-add').on('click', (e) => {
             var name = document.getElementById("exampleInputCreate").value
             console.log(fileData)
-            sendImage(name, fileData, "/gender/create")
+            console.log(fileName)
+            sendImage(name, fileData, fileName, "/gender/create")
             $("#exampleInputCreate").val(" ")
             let thumb = document.querySelector('.drop-zone__thumb')
             if (thumb) {
@@ -209,7 +210,8 @@
         $('.action-update').on('click', (e) => {
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
             var newName = document.getElementById("exampleInputUpdateDelete").value
-            updateGender(name,newName, fileData, "/gender/update")
+            console.log(newName)
+            updateGender(name,newName, fileData, fileName, "/gender/update")
         })
     });
 
@@ -264,10 +266,10 @@
     function encryptUrl(arr) {
         return arr.join("_")
     }
-    function sendImage(name, file, pathInfo) {
+    function sendImage(name, file,newNameFile, pathInfo) {
         (async () => {
             const formData = new FormData()
-            formData.append('myFile', file)
+            formData.append('myFile', file, newNameFile+"."+getFileExtension(file.name))
             formData.append('name', name)
             var options = {
                 method: 'POST',
@@ -350,7 +352,7 @@
             }
         })
     }
-    function updateGender(name,newName, file, path) {
+    function updateGender(name,newName, file,newFileName, path) {
         Swal.fire({
             title: `Do you want to update ${name} gender?`,
             showCancelButton: true,
@@ -359,7 +361,7 @@
             if(result.isConfirmed) {
                 const formData = new FormData()
                 if(file != null) {
-                    formData.append('myFile', file)
+                    formData.append('myFile', file, newFileName+"."+getFileExtension(file.name))
                     formData.append('newName', newName)
                     formData.append('name', name)
                 } else {
