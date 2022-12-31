@@ -2,6 +2,7 @@ const Admin = require('../models/index')['Admin']
 const SecurityService = require('../services/securityservice')
 const CategoryService = require('../services/categoryservices')
 const GenderService = require('../services/genderservices')
+const ProductService = require('../services/productservices')
 function processLogin(req, res){
         (async() => {
             var admin = new Admin(req.body.UserName, req.body.Password)
@@ -38,7 +39,13 @@ function category(req, res) {
         res.render('Dashboard/partials/categoryContainer/', {category: categories, gender: genders})
     })()
 }
+function product(req, res) {
+    (async() => {
+        var products = await ProductService.getAllProducts2()
+        res.render('Dashboard/partials/productContainer/', {product: products})
+    })()
+}
 function page404(req,res) {
     res.status(404).render('Error/404')
 }
-module.exports = {login, processLogin, dashboard, page404, category, gender}
+module.exports = {login, processLogin, dashboard, page404, category, gender, product}

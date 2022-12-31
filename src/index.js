@@ -53,9 +53,7 @@ app.post('/category/create', authenticateToken,CategoryController.insertCategory
 app.post('/category/update', authenticateToken,CategoryController.updateCategory)
 app.post('/category/delete', authenticateToken,CategoryController.deleteCategory)
 /* Render page for product */
-app.get('/product',authenticateToken, (req, res) => {
-    res.render('Dashboard/partials/productContainer/')
-})
+app.get('/product',authenticateToken, ui.product)
 /* Render page for rating */
 app.get('/rating',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
@@ -68,6 +66,7 @@ app.get('/order',authenticateToken, (req, res) => {
 
 /* Gender API */
 app.get('/gender/all', api.getAllGender)
+app.get('/category/all', api.getAllCate)
 /*End*/
 
 /* Product APi*/

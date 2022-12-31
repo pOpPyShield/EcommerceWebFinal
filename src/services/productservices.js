@@ -30,6 +30,24 @@ class ProductService {
                 ]
             });
     }
+    static async getAllProducts2() {
+        return await Product.findAll({
+            include: [
+                {
+                    model: ProductSize,
+                    required: true,
+                    include: [{
+                        model: Size,
+                        required: true
+                    }]
+                },
+                {
+                    model: Image,
+                    required: true
+                }
+            ]
+        })
+    }
     static async getOneProduct(id) {
         return await Product.findByPk(id)
     }
