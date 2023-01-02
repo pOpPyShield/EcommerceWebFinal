@@ -89,7 +89,9 @@
                 <div class="form-group">
                     <label for="select-category-add">Category</label>
                     <select class="form-control" id="select-category-add">
-                        <option>Render category here</option>
+                        <% categories.forEach(function(cat){ %>
+                            <option><%=cat.name%> <%=cat.Gender.name%></option>
+                        <% });%>
                     </select>
                 </div>
                 <div class="form-group">
@@ -139,6 +141,8 @@
         //Add more size and quant
         var btnAddSize = document.getElementById("addSize")
         var sizeQuantParent = document.getElementById("size-quant-parent")
+        //File manipulation
+        var fileName, fileData;
         fnf.addEventListener('keyup', function (evt) {
             n = parseInt(this.value.replace(/\D/g, ''), 10) || '';
             fnf.value = n.toLocaleString();
@@ -151,9 +155,133 @@
             addParseInt()
         })
         $('.btn-close-cate').on('click', (evt) => {
+            $("#exampleName").val("")
+            $("#examplePrice").val("")
+            $("#description").val("")
+            clearSizeQuantInp()
             $('#size-quant-parent').children().not(':first-child').remove()
+            clearThumb()
         })
+        //Drop file zone
+        $('.drop-zone').on('dragover', (e) => {
+            e.preventDefault()
+            $('.drop-zone').addClass("drop-zone--over")
+        });
+        ["dragleave", "dragend"].forEach(type => {
+            $('.drop-zone').on(type, (e) => {
+                $('.drop-zone').removeClass("drop-zone--over")
+            })
+        })
+        $('.create-prod-image').on('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
+                /*UPLOAD FILES HERE*/
+                let lengthFiles = e.originalEvent.dataTransfer.files.length
+                $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
+                fileName =updateThumbNail($('.create-prod-image'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
+                fileData = e.originalEvent.dataTransfer.files[lengthFiles - 1]
+            }
+            $('.drop-zone').removeClass('drop-zone--over')
+        })
+        //Send data to server
+        $('.action-add').on('click', (e) => {
+            sendProduct($("#exampleName").val(), $("#select-category-add").val() ,$("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName+"."+getFileExtension(fileData.name))  
+        })
+        
     })
+    function createDictSizeQuant() {
+        var dict = {};
+        $('.size-quant').each((i,val) => {
+            let childRenIdx = 0
+            dict[i] = {
+                "Size": val.children[childRenIdx].children[1].value,
+                "Quantity": val.children[++childRenIdx].children[1].value
+            }
+        })
+        return dict;
+    }
+    function sendProduct(name, category, price, dictSizeQuant, description, img, imgName) {
+        (async() => {
+            const formData = new FormData()
+            formData.append('name', name)
+            formData.append('category', category)
+            formData.append('price', price)
+            formData.append('dictSizeQuant', dictSizeQuant)
+            formData.append('description', description)
+            formData.append('myFile', img, imgName)
+            var options = {
+                method: 'POST',
+                body: formData,
+            }
+            console.log(formData)
+        })()
+    }
+    function clearThumb(){
+        let thumb = document.querySelector('.drop-zone__thumb')
+        if (thumb) {
+            thumb.remove()
+            let prompt = document.createElement('span')
+            prompt.classList.add('drop-zone__prompt')
+            prompt.innerHTML = "Drop file here or click to upload"
+            $('.drop-zone').prepend(prompt)
+        }
+    }
+    function clearSizeQuantInp(){
+        $(".size-input").each((i,val) => {
+            if(val.value.length > 0) {
+                val.value = ''
+            }
+        })
+        $(".quant-input").each((i, val) => {
+            if(val.value.length > 0) {
+                val.value=''
+            }
+        })
+    }
+    function getFileExtension(url) {
+        return url.split('.').pop()
+    }
+    function getNameImage(url) {
+        return url.split('.').slice(0, -1).join('.')
+    }
+    function encryptUrl(arr) {
+        return arr.join("_")
+    }
+    function updateThumbNail(dropZoneElement, file, label) {
+        if (file.type.startsWith("image/")) {
+            let thumbnailElement = document.querySelector('.drop-zone__thumb')
+            // First time - remove the prompt
+            if (dropZoneElement.has(".drop-zone__prompt")) {
+                $(".drop-zone__prompt").remove();
+            }
+            // Second time - there is no thumbnail element, so create it 
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div")
+                thumbnailElement.classList.add("drop-zone__thumb")
+                dropZoneElement.append(thumbnailElement);
+            }
+            thumbnailElement.dataset.label = file.name
+            //Show thumbnail for image files
+            const reader = new FileReader();
+            reader.readAsDataURL(file)
+            reader.onload = () => {
+                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            }
+            if (label) {
+                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString(), label])
+            } else {
+                return encryptUrl([getNameImage(file.name), file.lastModified.toString(), file.size.toString()])
+            }
+        } else {
+            Swal.fire({
+                title: "Accept image file only!",
+                text: "Please check the file is image!",
+                icon: "warning",
+                button: "Ok"
+            })
+        }
+    }
     function addParseInt() {
         //Cast to number only
         var quantSelect = document.getElementsByClassName("quant-input")

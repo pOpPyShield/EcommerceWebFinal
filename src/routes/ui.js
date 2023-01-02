@@ -42,7 +42,8 @@ function category(req, res) {
 function product(req, res) {
     (async() => {
         var products = await ProductService.getAllProducts2()
-        res.render('Dashboard/partials/productContainer/', {product: products})
+        var categories = await CategoryService.getAllCategories()
+        res.render('Dashboard/partials/productContainer/', {product: products, categories: categories})
     })()
 }
 function page404(req,res) {
