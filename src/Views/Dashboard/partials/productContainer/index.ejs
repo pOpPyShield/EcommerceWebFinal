@@ -83,13 +83,44 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="exampleInputCreate">Product name</label>
+                    <label for="exampleName">Product name</label>
                     <input type="text" class="form-control" id="exampleName" placeholder="Enter product name">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputCreate">Price</label>
-                    <input type="text" class="form-control" id="examplePrice"
-                        placeholder="Enter product name">
+                    <label for="select-category-add">Category</label>
+                    <select class="form-control" id="select-category-add">
+                        <option>Render category here</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="examplePrice">Price</label>
+                    <input type="text" class="form-control" id="examplePrice" placeholder="Enter product price">
+                </div>
+                <div class="form-group mb-2" id="size-quant-parent">
+                    <div class="size-quant">
+                        <div class="size">
+                            <label>Size</label>
+                            <input type="text" class="form-control size-input" placeholder="Enter product size">
+                        </div>
+                        <div class="quantity">
+                            <label>Quantity</label>
+                            <input type="text" class="form-control quant-input"  placeholder="Enter product quantity">
+                        </div>
+                    </div>
+                </div>
+                <div class="add-size-btn">
+                    <input type="submit" name="addMoreSize" value="+" class="btn btn-success rounded-circle"
+                        data-dismiss="modal" id="addSize">
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-form-label">Description</label>
+                    <textarea class="form-control" id="description" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="drop-zone create-prod-image">
+                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                        <input type="file" name="myCatFile" class="drop-zone__input">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -102,20 +133,76 @@
 <script>
 
     $(document).ready(function () {
-            var fnf = document.getElementById("examplePrice");
-            var n;
-            fnf.addEventListener('keyup', function(evt){
-                n = parseInt(this.value.replace(/\D/g,''),10) || '';
-                fnf.value = n.toLocaleString();
-            }, false);
-            /*
-        $("#examplePrice").on('keyup', function () { 
-            console.log($(this).val())
-            var nf = Intl.NumberFormat();
-            //var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-            $(this).val(nf.format(parseInt($(this).val())));
-            //do something else as per updated question
-        });
-        */
+        //Cast to decimal in price
+        var fnf = document.getElementById("examplePrice");
+        var n;
+        //Add more size and quant
+        var btnAddSize = document.getElementById("addSize")
+        var sizeQuantParent = document.getElementById("size-quant-parent")
+        fnf.addEventListener('keyup', function (evt) {
+            n = parseInt(this.value.replace(/\D/g, ''), 10) || '';
+            fnf.value = n.toLocaleString();
+        }, false);
+        addParseInt()
+        btnAddSize.addEventListener('click', (evt) => {
+            evt.preventDefault()
+            evt.stopPropagation()
+            sizeQuantParent.append(addSizeDiv())
+            addParseInt()
+        })
+        $('.btn-close-cate').on('click', (evt) => {
+            $('#size-quant-parent').children().not(':first-child').remove()
+        })
     })
+    function addParseInt() {
+        //Cast to number only
+        var quantSelect = document.getElementsByClassName("quant-input")
+        var q;
+        for(let i = 0;i<quantSelect.length;i++) {
+            quantSelect[i].addEventListener('keyup', function(evt) {
+                q= parseInt(this.value.replace(/\D/g, ''), 10) || ''
+                quantSelect[i].value = q.toLocaleString()
+            }, false)
+        }
+    }
+    function addSizeDiv() {
+        //Create SizeQuant div
+        let sizeQuantGroup = document.createElement("div")
+        sizeQuantGroup.setAttribute("class", "size-quant")
+        
+        //Create size div
+        let sizeGroup = document.createElement("div")
+        sizeGroup.setAttribute("class","size")
+        //Create size label
+        let sizeLabel = document.createElement("label")
+        sizeLabel.innerText = "Size"
+        //Create size input
+        let sizeInp = document.createElement("input")
+        sizeInp.setAttribute("type", "text")
+        sizeInp.setAttribute("class", "form-control size-input")
+        sizeInp.setAttribute("placeholder", "Enter product size")
+        //apeend size label, input to sizeGroup 
+        sizeGroup.append(sizeLabel)
+        sizeGroup.append(sizeInp)
+        //append sizegroup to size quant
+        sizeQuantGroup.append(sizeGroup)
+
+        //Create quantity div
+        let quantityGroup = document.createElement("div")
+        quantityGroup.setAttribute("class", "quantity")
+        //Create quantity label
+        let quantityLabel = document.createElement("label")
+        quantityLabel.innerText ="Quantity"
+        //Create quantity input
+        let quantityInp = document.createElement("input")
+        quantityInp.setAttribute("type", "text")
+        quantityInp.setAttribute("class", "form-control quant-input")
+        quantityInp.setAttribute("placeholder", "Enter product quant")
+        //append quantity label, input to quantity group 
+        quantityGroup.append(quantityLabel)
+        quantityGroup.append(quantityInp)
+        //append quantity group to sizequant
+        sizeQuantGroup.append(quantityGroup)
+        return sizeQuantGroup
+    }
 </script>
