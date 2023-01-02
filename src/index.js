@@ -23,6 +23,7 @@ app.use(logger.logger)
 const LoginController = require('./controllers/logincontroller')
 const CategoryController = require('./controllers/categorycontroller')
 const GenderController = require('./controllers/gendercontroller')
+const ProductController = require('./controllers/productcontroller')
 //Set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'Views'))
@@ -54,6 +55,7 @@ app.post('/category/update', authenticateToken,CategoryController.updateCategory
 app.post('/category/delete', authenticateToken,CategoryController.deleteCategory)
 /* Render page for product */
 app.get('/product',authenticateToken, ui.product)
+app.post('/product/create', authenticateToken, ProductController.addProduct)
 /* Render page for rating */
 app.get('/rating',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
