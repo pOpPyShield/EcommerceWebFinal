@@ -40,7 +40,6 @@ module.exports = (sequelize, DataTypes) => {
   });
   Product.associate = (models) => {
     Product.belongsTo(models.Category)
-    Product.belongsToMany(models.Size, {through: models.ProductSize})
     Product.hasMany(models.ProductSize)
     Product.hasMany(models.Image)
     Product.hasMany(models.Cart)

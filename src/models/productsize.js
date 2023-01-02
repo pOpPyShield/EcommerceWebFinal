@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
+    size: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     quantity:{
       type: DataTypes.INTEGER,
       allowNull: false
@@ -33,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
   });
   ProductSize.associate = (models) => {
     ProductSize.belongsTo(models.Product)
-    ProductSize.belongsTo(models.Size)
   }
   return ProductSize;
 };

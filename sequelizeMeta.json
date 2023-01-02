@@ -3,7 +3,6 @@
   "20221215072524-create-gender.js",
   "20221215072550-create-category.js",
   "20221215072737-create-product.js",
-  "20221215080439-create-size.js",
   "20221216025315-create-product-size.js",
   "20221217064913-create-image.js",
   "20221217081953-add-associations.js",

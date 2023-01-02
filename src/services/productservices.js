@@ -36,10 +36,6 @@ class ProductService {
                 {
                     model: ProductSize,
                     required: true,
-                    include: [{
-                        model: Size,
-                        required: true
-                    }]
                 },
                 {
                     model: Image,
