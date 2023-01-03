@@ -207,14 +207,22 @@
             formData.append('name', name)
             formData.append('category', category)
             formData.append('price', price)
-            formData.append('dictSizeQuant', dictSizeQuant)
+            formData.append('dictSizeQuant', JSON.stringify(dictSizeQuant))
             formData.append('description', description)
             formData.append('myFile', img, imgName)
             var options = {
                 method: 'POST',
                 body: formData,
+            
             }
-            console.log(formData)
+            await fetch("/product/create", options)
+                    .then((res) => res.json())
+                    .then((resp) => {
+                        
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
         })()
     }
     function clearThumb(){
