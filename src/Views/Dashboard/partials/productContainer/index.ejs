@@ -91,6 +91,7 @@
                     <select class="form-control" id="select-category-add">
                         <% categories.forEach(function(cat){ %>
                             <option><%=cat.name%> <%=cat.Gender.name%></option>
+                            <input type="hidden" id="genderId" value="<%=cat.id%>">
                         <% });%>
                     </select>
                 </div>
@@ -186,7 +187,7 @@
         })
         //Send data to server
         $('.action-add').on('click', (e) => {
-            sendProduct($("#exampleName").val(), $("#select-category-add").val() ,$("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName+"."+getFileExtension(fileData.name))  
+            sendProduct($("#exampleName").val(), $("#genderId").val() ,$("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName+"."+getFileExtension(fileData.name))  
         })
         
     })
@@ -218,7 +219,26 @@
             await fetch("/product/create", options)
                     .then((res) => res.json())
                     .then((resp) => {
-                        
+                        if (resp.errors) {
+                            Swal.fire({
+                                title: "Errors",
+                                text: resp.errors[resp.errors.length - 1].message,
+                                icon: "error",
+                                confirmButtonText: "Ok"
+                            })
+                        } else {
+                            console.log("Upload info success")
+                            Swal.fire({
+                                title: "Success",
+                                text: resp.operation + " " + resp.result + " product",
+                                icon: "success",
+                                confirmButtonText: 'Ok',
+                            }).then((result) => {
+                                $.get('/product', (html) => {
+                                    $(".container-fluid").html(html)
+                                })
+                            })
+                        }
                     })
                     .catch((err) => {
                         console.log(err)
