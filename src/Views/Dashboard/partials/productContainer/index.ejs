@@ -9,6 +9,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Category</th>
                         <th>Price</th>
                         <th>Description</th>
                         <th>Quantity</th>
@@ -19,6 +20,7 @@
                 <tfoot>
                     <tr>
                         <th>Name</th>
+                        <th>Category</th>
                         <th>Price</th>
                         <th>Description</th>
                         <th>Quantity</th>
@@ -27,12 +29,17 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <% products.forEach(function(prod){ %>
+                        <tr>
+                            <td><%=prod.name%></td>
+                            <td><%=prod.Category.name%></td>
+                            <td><%=prod.price%></td>
+                            <td><%=prod.description%></td>
+                            <td><%=prod.SizeQuant.sum%></td>
+                            <td><%=prod.createdAt%></td>
+                            <td><%=prod.updatedAt%></td>
+                        </tr>
+                        <%});%>
                 </tbody>
             </table>
         </div>
@@ -90,9 +97,12 @@
                     <label for="select-category-add">Category</label>
                     <select class="form-control" id="select-category-add">
                         <% categories.forEach(function(cat){ %>
-                            <option><%=cat.name%> <%=cat.Gender.name%></option>
+                            <option>
+                                <%=cat.name%>
+                                    <%=cat.Gender.name%>
+                            </option>
                             <input type="hidden" id="genderId" value="<%=cat.id%>">
-                        <% });%>
+                            <% });%>
                     </select>
                 </div>
                 <div class="form-group">
@@ -107,7 +117,7 @@
                         </div>
                         <div class="quantity">
                             <label>Quantity</label>
-                            <input type="text" class="form-control quant-input"  placeholder="Enter product quantity">
+                            <input type="text" class="form-control quant-input" placeholder="Enter product quantity">
                         </div>
                     </div>
                 </div>
@@ -180,20 +190,20 @@
                 /*UPLOAD FILES HERE*/
                 let lengthFiles = e.originalEvent.dataTransfer.files.length
                 $('.drop-zone__input').files = e.originalEvent.dataTransfer.files[lengthFiles - 1]
-                fileName =updateThumbNail($('.create-prod-image'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
+                fileName = updateThumbNail($('.create-prod-image'), e.originalEvent.dataTransfer.files[lengthFiles - 1], '')
                 fileData = e.originalEvent.dataTransfer.files[lengthFiles - 1]
             }
             $('.drop-zone').removeClass('drop-zone--over')
         })
         //Send data to server
         $('.action-add').on('click', (e) => {
-            sendProduct($("#exampleName").val(), $("#genderId").val() ,$("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName+"."+getFileExtension(fileData.name))  
+            sendProduct($("#exampleName").val(), $("#genderId").val(), $("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName + "." + getFileExtension(fileData.name))
         })
-        
+
     })
     function createDictSizeQuant() {
         var dict = {};
-        $('.size-quant').each((i,val) => {
+        $('.size-quant').each((i, val) => {
             let childRenIdx = 0
             dict[i] = {
                 "Size": val.children[childRenIdx].children[1].value,
@@ -203,7 +213,7 @@
         return dict;
     }
     function sendProduct(name, category, price, dictSizeQuant, description, img, imgName) {
-        (async() => {
+        (async () => {
             const formData = new FormData()
             formData.append('name', name)
             formData.append('category', category)
@@ -214,38 +224,38 @@
             var options = {
                 method: 'POST',
                 body: formData,
-            
+
             }
             await fetch("/product/create", options)
-                    .then((res) => res.json())
-                    .then((resp) => {
-                        if (resp.errors) {
-                            Swal.fire({
-                                title: "Errors",
-                                text: resp.errors[resp.errors.length - 1].message,
-                                icon: "error",
-                                confirmButtonText: "Ok"
+                .then((res) => res.json())
+                .then((resp) => {
+                    if (resp.errors) {
+                        Swal.fire({
+                            title: "Errors",
+                            text: resp.errors[resp.errors.length - 1].message,
+                            icon: "error",
+                            confirmButtonText: "Ok"
+                        })
+                    } else {
+                        console.log("Upload info success")
+                        Swal.fire({
+                            title: "Success",
+                            text: resp.operation + " " + resp.result + " product",
+                            icon: "success",
+                            confirmButtonText: 'Ok',
+                        }).then((result) => {
+                            $.get('/product', (html) => {
+                                $(".container-fluid").html(html)
                             })
-                        } else {
-                            console.log("Upload info success")
-                            Swal.fire({
-                                title: "Success",
-                                text: resp.operation + " " + resp.result + " product",
-                                icon: "success",
-                                confirmButtonText: 'Ok',
-                            }).then((result) => {
-                                $.get('/product', (html) => {
-                                    $(".container-fluid").html(html)
-                                })
-                            })
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
+                        })
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         })()
     }
-    function clearThumb(){
+    function clearThumb() {
         let thumb = document.querySelector('.drop-zone__thumb')
         if (thumb) {
             thumb.remove()
@@ -255,15 +265,15 @@
             $('.drop-zone').prepend(prompt)
         }
     }
-    function clearSizeQuantInp(){
-        $(".size-input").each((i,val) => {
-            if(val.value.length > 0) {
+    function clearSizeQuantInp() {
+        $(".size-input").each((i, val) => {
+            if (val.value.length > 0) {
                 val.value = ''
             }
         })
         $(".quant-input").each((i, val) => {
-            if(val.value.length > 0) {
-                val.value=''
+            if (val.value.length > 0) {
+                val.value = ''
             }
         })
     }
@@ -314,9 +324,9 @@
         //Cast to number only
         var quantSelect = document.getElementsByClassName("quant-input")
         var q;
-        for(let i = 0;i<quantSelect.length;i++) {
-            quantSelect[i].addEventListener('keyup', function(evt) {
-                q= parseInt(this.value.replace(/\D/g, ''), 10) || ''
+        for (let i = 0; i < quantSelect.length; i++) {
+            quantSelect[i].addEventListener('keyup', function (evt) {
+                q = parseInt(this.value.replace(/\D/g, ''), 10) || ''
                 quantSelect[i].value = q.toLocaleString()
             }, false)
         }
@@ -325,10 +335,10 @@
         //Create SizeQuant div
         let sizeQuantGroup = document.createElement("div")
         sizeQuantGroup.setAttribute("class", "size-quant")
-        
+
         //Create size div
         let sizeGroup = document.createElement("div")
-        sizeGroup.setAttribute("class","size")
+        sizeGroup.setAttribute("class", "size")
         //Create size label
         let sizeLabel = document.createElement("label")
         sizeLabel.innerText = "Size"
@@ -348,7 +358,7 @@
         quantityGroup.setAttribute("class", "quantity")
         //Create quantity label
         let quantityLabel = document.createElement("label")
-        quantityLabel.innerText ="Quantity"
+        quantityLabel.innerText = "Quantity"
         //Create quantity input
         let quantityInp = document.createElement("input")
         quantityInp.setAttribute("type", "text")

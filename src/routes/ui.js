@@ -39,11 +39,25 @@ function category(req, res) {
         res.render('Dashboard/partials/categoryContainer/', {category: categories, gender: genders})
     })()
 }
+function sumProductSizeQuantity(products){
+    let sum = 0
+    for(let i = 0; i<=products.length-1;i++){
+        for(let j = 0; j<=products[i].ProductSizes.length-1;j++){
+            //console.log(JSON.stringify(products[i].ProductSizes[j]["quantity"], null, 2))
+            sum+=products[i].ProductSizes[j]["quantity"]
+        }
+        products[i]["SizeQuant"]={ sum }
+        sum=0
+    }
+
+}
 function product(req, res) {
     (async() => {
         var products = await ProductService.getAllProducts2()
         var categories = await CategoryService.getAllCategories()
-        res.render('Dashboard/partials/productContainer/', {product: products, categories: categories})
+        sumProductSizeQuantity(products)
+        //console.log(products[0].SizeQuant)
+        res.render('Dashboard/partials/productContainer/', {products: products, categories: categories})
     })()
 }
 function page404(req,res) {

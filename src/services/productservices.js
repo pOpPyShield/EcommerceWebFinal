@@ -1,3 +1,5 @@
+const { Sequelize, sequelize } = require("../models")
+
 const Gender = require("../models")['Gender']
 const Category = require("../models")['Category']
 const Product = require("../models")['Product']
@@ -32,17 +34,24 @@ class ProductService {
     }
     static async getAllProducts2() {
         return await Product.findAll({
+            //attributes: [[ Sequelize.fn('sum', Sequelize.col('ProductSizes.quantity')), 'TotalQuantity' ]],
+            //group: ['ProductSizes.ProductId'],
             include: [
                 {
+                    model: Category,
+                    required: true
+                },
+                {
                     model: ProductSize,
-                    required: true,
+                    required: true
                 },
                 {
                     model: Image,
                     required: true
-                }
-            ]
-        })
+                },
+            ],
+            
+        }) 
     }
     static async getOneProduct(id) {
         return await Product.findByPk(id)
