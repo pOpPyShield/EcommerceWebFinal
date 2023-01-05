@@ -56,6 +56,7 @@ function product(req, res) {
         var products = await ProductService.getAllProducts2()
         var categories = await CategoryService.getAllCategories()
         sumProductSizeQuantity(products)
+        console.log(JSON.stringify(products[0].Images[0].path, null, 2))
         //console.log(products[0].SizeQuant)
         res.render('Dashboard/partials/productContainer/', {products: products, categories: categories})
     })()

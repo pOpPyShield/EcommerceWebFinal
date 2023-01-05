@@ -31,13 +31,14 @@
                 <tbody>
                     <% products.forEach(function(prod){ %>
                         <tr>
-                            <td><%=prod.name%></td>
+                            <td><a data-categoryid="<%=prod.Category.id%>" data-price="<%=prod.price%>" data-sizequant="<%=JSON.stringify(prod.ProductSizes)%>" class="show-form-product" href="#" data-toggle="modal" data-target="#exampleModal"><%=prod.name%></a></td>
                             <td><%=prod.Category.name%></td>
-                            <td><%=prod.price%></td>
+                            <td class="product-price-display"><%=prod.price%></td>
                             <td><%=prod.description%></td>
                             <td><%=prod.SizeQuant.sum%></td>
                             <td><%=prod.createdAt%></td>
                             <td><%=prod.updatedAt%></td>
+                            <input type="hidden" id="imageProduct" value="<%=prod.Images[0] != null ? prod.Images[0].path : ''%>">
                         </tr>
                         <%});%>
                 </tbody>
@@ -51,23 +52,27 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabelUpdateDelete">Modal title</h5>
+                <h5 class="modal-title update-delete-product" id="exampleModalLabelUpdateDelete">Modal title</h5>
                 <button type="button" class="close btn-close-cate" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="exampleInputUpdateDelete">Gender name</label>
-                    <input type="email" class="form-control" id="exampleInputUpdateDelete" aria-describedby="emailHelp"
-                        placeholder="Enter category name">
-                    <small id="emailHelp" class="form-text text-muted">The change will affect other products</small>
+                    <label>Product name</label>
+                    <input type="text" class="form-control" id="updateDeleteProdName" placeholder="Enter product name">
                 </div>
                 <div class="form-group">
-                    <div class="drop-zone update-delete-cate">
-                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                        <input type="file" name="myCatFile" class="drop-zone__input">
-                    </div>
+                    <label for="select-category-add">Category</label>
+                    <select class="form-control" id="select-category-update-delete">
+                        <% categories.forEach(function(cat){ %>
+                            <option value="<%=cat.id%>"><%=cat.name%> <%=cat.Gender.name%></option>
+                        <% });%>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="text" class="form-control" id="updateDeletePrice" placeholder="Enter product price">
                 </div>
             </div>
             <div class="modal-footer">
@@ -97,11 +102,7 @@
                     <label for="select-category-add">Category</label>
                     <select class="form-control" id="select-category-add">
                         <% categories.forEach(function(cat){ %>
-                            <option>
-                                <%=cat.name%>
-                                    <%=cat.Gender.name%>
-                            </option>
-                            <input type="hidden" id="genderId" value="<%=cat.id%>">
+                            <option value="<%=cat.id%>"><%=cat.name%> <%=cat.Gender.name%></option>
                             <% });%>
                     </select>
                 </div>
@@ -146,6 +147,35 @@
 <script>
 
     $(document).ready(function () {
+        // Add event key up in price input field to add commas when user type in updateDelete form
+        document.getElementById('updateDeletePrice').addEventListener('keyup', function(evt) {
+            n = parseInt(this.value.replace(/\D/g, ''), 10) || '';
+            document.getElementById('updateDeletePrice').value = n.toLocaleString();
+        }, false)
+        //Display price with comma
+        $('.product-price-display').each(function() {
+            let columnPrice = $(this).html()
+            let addCommas = parseInt(columnPrice.replace(/\D/g, ''), 10).toLocaleString() || ''
+            $(this).html(addCommas)
+        })
+        //Click to display form update, delete
+        $('.show-form-product').on('click', (event) => {
+            event.preventDefault()
+            let imageProduct= $('#imageProduct').val()
+            let productTitle = $(event.target).text()
+            $('.update-delete-product').text(productTitle)
+            $('#updateDeleteProdName').val(productTitle)
+            $("#select-category-update-delete").val($(event.target).attr("data-categoryid"))
+            //Price
+            //1. Add comma in price input field
+            let productPrice = $(event.target).attr("data-price")
+            let addCommas = parseInt(productPrice.replace(/\D/g, ''), 10).toLocaleString() || ''
+            $('#updateDeletePrice').val(addCommas)
+            //Size
+            //1. Get array of size-quant input
+            renderTheInputQuantity($(event.target).attr("data-sizequant"))
+            console.log(imageProduct,productTitle, $(event.target).attr("data-categoryid"))
+        })
         //Cast to decimal in price
         var fnf = document.getElementById("examplePrice");
         var n;
@@ -197,10 +227,20 @@
         })
         //Send data to server
         $('.action-add').on('click', (e) => {
-            sendProduct($("#exampleName").val(), $("#genderId").val(), $("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName + "." + getFileExtension(fileData.name))
+            //console.log($('#select-category-add').val())
+            sendProduct($("#exampleName").val(), $("#select-category-add").val(), $("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName + "." + getFileExtension(fileData.name))
         })
 
     })
+    function appendToUpdateDeleteForm(sizeString, quantityString) {
+        
+    }
+    function renderTheInputQuantity(quantSizeObjs) {
+        let parseJson = JSON.parse(quantSizeObjs)
+        for(var size of parseJson) {
+            console.log(size)
+        }
+    }
     function createDictSizeQuant() {
         var dict = {};
         $('.size-quant').each((i, val) => {
