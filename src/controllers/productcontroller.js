@@ -55,32 +55,26 @@ function iterativeDictUpdate(dict, prodId) {
         try {
             //1. Check each dict that have in ProductSize
             let prodSizeQuery = await ProductSize.findAll({
-                where: {ProductId: prodId}   
+                where: {ProductId: prodId}
             })
             //2. Get the length
-            // 2
             let lengthOfDictOrigin = prodSizeQuery.length
             var startLength = 0
-
-            //Working with dict
-            let arrDictOut = []
+            //3. Working with dict
             let lengthDict = Object.keys(dict).length
             for(let i = 0; i<lengthDict; i++) {
                 console.log(dict[i])
                 //2. Update that dict
-                /*
                 if(startLength < lengthOfDictOrigin) {
-                    await prodSizeQuery[i].update({ProductId: prodId, size: dict[i].size, quantity: parseInt(dict[i].quantity)})
+                    await prodSizeQuery[i].update({ProductId: prodId, size: dict[i].Size, quantity: parseInt(dict[i].Quantity)})
                     await prodSizeQuery[i].save()
                 } else {
-                    let productSize = await ProductSize.create({ProductId: prodId, size: dict[i].size, quantity: parseInt(dict[i].quantity)})
+                //3. If the dict not have in the ProductSize then insert it
+                    let productSize = await ProductSize.create({ProductId: prodId, size: dict[i].Size, quantity: parseInt(dict[i].Quantity)})
                     await productSize.save()
                 }
-                */
-                console.log(startLength++)
+                startLength++
             }
-            //3. If the dict not have in the ProductSize
-            //4. Then insert it
         } catch(err) {
             return err
         }
