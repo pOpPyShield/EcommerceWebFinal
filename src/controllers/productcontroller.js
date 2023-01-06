@@ -50,4 +50,64 @@ function addProduct(req, res) {
         }
     })()
 }
-module.exports={addProduct}
+function iterativeDictUpdate(dict, prodId) {
+    (async() => {
+        try {
+            //1. Check each dict that have in ProductSize
+            let prodSizeQuery = await ProductSize.findAll({
+                where: {ProductId: prodId}   
+            })
+            //2. Get the length
+            // 2
+            let lengthOfDictOrigin = prodSizeQuery.length
+            var startLength = 0
+
+            //Working with dict
+            let arrDictOut = []
+            let lengthDict = Object.keys(dict).length
+            for(let i = 0; i<lengthDict; i++) {
+                console.log(dict[i])
+                //2. Update that dict
+                /*
+                if(startLength < lengthOfDictOrigin) {
+                    await prodSizeQuery[i].update({ProductId: prodId, size: dict[i].size, quantity: parseInt(dict[i].quantity)})
+                    await prodSizeQuery[i].save()
+                } else {
+                    let productSize = await ProductSize.create({ProductId: prodId, size: dict[i].size, quantity: parseInt(dict[i].quantity)})
+                    await productSize.save()
+                }
+                */
+                console.log(startLength++)
+            }
+            //3. If the dict not have in the ProductSize
+            //4. Then insert it
+        } catch(err) {
+            return err
+        }
+    })()
+}
+function updateProduct(req, res) {
+    (async() => {
+        try {
+            var bodyData = JSON.parse(JSON.stringify(req.body))
+            var sizeQuants = JSON.parse(bodyData.dictSizeQuant)
+            console.log(bodyData)
+            console.log(req)
+            if(req.files == null) {
+                console.log("Execute file == null")
+                var product = await Product.findByPk(bodyData.id)
+                if (product == null) {
+                    throw Error("Don't has any product match the name to update")
+                }
+                await product.update({name: bodyData.name, price: removeCommas(bodyData.price), description: bodyData.description, CategoryId: parseInt(bodyData.category)})
+                await product.save()
+                iterativeDictUpdate(sizeQuants, product.id)
+            } else {
+
+            }
+        } catch(err) {
+            res.send(err)
+        }
+    })()
+}
+module.exports={addProduct, updateProduct}

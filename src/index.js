@@ -56,6 +56,7 @@ app.post('/category/delete', authenticateToken,CategoryController.deleteCategory
 /* Render page for product */
 app.get('/product',authenticateToken, ui.product)
 app.post('/product/create', authenticateToken, ProductController.addProduct)
+app.post('/product/update', authenticateToken, ProductController.updateProduct)
 /* Render page for rating */
 app.get('/rating',authenticateToken, (req, res) => {
     res.render('Dashboard/partials/ratingContainer/')
