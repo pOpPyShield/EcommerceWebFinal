@@ -314,7 +314,7 @@
         })
         //Send data to server
         $('.action-add').on('click', (e) => {            
-            console.log(fileName, fileData, ext)
+            //console.log(fileName, fileData, ext)
             //console.log($('#select-category-add').val())
             sendProduct($("#exampleName").val(), $("#select-category-add").val(), $("#examplePrice").val(), createDictSizeQuant(), $("#description").val(), fileData, fileName + "." + getFileExtension(fileData.name))
         })
@@ -327,11 +327,6 @@
             confirmButtonText: 'Delete'
         }).then((result) => {
             if(result.isConfirmed) {
-                /*
-                const formData = new FormData()
-                formData.append('id', id)
-                formData.append('oldName', oldName)
-                */
                 (async() => {
                     const formData = new FormData()
                     formData.append('id', id)

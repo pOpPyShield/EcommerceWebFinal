@@ -2,6 +2,7 @@ const Product = require('../models/')['Product']
 const ProductImage = require('../models/')['Image']
 const ProductSize = require('../models/')['ProductSize']
 const pathSave = require('path').resolve(__dirname, '..')+"/Static/imgs/ProductImg/"
+const fs = require("fs")
 function iterativeDict(dict, prodId) {
     (async() => {
         try {
@@ -112,6 +113,12 @@ function updateProduct(req, res) {
                 //3. Save image
                 console.log(req.files.myFile.name)
                 var image = await ProductImage.findOne({where: {ProductId: product.id}})
+                //3.1 Delete the old image
+                fs.unlink(pathSave+image.path, (err) => {
+                    if(err) console.log(err)
+                    console.log("Remove "+pathSave+image.path)
+                })
+                //3.2 Update image 
                 await image.update({path: req.files.myFile.name, ProductId: product.id})
                 await image.save()
                 saveImageToServer(req.files.myFile)
@@ -122,4 +129,34 @@ function updateProduct(req, res) {
         }
     })()
 }
-module.exports={addProduct, updateProduct}
+function deleteProduct(req, res)  {
+    (async() => {
+        try {
+            var bodyData = JSON.parse(JSON.stringify(req.body))
+            var product = await Product.findByPk(bodyData.id)
+            if(product == null) {
+                throw Error("Don't has any product match the name to update")
+            }
+            //Delete image
+            var image = await ProductImage.findOne({where: {ProductId: bodyData.id}})
+            fs.unlink(pathSave+image.path, (err) => {
+                if(err) console.log(err)
+                console.log("Remove "+pathSave+image.path)
+            })
+            await image.destroy()
+            //Delete productsize
+            var sizes = await ProductSize.findAll({where: {ProductId: bodyData.id}})
+            sizes.forEach((size) => {
+                (async() => {
+                    await size.destroy()
+                })()
+            })
+            //Delete product
+            await product.destroy()
+            res.json({result: bodyData.oldName, operation: "Update"})
+        } catch(err) {
+            res.send(err)
+        }
+    })()
+}
+module.exports={addProduct, updateProduct, deleteProduct}
