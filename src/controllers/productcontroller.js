@@ -87,18 +87,36 @@ function updateProduct(req, res) {
             var sizeQuants = JSON.parse(bodyData.dictSizeQuant)
             console.log(bodyData)
             console.log(req)
+            var product = await Product.findByPk(bodyData.id)
             if(req.files == null) {
                 console.log("Execute file == null")
-                var product = await Product.findByPk(bodyData.id)
                 if (product == null) {
                     throw Error("Don't has any product match the name to update")
                 }
+                //1. Update information of product
                 await product.update({name: bodyData.name, price: removeCommas(bodyData.price), description: bodyData.description, CategoryId: parseInt(bodyData.category)})
                 await product.save()
+                //2. Get the productid then iterate over sizes, quantitys, then insert or update in ProductSizes table
                 iterativeDictUpdate(sizeQuants, product.id)
             } else {
-
+                console.log("Execute file != null")
+                var product2 = await Product.findByPk(bodyData.id)
+                if (product2 == null) {
+                    throw Error("Don't has any product match the name to update")
+                }
+                //1. Update information of product
+                await product2.update({name: bodyData.name, price: removeCommas(bodyData.price), description: bodyData.description, CategoryId: parseInt(bodyData.category)})
+                await product2.save()
+                //2. Get the productid then iterate over sizes, quantitys, then insert or update in ProductSizes table
+                iterativeDictUpdate(sizeQuants, product2.id)
+                //3. Save image
+                console.log(req.files.myFile.name)
+                var image = await ProductImage.findOne({where: {ProductId: product.id}})
+                await image.update({path: req.files.myFile.name, ProductId: product.id})
+                await image.save()
+                saveImageToServer(req.files.myFile)
             }
+            res.json({result: bodyData.oldName, operation: "Update"})
         } catch(err) {
             res.send(err)
         }

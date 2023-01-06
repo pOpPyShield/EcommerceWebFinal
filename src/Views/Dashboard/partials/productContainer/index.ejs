@@ -247,7 +247,8 @@
                 //var newName = document.getElementById("exampleInputUpdateDelete").value
                 //console.log(newName)
                 //updateGender(name,newName, fileData, fileName, "/gender/update")
-                updateProduct(id, 
+                updateProduct(id,
+                                productTitle,
                                 $('#updateDeleteProdName').val(), 
                                 $('#select-category-update-delete').val(), 
                                 $('#updateDeletePrice').val(), createDictSizeQuantUpdateDelete(), 
@@ -324,11 +325,12 @@
         })
         return dict;
     }
-    function updateProduct(id, newName, category, price, dictSizeQuant, description, img, imgName) {
+    function updateProduct(id, oldName, newName, category, price, dictSizeQuant, description, img, imgName) {
             console.log(id, newName, category, price, dictSizeQuant, description, img, imgName)
             const formData = new FormData()
             if(img!=null){
                 formData.append('id', id)
+                formData.append('oldName', oldName)
                 formData.append('name', newName)
                 formData.append('category', category)
                 formData.append('price', price)
@@ -337,6 +339,7 @@
                 formData.append('myFile', img, imgName)
             } else {
                 formData.append('id', id)
+                formData.append('oldName', oldName)
                 formData.append('name', newName)
                 formData.append('category', category)
                 formData.append('price', price)
@@ -367,7 +370,7 @@
                                     confirmButtonText: 'Ok',
                                 }).then((result) => {
                                     document.querySelector(".modal-backdrop").remove()
-                                    $.get('/gender', (html) => {
+                                    $.get('/product', (html) => {
                                         $(".container-fluid").html(html)
                                     })
                                 })
