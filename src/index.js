@@ -71,15 +71,9 @@ app.get('/order',authenticateToken, (req, res) => {
 /* Gender API */
 app.get('/gender/all', api.getAllGender)
 app.get('/category/all', api.getAllCate)
+app.get('/product/all', api.getAllProduct)
 /*End*/
 
-/* Product APi*/
-app.get('/product/all',(req, res) => {
-    (async() => {
-        // Now the ship comes with it
-        res.json(await ProductService.getAllProducts())
-    })()
-})
 app.get('/product/:id', (req, res) => {
     (async() => {
         res.json(await ProductService.getOneProduct(req.params.id))
