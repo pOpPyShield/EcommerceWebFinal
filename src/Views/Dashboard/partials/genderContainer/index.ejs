@@ -205,6 +205,7 @@
         })
         $('.action-delete').on('click', (e) => {
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
+            console.log(name)
             deleteGender(name, "/gender/delete")
         })
         $('.action-update').on('click', (e) => {

@@ -47,11 +47,12 @@ function deleteGender(req, res, next) {
             if(gender == null) {
                 throw Error(`${bodyData.name} gender not found!`)
             }
-
-            fs.unlink(pathSave+imageGender.path+"."+imageGender.ext, (err) => {
-                if(err) console.log(err)
-                console.log("Remove "+pathSave+imageGender.path+"."+imageGender.ext)
-            })
+            if(imageGender != null) {
+                fs.unlink(pathSave+imageGender.path+"."+imageGender.ext, (err) => {
+                    if(err) console.log(err)
+                    console.log("Remove "+pathSave+imageGender.path+"."+imageGender.ext)
+                })
+            }
             await gender.destroy()
             res.json({result: gender.name, operation: "Delete"})
         } catch(err) {
