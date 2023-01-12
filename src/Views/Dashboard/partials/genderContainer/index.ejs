@@ -211,7 +211,6 @@
         $('.action-update').on('click', (e) => {
             var name = document.getElementById("exampleModalLabelUpdateDelete").innerHTML.trim()
             var newName = document.getElementById("exampleInputUpdateDelete").value
-            console.log(newName)
             updateGender(name,newName, fileData, fileName, "/gender/update")
         })
     });

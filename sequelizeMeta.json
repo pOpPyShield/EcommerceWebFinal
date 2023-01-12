@@ -1,1 +1,19 @@
-[]
+[
+  "20221215013024-create-admin.js",
+  "20221215072524-create-gender.js",
+  "20221215072550-create-category.js",
+  "20221215072737-create-product.js",
+  "20221216025315-create-product-size.js",
+  "20221217064913-create-image.js",
+  "20221217081953-add-associations.js",
+  "20221217082002-add-products-size-association.js",
+  "20221217082011-add-products-image-association.js",
+  "20221217091528-create-cart.js",
+  "20221217091552-create-checkout.js",
+  "20221217091628-create-customer.js",
+  "20221217091914-add-products-cart-association.js",
+  "20221217092740-add-cart-checkout-association.js",
+  "20221217094827-add-checkout-customer-association.js",
+  "20221226011128-create-image-gender.js",
+  "20221226011622-add-imagegender-gender-association.js"
+]

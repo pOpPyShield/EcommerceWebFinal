@@ -93,6 +93,18 @@ function updateGender(req, res, next) {
                         if(err) console.log(err)
                         console.log("file uploaded")   
                     })
+                } else {
+                    imageGender = await ImageGender.create({path: getNameImage(req.files.myFile.name), ext: getFileExtension(req.files.myFile.name), GenderId: gender2.id})
+                    await imageGender.save()
+                    var fileObj = req.files.myFile
+                    console.log(fileObj)
+                    fileObj.mv(pathSave+getNameImage(req.files.myFile.name)+"."+getFileExtension(req.files.myFile.name), (err) => {
+                        if(err) {
+                            console.log(err)
+                        } else {
+                            console.log("file uploaded")   
+                        }
+                    })
                 }
                 res.json({result: bodyData.name, operation: "Update"})
             }
