@@ -31,6 +31,7 @@ app.set('views', path.join(__dirname, 'Views'))
 //Serving static files
 app.use(express.static(__dirname+'/Static'))
 app.use('/GenderImg', express.static(__dirname+'/Static/imgs/GenderImg/'))
+app.use('/ProductImg', express.static(__dirname+'/Static/imgs/ProductImg/'))
 //Use body-parser to encoded message
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json())
